@@ -1,0 +1,102 @@
+@use '../abstracts/variables' as *;
+
+.header {
+  background-color: $white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem 2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  direction: rtl;
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    img {
+      height: 40px;
+      width: auto;
+    }
+
+    h1 {
+      color: $primary-color;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: $bg-light;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $primary-color;
+        font-weight: bold;
+      }
+
+      .user-name {
+        color: $text-primary;
+        font-weight: 500;
+      }
+
+      .user-role {
+        color: $text-secondary;
+        font-size: 0.875rem;
+      }
+    }
+
+    .notifications {
+      position: relative;
+      cursor: pointer;
+      
+      .badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: $danger-color;
+        color: $white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .logout-button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      background-color: $button-bg-color;
+      color: $white;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+}

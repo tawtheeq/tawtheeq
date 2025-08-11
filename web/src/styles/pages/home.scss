@@ -1,0 +1,27 @@
+@use '../abstracts/variables' as *;
+
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 60px); // ترك مساحة للهيدر
+  padding: 2rem;
+  background-color: $bg-light;
+
+
+
+  h1 {
+    font-size: 2rem;
+    color: $primary-color;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  p {
+    font-size: 1.125rem;
+    color: $text-secondary;
+    text-align: center;
+  }
+}

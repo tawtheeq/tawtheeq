@@ -1,0 +1,77 @@
+
+@use '../abstracts/variables' as *;
+
+.signin-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 60px); // ترك مساحة للهيدر
+  padding: 2rem;
+  background-color: $bg-light;
+  font-size: 2rem;
+}
+
+.login-form {
+  width: 30%;
+  max-width: 400px;
+ display: flex;
+ flex-direction: column;
+font-size: 2rem;
+ align-items: center;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+ 
+  // text-align: right;
+  // direction: rtl;
+
+  .title {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    color:$primary-color;
+    font-weight: bold;
+  }
+
+  label {
+    display: block;
+    margin: 1rem 0 0.5rem;
+    font-weight: 600;
+    color: #64748b;
+  }
+
+  .input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+
+    transition: all 0.2s ease;
+    margin-bottom: 1rem;
+    background-color: $input-bg-color;
+    color: $text-primary;
+    font-family: $font-family;
+
+    &:focus {
+      border-color: #2563eb;
+      outline: none;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+  }
+
+
+
+.error-message {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+
+.logo-signin {
+  width: 200px; /* Adjust the size as needed */
+  height: auto;
+  margin-bottom: 1.5rem;
+}
+
+}

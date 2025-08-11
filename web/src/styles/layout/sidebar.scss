@@ -1,0 +1,164 @@
+
+@use '../abstracts/variables' as *;
+
+.sidebar {
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  width: 280px;
+  background-color: $white;
+  box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+  padding-top: 90px; // لترك مساحة للهيدر
+  direction: rtl;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+  z-index: 99;
+  text-align: center;
+
+  // Logo section
+  .logo {
+    // margin-bottom: 1rem;
+    // margin: 0.5rem auto;
+    padding: 0%;
+    color: $primary-color;
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin: 0 auto;
+  }
+
+  // Navigation
+  nav {
+    width: 100%;
+    height: calc(100vh - 160px); // ارتفاع كامل مع ترك مساحة للوغو والفوتر
+    overflow-y: auto;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        margin-bottom: 0.25rem;
+
+        a {
+          display: flex;
+          align-items: center;
+          padding: 0.875rem 2rem;
+          color: $text-secondary;
+          text-decoration: none;
+          transition: all 0.2s ease;
+          gap: 1rem;
+
+          i {
+            width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+          }
+
+          &:hover {
+            background-color: rgba($primary-color, 0.1);
+            color: $primary-color;
+          }
+
+          &.active {
+            background-color: rgba($primary-color, 0.15);
+            color: $primary-color;
+            border-right: 4px solid $primary-color;
+          }
+        }
+      }
+    }
+  }
+
+  // القسم السفلي للقائمة
+  .sidebar-footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 280px;
+    padding: 1rem 2rem;
+    background-color: $white;
+    border-top: 1px solid rgba($text-secondary, 0.1);
+
+    .user-status {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .status-indicator {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: $success-color;
+      }
+
+      .status-text {
+        color: $text-secondary;
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  // تصميم القوائم الفرعية
+  .submenu {
+    padding-right: 3rem;
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s ease;
+
+    &.open {
+      height: auto;
+    }
+
+    a {
+      padding: 0.75rem 2rem;
+      font-size: 0.9rem;
+    }
+  }
+
+  // أيقونة السهم للقوائم التي تحتوي على قوائم فرعية
+  .has-submenu {
+    position: relative;
+
+    .arrow {
+      position: absolute;
+      left: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      transition: transform 0.2s ease;
+
+      &.open {
+        transform: translateY(-50%) rotate(180deg);
+      }
+    }
+  }
+
+  // تصميم متجاوب
+  @media (max-width: 768px) {
+    transform: translateX(100%);
+    width: 240px;
+
+    &.open {
+      transform: translateX(0);
+    }
+  }
+}
+
+// تأثير التعتيم عند فتح القائمة في الشاشات الصغيرة
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+
+  @media (max-width: 768px) {
+    &.active {
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,56 @@
+
+// body {
+//   font-family: variables.$font-family;
+//   line-height: 1.5;
+//   font-weight: 400;
+//   color: variables.$text-primary;
+//   background-color: variables.$bg-light;
+//   text-rendering: optimizeLegibility;
+//   -webkit-font-smoothing: antialiased;
+//   -moz-osx-font-smoothing: grayscale;
+//   direction: rtl;
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+
+}
+
+
+html {
+    font-size: 62.5%;
+
+}
+
+body {
+
+    font-family: "Cairo", sans-serif;
+    font-weight: 400;
+    font-size: 1.6rem;
+    line-height: 1.7;
+    color: #777;
+
+    // box-sizing: border-box;
+}
+
+
+// @media (max-width: 768px) {
+//   html {
+//     font-size: 14px;
+//   }
+// }

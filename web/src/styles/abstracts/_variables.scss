@@ -1,0 +1,54 @@
+
+// Variables for Tawtheeq Web Application Styles
+
+// Font Family
+$font-family: 'Cairo', sans-serif;
+
+// Brand Colors - Blue Theme
+$primary-color: #0a2647;        // أزرق داكن جداً (للعناصر الرئيسية)
+$primary-light: #144272;        // أزرق داكن (للتأثيرات والتحويم)
+$primary-lighter: #205295;      // أزرق متوسط
+$primary-lightest: #2C74B3;     // أزرق فاتح
+$secondary-color: #5585b5;      // أزرق رمادي
+
+// Status Colors
+$success-color: #0d9488;        // أخضر مائل للأزرق
+$danger-color: #b91c1c;         // أحمر غامق
+$warning-color: #0369a1;        // أزرق مائل للتحذير
+$info-color: #0ea5e9;          // أزرق فاتح للمعلومات
+
+// Neutral Colors - Cool Tones
+$white: #ffffff;
+$black: #1e293b;              // أزرق أسود
+$gray-100: #f1f5f9;
+$gray-200: #e2e8f0;
+$gray-300: #cbd5e1;
+$gray-400: #94a3b8;
+$gray-500: #64748b;
+$gray-600: #475569;
+
+// Text Colors
+$text-primary: #0f172a;        // أزرق داكن للنصوص
+$text-secondary: $gray-600;
+$text-light: #f8fafc;         // أبيض مائل للأزرق
+
+// Background Colors
+$bg-light: #f8fafc;           // خلفية فاتحة مائلة للأزرق
+$bg-dark: #0f172a;            // خلفية داكنة زرقاء
+$bg-secondary: #f1f5f9;       // خلفية ثانوية
+
+// Interactive Elements
+$input-border-color: #bfdbfe;     // حدود زرقاء فاتحة
+$input-bg-color: #f8fafc;         // خلفية فاتحة للمدخلات
+$input-focus-border-color: #60a5fa; // حدود زرقاء عند التركيز
+$button-bg-color: $primary-color;   // خلفية الأزرار
+$button-text-color: $white;         // لون نص الأزرار
+
+// Gradients
+$gradient-primary: linear-gradient(135deg, $primary-color, $primary-lighter);
+$gradient-secondary: linear-gradient(135deg, $primary-lighter, $primary-lightest);
+
+// Shadows with Blue Tint
+$shadow-sm: 0 1px 2px rgba($primary-color, 0.05);
+$shadow: 0 4px 6px rgba($primary-color, 0.1);
+$shadow-lg: 0 10px 15px rgba($primary-color, 0.1);
