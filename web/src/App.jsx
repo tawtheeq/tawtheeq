@@ -6,6 +6,9 @@ import Dashboard from './pages/Dashboard';
 import Overview from './pages/Overview';
 import Users from './pages/Users';
 import Settings from './pages/Settings';
+import Missions from './pages/Missions';
+import AddMission from './pages/Addmission';
+
 
 function App() {
   return (
@@ -20,7 +23,10 @@ function App() {
           <Route index element={<Overview />} />
           <Route path="users" element={<Users />} />
           <Route path="settings" element={<Settings />} />
-        </Route>
+          <Route path="missions" element={<Missions/>} />
+          <Route path="missions/addmission" element={<AddMission />} />
+          </Route>
+      
      
       </Routes>
     </BrowserRouter>

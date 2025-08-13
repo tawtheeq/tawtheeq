@@ -10,7 +10,7 @@ export default function Users() {
       email: "ahmed@example.com",
       role: "مدير",
       department: "قسم التوثيق",
-      status: "نشط"
+      status: 0
     },
     {
       id: 2,
@@ -18,15 +18,15 @@ export default function Users() {
       email: "sara@example.com",
       role: "محرر",
       department: "قسم الإعلام",
-      status: "نشط"
+      status: 20
     },
     {
       id: 3,
       name: "محمد علي",
       email: "mohammad@example.com",
-      role: "مستخدم",
+      role: "مصور",
       department: "قسم المتابعة",
-      status: "غير نشط"
+      status: 45
     }
   ]);
 
@@ -59,7 +59,7 @@ export default function Users() {
               <th>البريد الإلكتروني</th>
               <th>الدور</th>
               <th>القسم</th>
-              <th>الحالة</th>
+              <th>الرصيد المتبقي</th>
               <th>الإجراءات</th>
             </tr>
           </thead>
@@ -72,16 +72,16 @@ export default function Users() {
                   <td>{user.role}</td>
                   <td>{user.department}</td>
                   <td>
-                    <span className={`status ${user.status === 'نشط' ? 'active' : 'inactive'}`}>
+                    <span className={`status ${user.status > 0 ? 'active' : 'inactive'}`}>
                       {user.status}
                     </span>
                   </td>
-                  <td className="user-actions">
-                    <button className="edit-btn">
+                 <td className="user-actions">
+                    <button className="procedure-button">
                       <i className="fas fa-edit"></i>
                     </button>
                     <button 
-                      className="delete-btn"
+                      className="procedure-button"
                       onClick={() => handleDelete(user.id)}
                     >
                       <i className="fas fa-trash"></i>

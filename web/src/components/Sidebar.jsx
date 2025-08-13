@@ -23,9 +23,13 @@ export default function Sidebar() {
     },
     {
       title: 'المهام',
-      path: 'tasks',
-      icon: 'fas fa-tasks'
+      path: 'missions',
+      icon: 'fas fa-tasks',
+      submenu: [
+        { title: 'قائمة المهام', path: 'addmission' },
+      ]
     },
+    
     {
       title: 'التقارير',
       path: 'reports',

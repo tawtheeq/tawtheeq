@@ -1,9 +1,10 @@
 @use '../abstracts/variables' as *;
 
 .users-container {
+  direction: rtl;
   padding: 1.5rem;
   height: calc(100vh - 70px); // ارتفاع الشاشة ناقص ارتفاع الهيدر
-  width: 100%;
+  // width: 100%;
   
   .users-header {
     display: flex;
