@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from 'react'; 
 
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-import '../styles/components/buttons.scss';
+// import '../styles/components/buttons.scss';
                     import '../styles/pages/home.scss';  
                                                                                                                                                                                                                             
 
@@ -24,7 +24,7 @@ export default function Home() {
     </div>
 <br/>
 <br/>
-<button  onClick={() => navigate("/login")}>
+<button className="login-button"  onClick={() => navigate("/login")}>
      الدخول إلى النظام
     </button>
    </div>
