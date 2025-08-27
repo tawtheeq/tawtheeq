@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import '../styles/pages/users.scss';
 
 export default function Users() {
@@ -45,10 +46,10 @@ export default function Users() {
     <div className="users-container">
       <div className="users-header">
         <h1>قائمة المستخدمين</h1>
-        <button className="add-user-btn" onClick={handleAdd}>
+        <Link to="addemp" className="function-button">
           <i className="fas fa-plus"></i>
-          إضافة مستخدم
-        </button>
+          إضافة موظف
+        </Link>
       </div>
 
       <div className="users-table">
@@ -76,11 +77,11 @@ export default function Users() {
                       {user.status}
                     </span>
                   </td>
-                 <td className="user-actions">
+                  <td className="user-actions">
                     <button className="procedure-button">
                       <i className="fas fa-edit"></i>
                     </button>
-                    <button 
+                    <button
                       className="procedure-button"
                       onClick={() => handleDelete(user.id)}
                     >

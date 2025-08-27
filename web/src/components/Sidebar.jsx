@@ -16,18 +16,11 @@ export default function Sidebar() {
       title: 'المستخدمون',
       path: 'users',
       icon: 'fas fa-users',
-      submenu: [
-        { title: 'قائمة المستخدمين', path: 'users/list' },
-        { title: 'إضافة مستخدم', path: 'users/add' }
-      ]
     },
     {
       title: 'المهام',
       path: 'missions',
       icon: 'fas fa-tasks',
-      submenu: [
-        { title: 'قائمة المهام', path: 'addmission' },
-      ]
     },
     
     {

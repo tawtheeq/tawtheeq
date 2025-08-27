@@ -52,7 +52,6 @@ export default function Addmission() {
   return photographers.filter(p => !selectedIds.includes(p.id.toString()));
 };
 
-
     // دالة معالجة اختيار المصور لكل حقل بشكل مستقل
     const handlePhotographerSelect = (fieldKey, e) => {
         const photographerId = e.target.value;
@@ -97,7 +96,7 @@ export default function Addmission() {
         console.log('المصورون المختارون:', selectedPhotographers);
 
 
-        const CombinedData = {
+        const misionData = {
             ...form,
             photographers
         }
@@ -124,7 +123,7 @@ export default function Addmission() {
             <div className="users-header">
                 <h1>إضافة مهمة جديدة</h1>
             </div>
-            <form className="mission-form" onSubmit={handleSubmit}>
+            <form className="input-form" onSubmit={handleSubmit}>
                 <div className="form-row">
                     <div className="form-group">
                         <label>اسم المهمة</label>
@@ -304,7 +303,7 @@ export default function Addmission() {
                     </div>
                 </div>
 
-                <button type="submit" className="add-user-btn">
+                <button type="submit" className="function-button">
                     <i className="fas fa-plus"></i> إضافة المهمة
                 </button>
             </form>

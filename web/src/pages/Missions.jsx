@@ -11,25 +11,25 @@ export default function Missions() {
       year: "2025",
       location: "مدير",
       main_person: "نائب رئيس الأركان",
-      main_category:"VIP",
+      main_category: "VIP",
       status: "نشط"
     },
-       {
+    {
       id: 2,
       mission_name: "محمد محمد",
       year: "2015",
       location: "مدير",
       main_person: "نائب رئيس الأركان",
-      main_category:"VIP",
+      main_category: "VIP",
       status: "نشط"
     },
-       {
+    {
       id: 3,
       mission_name: "خالد محمد",
       year: "2020",
       location: "مدير",
       main_person: "نائب رئيس الأركان",
-      main_category:"VIP",
+      main_category: "VIP",
       status: "نشط"
     },
   ]);
@@ -50,10 +50,10 @@ export default function Missions() {
     <div className="users-container">
       <div className="users-header">
         <h1>قائمة المهام</h1>
-        <Link to="addmission" className="add-user-btn">
-  <i className="fas fa-plus"></i>
-  إضافة مهمة
-</Link>
+        <Link to="addmission" className="function-button">
+          <i className="fas fa-plus"></i>
+          إضافة مهمة
+        </Link>
       </div>
 
       <div className="users-table">
@@ -82,18 +82,18 @@ export default function Missions() {
                     </span>
                   </td> */}
                   <td className="user-actions">
-                     <button className=" procedure-button">
+                    <button className=" procedure-button">
                       <i className="fas fa-eye"></i>
                     </button>
                     <button className=" procedure-button">
                       <i className="fas fa-edit"></i>
                     </button>
-                    <button 
+                    <button
                       className=" procedure-button"
                       onClick={() => handleDelete(user.id)}
                     >
                       <i className="fas fa-trash"></i>
-                      
+
                     </button>
                   </td>
                 </tr>

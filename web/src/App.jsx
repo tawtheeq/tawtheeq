@@ -8,6 +8,7 @@ import Users from './pages/Users';
 import Settings from './pages/Settings';
 import Missions from './pages/Missions';
 import AddMission from './pages/Addmission';
+import AddEmp from './pages/Addemp';
 
 
 function App() {
@@ -22,6 +23,9 @@ function App() {
           <Route path="settings" element={<Settings />} />
           <Route path="missions" element={<Missions/>} />
           <Route path="missions/addmission" element={<AddMission />} />
+          <Route path="users/addemp" element={<AddEmp />} />
+          <Route path="*" element={<h1>404 Not Found</h1>} />
+
           </Route>
       
      

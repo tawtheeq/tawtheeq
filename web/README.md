@@ -46,6 +46,7 @@
 - name 'text'
 - mobile 'text'
 - delegationBalance 'int'
+- isAdmin [default 0]
 - leaves '[from: yyyy-mm-dd , to: yyyy-mm-dd]'
 
 
@@ -53,4 +54,9 @@
 - docker pull postgres
 - docker run postgres and specify ports.
 - goose do employees migrations.
-- sqlc do migrations.
+- sqlc do employees migrations.
+- add employee screen
+
+20/8/2025 - to do:
+- goose do employees migrations.
+- sqlc do employees migrations.

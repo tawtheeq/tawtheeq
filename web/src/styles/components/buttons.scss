@@ -11,12 +11,12 @@ button {
 
   background-color: $primary-color;
   color: $button-text-color;
-  transition: border-color 0.25s;
-  
-  &:hover {
-    border-color: $primary-color;
-  }
-  
+  // transition: border-color 0.25s;
+
+  // &:hover {
+  //   border-color: $primary-color;
+  // }
+
   &:focus,
   &:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
@@ -25,65 +25,88 @@ button {
 
 
 .edit-button {
-        background: grey;
-        color: $white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: opacity 0.2s;
+  background: grey;
+  color: $white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s;
 
-        &:hover {
-          opacity: 0.9;
-        }
-      }
-
-
-      .procedure-button {
-        background: $primary-light;
-        color: $white;
-        border: none;
-        // padding: 0.5rem 1rem;
-        border-radius: 4px;
-width:3rem;
-height: 3rem;
-        cursor: pointer;
-        transition: opacity 0.2s;
-
-        &:hover {
-          opacity: 0.9;
-        }
-      }
-
-      .login-button {
-        background: $primary-color;
-        color: $white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-
-        width: 100%;
-        cursor: pointer;
-        transition: opacity 0.2s;
-
-        &:hover {
-          opacity: 0.9;
-        }
-      }
+  &:hover {
+    opacity: 0.9;
+  }
+}
 
 
-           .delete-button {
-        background: rgb(102, 0, 0);
-        color: $white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
+.procedure-button {
+  background: $primary-light;
+  color: $white;
+  border: none;
+  // padding: 0.5rem 1rem;
+  border-radius: 4px;
+  width: 3rem;
+  height: 3rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
 
-        width: 100%;
-        cursor: pointer;
-        transition: opacity 0.2s;
+  &:hover {
+    opacity: 0.9;
+  }
+}
 
-        &:hover {
-          opacity: 0.9;
-        }
-      }
+.login-button {
+  background: $primary-color;
+  color: $white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+
+  width: 100%;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+
+.delete-button {
+  background: rgb(102, 0, 0);
+  color: $white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+
+  width: 100%;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+
+.function-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: $gradient-primary;
+  color: $white;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+
+  i {
+    font-size: 1rem;
+  }
+
+  &:hover {
+    transform: $bg-secondary;
+  }
+}
