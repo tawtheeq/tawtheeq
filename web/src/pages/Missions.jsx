@@ -82,14 +82,14 @@ export default function Missions() {
                     </span>
                   </td> */}
                   <td className="user-actions">
-                    <button className=" procedure-button">
+                    <button className=" procedure-button show">
                       <i className="fas fa-eye"></i>
                     </button>
-                    <button className=" procedure-button">
+                    <button className=" procedure-button edit">
                       <i className="fas fa-edit"></i>
                     </button>
                     <button
-                      className=" procedure-button"
+                      className=" procedure-button delete"
                       onClick={() => handleDelete(user.id)}
                     >
                       <i className="fas fa-trash"></i>

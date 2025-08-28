@@ -40,10 +40,8 @@ button {
 
 
 .procedure-button {
-  background: $primary-light;
+  
   color: $white;
-  border: none;
-  // padding: 0.5rem 1rem;
   border-radius: 4px;
   width: 3rem;
   height: 3rem;
@@ -53,6 +51,23 @@ button {
   &:hover {
     opacity: 0.9;
   }
+
+  &:active {
+    border: none;
+  }
+}
+
+
+.show {
+  background-color: $info-color;
+}
+
+.edit {
+  background-color: $warning-color;
+}
+
+.delete {
+  background-color: $danger-color;
 }
 
 .login-button {

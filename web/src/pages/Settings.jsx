@@ -69,7 +69,7 @@ export default function Settings() {
               <div className="value">{stat.value}</div>
             </div>
             <button 
-              className="edit-button"
+              className="function-button"
               onClick={() => handleEdit(stat.type)}
             >
               تعديل
@@ -79,10 +79,10 @@ export default function Settings() {
       </div>
 
       {/* نموذج الإعدادات */}
-     <form className="settings-form" onSubmit={handleSubmit}>
+     <form className="input-form" onSubmit={handleSubmit}>
         <h2 className="form-title">إعدادات النظام</h2>
         
-        <div className="form-grid">
+        <div className="form-row">
           {Object.entries(selectOptions).map(([key, options]) => (
             <div key={key} className="form-group">
               <label htmlFor={key}>
@@ -109,10 +109,10 @@ export default function Settings() {
         </div>
 
         <div className="form-actions">
-          <button type="button" className="cancel-button">
+          <button type="button" className="function-button">
             إلغاء
           </button>
-          <button type="submit" className="save-button">
+          <button type="submit" className="function-button">
             حفظ التغييرات
           </button>
         </div>
