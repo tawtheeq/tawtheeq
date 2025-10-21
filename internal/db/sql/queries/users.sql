@@ -1,11 +1,11 @@
 -- name: AddUser :exec
-INSERT INTO users (name, email, mobile, password) VALUES ($1, $2, $3, $4)
+INSERT INTO users (name, email, mobile, ) VALUES ($1, $2, $3, $4)
 RETURNING *;
 
 -- name: GetUserByUsername :one
 SELECT * FROM users WHERE username = $1;
 
--- name: GetAllUsers :exec
+-- name: GetAllUsers :many
 SELECT * FROM users;
 
 -- name: UpdateUser :exec
@@ -21,6 +21,29 @@ SELECT * FROM users WHERE id = $1;
 -- name: CheckUserByUsername :one
 SELECT EXISTS(SELECT 1 FROM users WHERE username = $1);
 
+-- name: MakeUserAdmin :exec
+UPDATE users SET role = 'admin' WHERE id = $1
+RETURNING *;
+
+-- name: RmoveUserAdmin :exec
+UPDATE users SET role = 'user' WHERE id = $1
+RETURNING *;
+
+-- name: UpdatePassword :exec
+UPDATE users SET password = $1 WHERE id = $2
+RETURNING *;
+
+-- name: UpdateBalance :exec
+UPDATE users SET balance = $1 WHERE id = $2
+RETURNING *;
 
 
 
+
+    name
+    username
+    email
+    mobile
+    password
+    balance
+    created_at

@@ -1,0 +1,10 @@
+package handler
+
+import (
+	"net/http"
+)
+
+func (h *Handler) GetUsers(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Get Users Endpoint"))
+
+}

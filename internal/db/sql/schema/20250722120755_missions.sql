@@ -3,6 +3,7 @@
 CREATE TABLE IF NOT EXISTS missions (
     id SERIAL PRIMARY KEY,
     mission_name VARCHAR(255) NOT NULL,
+    cooordiator_num INT NOT NULL,
     phg_id1 INT NOT NULL,
     phg_id2 INT NOT NULL DEFAULT 0,
     phg_id3 INT NOT NULL DEFAULT 0,

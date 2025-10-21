@@ -2,41 +2,39 @@ package database
 
 import (
 	"database/sql"
-	"log"
+	"fmt"
 	"os"
 
+	// "github.com/jmoiron/sqlx"
+
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 	// "github.com/joho/godotenv"
 )
 
+var DB *sql.DB
+
 func Database() {
-	err := godotenv.Load(".env")
+	godotenv.Load(".env")
 
+	dbURL := os.Getenv("DB_URL")
+	db, err := sql.Open("postgres", dbURL)
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		fmt.Println("Error connecting to the database:", err)
 		return
+	} else {
+		fmt.Println("Successfully connected to the database")
 	}
 
-	// Load environment variables
-	// dbHost := "localhost" // Replace with os.Getenv("DB_HOST")
-	DBURL := os.Getenv("DB_HOST")
-	if DBURL == "" {
-		log.Fatal("DB_HOST environment variable is not set")
+	if err := db.Ping(); err != nil {
+		fmt.Println("Error pinging the database:", err)
 		return
-	}
-
-	db, err := sql.Open("postgres", DBURL)
-	if err != nil {
-		log.Fatal("Error connecting to the database")
-		return
+	} else {
+		fmt.Println("Successfully pinged the database")
 	}
 
 	defer db.Close()
 
-	err = db.Ping()
-	if err != nil {
-		log.Fatal("Error pinging the database")
-		return
-	}
+	DB = db
 
 }
