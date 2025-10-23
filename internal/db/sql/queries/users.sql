@@ -1,49 +1,69 @@
--- name: AddUser :exec
-INSERT INTO users (name, email, mobile, ) VALUES ($1, $2, $3, $4)
+-- name: AddUser :one
+INSERT INTO users (name, email, mobile, password, role, balance)
+VALUES ($1, $2, $3, $4, $5, $6)
 RETURNING *;
 
--- name: GetUserByUsername :one
-SELECT * FROM users WHERE username = $1;
+-- name: GetUserByID :one
+SELECT *
+FROM users
+WHERE id = $1;
+
+-- name: GetUserByEmail :one
+SELECT *
+FROM users
+WHERE email = $1;
+
+-- name: GetUserByMobile :one
+SELECT *
+FROM users
+WHERE mobile = $1;
 
 -- name: GetAllUsers :many
-SELECT * FROM users;
+SELECT *
+FROM users
+ORDER BY id;
 
--- name: UpdateUser :exec
-UPDATE users SET name = $1, email = $2, mobile = $3, password = $4 WHERE id = $5
+-- name: UpdateUser :one
+UPDATE users
+SET name = $2,
+    email = $3,
+    mobile = $4,
+    password = $5,
+    role = $6,
+    balance = $7
+WHERE id = $1
 RETURNING *;
 
 -- name: DeleteUser :exec
-DELETE FROM users WHERE id = $1;
+DELETE FROM users
+WHERE id = $1;
 
--- name: GetUserByID :one
-SELECT * FROM users WHERE id = $1;
-
--- name: CheckUserByUsername :one
-SELECT EXISTS(SELECT 1 FROM users WHERE username = $1);
-
--- name: MakeUserAdmin :exec
-UPDATE users SET role = 'admin' WHERE id = $1
+-- name: MakeUserAdmin :one
+UPDATE users
+SET role = 'admin'
+WHERE id = $1
 RETURNING *;
 
--- name: RmoveUserAdmin :exec
-UPDATE users SET role = 'user' WHERE id = $1
+-- name: RemoveUserAdmin :one
+UPDATE users
+SET role = 'user'
+WHERE id = $1
 RETURNING *;
 
--- name: UpdatePassword :exec
-UPDATE users SET password = $1 WHERE id = $2
+-- name: UpdatePassword :one
+UPDATE users
+SET password = $1
+WHERE id = $2
 RETURNING *;
 
--- name: UpdateBalance :exec
-UPDATE users SET balance = $1 WHERE id = $2
+-- name: UpdateBalance :one
+UPDATE users
+SET balance = $1
+WHERE id = $2
 RETURNING *;
 
+-- name: CheckUserByEmail :one
+SELECT EXISTS(SELECT 1 FROM users WHERE email = $1);
 
-
-
-    name
-    username
-    email
-    mobile
-    password
-    balance
-    created_at
+-- name: CheckUserByMobile :one
+SELECT EXISTS(SELECT 1 FROM users WHERE mobile = $1);

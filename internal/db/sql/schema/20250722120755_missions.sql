@@ -1,29 +1,18 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TABLE IF NOT EXISTS missions (
+CREATE TABLE missions (
     id SERIAL PRIMARY KEY,
     mission_name VARCHAR(255) NOT NULL,
-    cooordiator_num INT NOT NULL,
-    phg_id1 INT NOT NULL,
-    phg_id2 INT NOT NULL DEFAULT 0,
-    phg_id3 INT NOT NULL DEFAULT 0,
-    phg_id4 INT NOT NULL DEFAULT 0,
-    phg_id5 INT NOT NULL DEFAULT 0,
+    coordinator_num INT NOT NULL,
     main_category INT NOT NULL,
     sub_category INT NOT NULL,
     month INT NOT NULL,
-    year INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
-    number_of_phs INT NOT NULL DEFAULT 0,
-    number_of_vids INT NOT NULL DEFAULT 0,
-    description TEXT,
-    created_by INT NOT NULL,
-    status INT NOT NULL DEFAULT 1
+    created_by INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 -- +goose StatementEnd
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE IF EXISTS missions;
+DROP TABLE missions;
 -- +goose StatementEnd

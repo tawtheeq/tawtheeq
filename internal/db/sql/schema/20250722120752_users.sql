@@ -5,10 +5,10 @@ CREATE TABLE users (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     mobile VARCHAR(15) NOT NULL UNIQUE,
-    password VARCHAR(255),
-    balance INT DEFAULT 60,
-    role VARCHAR(20) DEFAULT 'user',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    password VARCHAR(255) NOT NULL DEFAULT '',
+    balance INT NOT NULL DEFAULT 60,
+    role VARCHAR(20) NOT NULL DEFAULT 'user',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 -- +goose StatementEnd
 
