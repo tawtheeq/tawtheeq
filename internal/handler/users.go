@@ -30,7 +30,6 @@ func (h *Handler) GetUsers(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to decode request body", http.StatusBadRequest)
 		return
 	}
-
 }
 
 func (h *Handler) AddUser(w http.ResponseWriter, r *http.Request) {

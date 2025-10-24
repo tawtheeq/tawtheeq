@@ -290,21 +290,19 @@ UPDATE users
 SET name = $2,
     email = $3,
     mobile = $4,
-    password = $5,
-    role = $6,
-    balance = $7
+    role = $5,
+    balance = $6
 WHERE id = $1
 RETURNING id, name, email, mobile, password, balance, role, created_at
 `
 
 type UpdateUserParams struct {
-	ID       int32
-	Name     string
-	Email    string
-	Mobile   string
-	Password string
-	Role     string
-	Balance  int32
+	ID      int32
+	Name    string
+	Email   string
+	Mobile  string
+	Role    string
+	Balance int32
 }
 
 func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error) {
@@ -313,7 +311,6 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, e
 		arg.Name,
 		arg.Email,
 		arg.Mobile,
-		arg.Password,
 		arg.Role,
 		arg.Balance,
 	)

@@ -28,11 +28,11 @@ UPDATE users
 SET name = $2,
     email = $3,
     mobile = $4,
-    password = $5,
-    role = $6,
-    balance = $7
+    role = $5,
+    balance = $6
 WHERE id = $1
 RETURNING *;
+
 
 -- name: DeleteUser :exec
 DELETE FROM users
