@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/maadiab/tawtheeq/tawtheeq/internal/db/sqlc"
 )
@@ -30,6 +31,11 @@ func (s *Services) GetAllUsers() ([]sqlc.User, error) {
 	users, err := s.DBQueries.GetAllUsers(context.Background())
 	if err != nil {
 		return nil, err
+	}
+
+	if users == nil {
+		fmt.Println("empty database !!!")
+		return []sqlc.User{}, nil
 	}
 
 	return users, nil

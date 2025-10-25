@@ -33,8 +33,6 @@ func Database() {
 		fmt.Println("Successfully pinged the database")
 	}
 
-	defer db.Close()
-
 	DB = db
 
 }

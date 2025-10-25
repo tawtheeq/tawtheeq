@@ -13,10 +13,12 @@ import (
 
 func main() {
 
+	database.Database()
 	svc := &service.Services{
 		DBQueries: sqlc.New(database.DB), // Initialize your database queries here
 	}
 
+	defer database.DB.Close()
 	h := handler.NewHandler(svc)
 	mux := http.NewServeMux()
 
@@ -27,7 +29,7 @@ func main() {
 
 	mux.HandleFunc("/api/users", h.GetUsers)
 
-	fmt.Println("Starting Tawtheeq API on port %S...", server.Addr)
+	fmt.Println("Starting Tawtheeq API on port %S ...", server.Addr)
 
 	fmt.Printf("Type of database.DB: %T\n", database.DB)
 

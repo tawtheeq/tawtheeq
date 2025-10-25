@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/maadiab/tawtheeq/tawtheeq/internal/db/sqlc"
@@ -9,16 +10,17 @@ import (
 
 func (h *Handler) GetUsers(w http.ResponseWriter, r *http.Request) {
 
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
+	// if r.Method != http.MethodGet {
+	// 	http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	// 	return
+	// }
 
 	var users []sqlc.User
 
 	users, err := h.svc.GetAllUsers()
 	if err != nil {
 		http.Error(w, "Failed to get users", http.StatusInternalServerError)
+		fmt.Println(err)
 		return
 	}
 
