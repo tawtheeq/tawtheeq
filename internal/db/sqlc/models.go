@@ -32,6 +32,8 @@ type Mission struct {
 	MainCategory   int32
 	SubCategory    int32
 	Month          int32
+	Year           int32
+	DurationDays   int32
 	CreatedBy      int32
 	CreatedAt      time.Time
 }

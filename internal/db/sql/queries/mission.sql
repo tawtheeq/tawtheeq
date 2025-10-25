@@ -5,9 +5,11 @@ INSERT INTO missions (
   main_category,
   sub_category,
   month,
+  year,
+  duration_days,
   created_by
 ) VALUES (
-  $1, $2, $3, $4, $5, $6
+  $1, $2, $3, $4, $5, $6, $7, $8
 )
 RETURNING *;
 
@@ -19,6 +21,8 @@ SELECT
   m.main_category,
   m.sub_category,
   m.month,
+  m.year,
+  m.duration_days,
   m.created_by,
   u.name AS created_by_name,
   m.created_at
@@ -34,6 +38,8 @@ SELECT
   m.main_category,
   m.sub_category,
   m.month,
+  m.year,
+  m.duration_days,
   m.created_by,
   u.name AS created_by_name,
   m.created_at
@@ -51,6 +57,8 @@ SET
   coordinator_num = $2,
   main_category = $3,
   sub_category = $4,
-  month = $5
-WHERE id = $6
+  month = $5,
+    year = $6,
+    duration_days = $7
+WHERE id = $8
 RETURNING *;

@@ -24,3 +24,24 @@ ORDER BY u.name;
 
 -- name: DeleteParticipantsByMission :exec
 DELETE FROM mission_participants WHERE mission_id = $1;
+
+
+-- name: GetMissionsByParticipant :many
+SELECT 
+  m.id,
+  m.mission_name,
+  m.coordinator_num,
+  m.main_category,
+  m.sub_category,
+  m.month,
+  m.year,
+  m.duration_days,
+  m.created_by,
+  mp.role
+FROM mission_participants mp
+JOIN missions m ON mp.mission_id = m.id
+WHERE mp.user_id = $1
+ORDER BY m.year DESC, m.month DESC;
+
+
+

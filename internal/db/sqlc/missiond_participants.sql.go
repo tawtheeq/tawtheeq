@@ -75,6 +75,71 @@ func (q *Queries) GetMissionParticipants(ctx context.Context, missionID int32) (
 	return items, nil
 }
 
+const getMissionsByParticipant = `-- name: GetMissionsByParticipant :many
+SELECT 
+  m.id,
+  m.mission_name,
+  m.coordinator_num,
+  m.main_category,
+  m.sub_category,
+  m.month,
+  m.year,
+  m.duration_days,
+  m.created_by,
+  mp.role
+FROM mission_participants mp
+JOIN missions m ON mp.mission_id = m.id
+WHERE mp.user_id = $1
+ORDER BY m.year DESC, m.month DESC
+`
+
+type GetMissionsByParticipantRow struct {
+	ID             int32
+	MissionName    string
+	CoordinatorNum int32
+	MainCategory   int32
+	SubCategory    int32
+	Month          int32
+	Year           int32
+	DurationDays   int32
+	CreatedBy      int32
+	Role           string
+}
+
+func (q *Queries) GetMissionsByParticipant(ctx context.Context, userID int32) ([]GetMissionsByParticipantRow, error) {
+	rows, err := q.db.QueryContext(ctx, getMissionsByParticipant, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []GetMissionsByParticipantRow
+	for rows.Next() {
+		var i GetMissionsByParticipantRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.MissionName,
+			&i.CoordinatorNum,
+			&i.MainCategory,
+			&i.SubCategory,
+			&i.Month,
+			&i.Year,
+			&i.DurationDays,
+			&i.CreatedBy,
+			&i.Role,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const removeMissionParticipant = `-- name: RemoveMissionParticipant :exec
 DELETE FROM mission_participants
 WHERE mission_id = $1 AND user_id = $2

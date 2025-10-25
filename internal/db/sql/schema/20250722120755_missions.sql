@@ -7,6 +7,8 @@ CREATE TABLE missions (
     main_category INT NOT NULL,
     sub_category INT NOT NULL,
     month INT NOT NULL,
+    year INT NOT NULL,
+    duration_days INT NOT NULL,
     created_by INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
