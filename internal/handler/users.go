@@ -4,18 +4,18 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/maadiab/tawtheeq/tawtheeq/internal/db/sqlc"
+	"github.com/maadiab/tawtheeq/tawtheeq/internal/response"
 )
 
 func (h *Handler) GetUsers(w http.ResponseWriter, r *http.Request) {
 
-	// if r.Method != http.MethodGet {
-	// 	http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	// 	return
-	// }
-
-	var users []sqlc.User
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
 
 	users, err := h.svc.GetAllUsers()
 	if err != nil {
@@ -24,19 +24,18 @@ func (h *Handler) GetUsers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-
-	err = json.NewEncoder(w).Encode(users)
-
-	if err != nil {
-		http.Error(w, "Failed to decode request body", http.StatusBadRequest)
+	if len(users) == 0 {
+		response.Send(w, http.StatusOK, false, "No users found", users)
 		return
 	}
+
+	response.Send(w, http.StatusOK, true, "Data retrieved successfully ...", users)
 }
 
 func (h *Handler) AddUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+
+		response.Error(w, http.StatusMethodNotAllowed, "Method not allowed")
 		return
 	}
 
@@ -44,23 +43,48 @@ func (h *Handler) AddUser(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
-		http.Error(w, "Failed to decode request body", http.StatusBadRequest)
+		response.Error(w, http.StatusBadRequest, "Invalid request body")
 		return
 	}
 
 	err = h.svc.RegisterUser(user)
 	if err != nil {
-		http.Error(w, "Failed to register user", http.StatusInternalServerError)
+		response.Error(w, http.StatusInternalServerError, "Failed to register user")
+		fmt.Println(err)
 		return
 	}
 
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte("User registered successfully"))
+	response.Created(w, "User registered successfully", nil)
 
 }
 
 func (h *Handler) GetUserByID(w http.ResponseWriter, r *http.Request) {
 	// Implementation for getting a user by ID
+
+	if r.Method != http.MethodGet {
+		response.Error(w, http.StatusMethodNotAllowed, "Method not allowed")
+		return
+	}
+	idStr := r.URL.Query().Get("id")
+	if idStr == "" {
+		response.Error(w, http.StatusBadRequest, "User ID is required")
+		return
+	}
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "Invalid User ID")
+		return
+	}
+
+	user, err := h.svc.GetUserByID(int32(id))
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "Failed to get user")
+		fmt.Println(err)
+		return
+	}
+
+	response.Success(w, "User retrieved successfully", user)
 }
 
 func (h *Handler) UpdateUser(w http.ResponseWriter, r *http.Request) {

@@ -9,6 +9,7 @@ import (
 	"github.com/maadiab/tawtheeq/tawtheeq/internal/db/service"
 	"github.com/maadiab/tawtheeq/tawtheeq/internal/db/sqlc"
 	"github.com/maadiab/tawtheeq/tawtheeq/internal/handler"
+	"github.com/maadiab/tawtheeq/tawtheeq/internal/router"
 )
 
 func main() {
@@ -20,14 +21,12 @@ func main() {
 
 	defer database.DB.Close()
 	h := handler.NewHandler(svc)
-	mux := http.NewServeMux()
+	mux := router.Router(h)
 
 	server := http.Server{
 		Addr:    ":8080",
 		Handler: mux,
 	}
-
-	mux.HandleFunc("/api/users", h.GetUsers)
 
 	fmt.Println("Starting Tawtheeq API on port %S ...", server.Addr)
 

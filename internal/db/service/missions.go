@@ -70,10 +70,37 @@ func (s *Services) GetMissions() error {
 	return nil
 }
 
-func (s *Services) UpdateMission() {
+func (s *Services) UpdateMission(mission sqlc.Mission) error {
 
+	err := s.DBQueries.DeleteParticipantsByMission(context.Background(), mission.ID)
+
+	if err != nil {
+		return err
+	}
+
+	_, err = s.DBQueries.UpdateMission(context.Background(), sqlc.UpdateMissionParams{
+		MissionName:    mission.MissionName,
+		CoordinatorNum: mission.CoordinatorNum,
+		MainCategory:   mission.MainCategory,
+		SubCategory:    mission.SubCategory,
+		Month:          mission.Month,
+		Year:           mission.Year,
+		DurationDays:   mission.DurationDays,
+		ID:             mission.CreatedBy,
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
-func (s *Services) DeleteMission() {
+func (s *Services) DeleteMission(missionId int32) error {
+	err := s.DBQueries.DeleteMission(context.Background(), missionId)
+	if err != nil {
+		return err
 
+	}
+
+	return nil
 }

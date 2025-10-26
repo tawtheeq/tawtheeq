@@ -27,17 +27,12 @@ func (s *Services) RegisterUser(user sqlc.User) error {
 }
 
 func (s *Services) GetAllUsers() ([]sqlc.User, error) {
-
 	users, err := s.DBQueries.GetAllUsers(context.Background())
 	if err != nil {
-		return nil, err
+		// Log for debugging or wrap error with context
+		return nil, fmt.Errorf("GetAllUsers: %w", err)
 	}
-
-	if users == nil {
-		fmt.Println("empty database !!!")
-		return []sqlc.User{}, nil
-	}
-
+	// fmt.Println("Retrieved users:", users)
 	return users, nil
 }
 
