@@ -18,31 +18,31 @@ func (s *Services) RegisterMission(mission sqlc.Mission) error {
 	return nil
 }
 
-func (s *Services) AddParticipantToMission(missionId, userId int32, role string) error {
+func (s *Services) AddParticipantToMission(participant sqlc.AddMissionParticipantParams) error {
 	err := s.DBQueries.AddMissionParticipant(context.Background(), sqlc.AddMissionParticipantParams{
-		MissionID: missionId,
-		UserID:    userId,
-		Role:      role,
+		MissionID: participant.MissionID,
+		UserID:    participant.UserID,
+		Role:      participant.Role,
 	})
 	if err != nil {
 		return err
 	}
 
 	err = s.DBQueries.AddMissionParticipant(context.Background(), sqlc.AddMissionParticipantParams{
-		MissionID: missionId,
-		UserID:    userId,
-		Role:      role,
+		MissionID: participant.MissionID,
+		UserID:    participant.UserID,
+		Role:      participant.Role,
 	})
 	if err != nil {
 		return err
 	}
 
-	user, err := s.DBQueries.GetUserByID(context.Background(), userId)
+	user, err := s.DBQueries.GetUserByID(context.Background(), participant.UserID)
 	if err != nil {
 		return err
 	}
 
-	missionData, err := s.DBQueries.GetMissionByID(context.Background(), missionId)
+	missionData, err := s.DBQueries.GetMissionByID(context.Background(), participant.MissionID)
 	if err != nil {
 		return err
 	}
@@ -52,7 +52,7 @@ func (s *Services) AddParticipantToMission(missionId, userId int32, role string)
 
 	_, err = s.DBQueries.UpdateBalance(context.Background(), sqlc.UpdateBalanceParams{
 		Balance: balance,
-		ID:      userId,
+		ID:      participant.UserID,
 	})
 
 	if err != nil {
@@ -62,12 +62,22 @@ func (s *Services) AddParticipantToMission(missionId, userId int32, role string)
 	return nil
 }
 
-func (s *Services) GetMissions() error {
-	_, err := s.DBQueries.GetAllMissions(context.Background())
+func (s *Services) GetAllMissions() ([]sqlc.GetAllMissionsRow, error) {
+	missions, err := s.DBQueries.GetAllMissions(context.Background())
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+
+	return missions, nil
+}
+
+func (s *Services) GetMissionByID(id int32) (sqlc.GetMissionByIDRow, error) {
+	mission, err := s.DBQueries.GetMissionByID(context.Background(), id)
+	if err != nil {
+		return sqlc.GetMissionByIDRow{}, err
+	}
+
+	return mission, nil
 }
 
 func (s *Services) UpdateMission(mission sqlc.Mission) error {

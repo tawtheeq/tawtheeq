@@ -33,13 +33,8 @@ func (h *Handler) GetUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) AddUser(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
 
-		response.Error(w, http.StatusMethodNotAllowed, "Method not allowed")
-		return
-	}
-
-	var user sqlc.User
+	var user sqlc.AddUserParams
 
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
@@ -88,9 +83,39 @@ func (h *Handler) GetUserByID(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) UpdateUser(w http.ResponseWriter, r *http.Request) {
-	// Implementation for updating a user
+
+	var user sqlc.UpdateUserParams
+
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "Invalid request body")
+		return
+	}
+
+	err = h.svc.UpdateUser(user)
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "Failed to update user")
+		fmt.Println(err)
+		return
+	}
+
+	response.Success(w, "User updated successfully", nil)
+
 }
 
 func (h *Handler) DeleteUser(w http.ResponseWriter, r *http.Request) {
-	// Implementation for deleting a user
+	id := r.PathValue("id")
+	userId, err := strconv.Atoi(id)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "Invalid user ID")
+		return
+	}
+
+	err = h.svc.DeleteUser(int32(userId))
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "Failed to delete user")
+		return
+	}
+
+	response.Success(w, "User deleted successfully", nil)
 }

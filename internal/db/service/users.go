@@ -7,7 +7,7 @@ import (
 	"github.com/maadiab/tawtheeq/tawtheeq/internal/db/sqlc"
 )
 
-func (s *Services) RegisterUser(user sqlc.User) error {
+func (s *Services) RegisterUser(user sqlc.AddUserParams) error {
 
 	_, err := s.DBQueries.AddUser(context.Background(), sqlc.AddUserParams{
 		Name:     user.Name,
@@ -46,7 +46,7 @@ func (s *Services) GetUserByID(id int32) (sqlc.User, error) {
 	return user, nil
 }
 
-func (s *Services) UpdateUser(user sqlc.User) error {
+func (s *Services) UpdateUser(user sqlc.UpdateUserParams) error {
 
 	_, err := s.DBQueries.UpdateUser(context.Background(), sqlc.UpdateUserParams{
 		ID:      user.ID,
