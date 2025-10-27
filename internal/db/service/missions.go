@@ -6,15 +6,21 @@ import (
 	"github.com/maadiab/tawtheeq/tawtheeq/internal/db/sqlc"
 )
 
-func (s *Services) RegisterMission(mission sqlc.Mission) error {
-	mission, err := s.DBQueries.CreateMission(context.Background(), sqlc.CreateMissionParams{
+func (s *Services) RegisterMission(mission sqlc.CreateMissionParams) error {
+	_, err := s.DBQueries.CreateMission(context.Background(), sqlc.CreateMissionParams{
 		MissionName:    mission.MissionName,
 		CoordinatorNum: mission.CoordinatorNum,
 		MainCategory:   mission.MainCategory,
-		SubCategory:    mission.SubCategory, Month: mission.Month})
+		SubCategory:    mission.SubCategory,
+		Month:          mission.Month,
+		Year:           mission.Year,
+		DurationDays:   mission.DurationDays,
+		CreatedBy:      mission.CreatedBy,
+	})
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -80,7 +86,7 @@ func (s *Services) GetMissionByID(id int32) (sqlc.GetMissionByIDRow, error) {
 	return mission, nil
 }
 
-func (s *Services) UpdateMission(mission sqlc.Mission) error {
+func (s *Services) UpdateMission(mission sqlc.UpdateMissionParams) error {
 
 	err := s.DBQueries.DeleteParticipantsByMission(context.Background(), mission.ID)
 
@@ -96,7 +102,6 @@ func (s *Services) UpdateMission(mission sqlc.Mission) error {
 		Month:          mission.Month,
 		Year:           mission.Year,
 		DurationDays:   mission.DurationDays,
-		ID:             mission.CreatedBy,
 	})
 	if err != nil {
 		return err

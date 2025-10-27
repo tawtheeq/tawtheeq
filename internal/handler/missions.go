@@ -1,18 +1,15 @@
 package handler
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 
+	"github.com/maadiab/tawtheeq/tawtheeq/internal/db/sqlc"
 	"github.com/maadiab/tawtheeq/tawtheeq/internal/response"
 )
 
 func (h *Handler) GetAllMissions(w http.ResponseWriter, r *http.Request) {
-
-	if r.Method != http.MethodGet {
-		response.Error(w, http.StatusMethodNotAllowed, "Method not allowed")
-		return
-	}
 
 	missions, err := h.svc.GetAllMissions()
 	if err != nil {
@@ -29,11 +26,6 @@ func (h *Handler) GetAllMissions(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) GetMissionByID(w http.ResponseWriter, r *http.Request) {
-
-	if r.Method != http.MethodGet {
-		response.Error(w, http.StatusMethodNotAllowed, "Method not allowed")
-		return
-	}
 
 	id := r.PathValue("id")
 
@@ -53,12 +45,75 @@ func (h *Handler) GetMissionByID(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) AddMission(w http.ResponseWriter, r *http.Request) {
 
+	missionParams := sqlc.CreateMissionParams{}
+	err := json.NewDecoder(r.Body).Decode(&missionParams)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "Invalid request body")
+		return
+	}
+
+	err = h.svc.RegisterMission(missionParams)
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "Failed to add mission")
+		return
+	}
+
 }
 
 func (h *Handler) UpdateMission(w http.ResponseWriter, r *http.Request) {
-	// Implementation for updating a mission
+
+	id := r.PathValue("id")
+
+	mission_id, err := strconv.Atoi(id)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "Invalid mission ID")
+		return
+	}
+
+	missionsParams := sqlc.UpdateMissionParams{}
+	missionsParams.ID = int32(mission_id)
+
+	if missionsParams.ID == 0 {
+		response.Error(w, http.StatusBadRequest, "Mission ID is required")
+		return
+	}
+
+	if missionsParams.MissionName == "" {
+		response.Error(w, http.StatusBadRequest, "Mission name is required")
+		return
+	}
+
+	err = json.NewDecoder(r.Body).Decode(&missionsParams)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "Invalid request body")
+		return
+	}
+
+	err = h.svc.UpdateMission(missionsParams)
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "Failed to update mission")
+		return
+	}
+
+	response.Success(w, "Mission updated successfully", nil)
 }
 
 func (h *Handler) DeleteMission(w http.ResponseWriter, r *http.Request) {
-	// Implementation for deleting a mission
+	id := r.PathValue("id")
+
+	mission_id, err := strconv.Atoi(id)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "Invalid mission ID")
+		return
+	}
+
+	h.svc.DeleteMission(int32(mission_id))
+
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "Failed to delete mission")
+		return
+
+	}
+
+	response.Success(w, "Mission deleted successfully", nil)
 }
