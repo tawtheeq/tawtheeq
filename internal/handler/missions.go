@@ -69,9 +69,11 @@ func (h *Handler) AddMission(w http.ResponseWriter, r *http.Request) {
 
 	err = h.svc.RegisterMission(missionParams)
 	if err != nil {
+		fmt.Println(err)
 		response.Error(w, http.StatusInternalServerError, "Failed to add mission")
 		return
 	}
+
 	response.Success(w, "Mission added successfully", nil)
 }
 

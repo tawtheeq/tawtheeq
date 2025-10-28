@@ -3,9 +3,11 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strconv"
 
+	"github.com/maadiab/tawtheeq/tawtheeq/internal/db/service"
 	"github.com/maadiab/tawtheeq/tawtheeq/internal/db/sqlc"
 	"github.com/maadiab/tawtheeq/tawtheeq/internal/response"
 )
@@ -35,11 +37,6 @@ func (h *Handler) GetMissionParticipants(w http.ResponseWriter, r *http.Request)
 
 func (h *Handler) AddParticipantsToMission(w http.ResponseWriter, r *http.Request) {
 
-	if r.Method != http.MethodPost {
-		response.Error(w, http.StatusMethodNotAllowed, "Method not allowed")
-		return
-	}
-
 	var participant sqlc.AddMissionParticipantParams
 
 	err := json.NewDecoder(r.Body).Decode(&participant)
@@ -52,6 +49,13 @@ func (h *Handler) AddParticipantsToMission(w http.ResponseWriter, r *http.Reques
 
 	err = h.svc.AddParticipantToMission(participant)
 	if err != nil {
+		if errors.Is(err, service.ErrParticipantNotFound) {
+			response.Error(w, http.StatusBadRequest, "User not found !!!")
+			return
+		} else if errors.Is(err, service.ErrMissionNotFound) {
+			response.Error(w, http.StatusBadRequest, "Mission not found !!!")
+			return
+		}
 		response.Error(w, http.StatusInternalServerError, "Failed to add participant to mission")
 		return
 	}

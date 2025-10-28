@@ -2,29 +2,37 @@ package service
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
 	"github.com/maadiab/tawtheeq/tawtheeq/internal/db/sqlc"
 )
 
+var ErrParticipantNotFound = errors.New("participant ot found")
+var ErrMissionNotFound = errors.New("mission not found")
+
 func (s *Services) AddParticipantToMission(participant sqlc.AddMissionParticipantParams) error {
 
 	tx, err := s.DB.BeginTx(context.Background(), nil)
 	if err != nil {
+		fmt.Println("Error in beginTX !!!")
 		return err
 	}
 
+	defer tx.Rollback()
 	qtx := s.DBQueries.WithTx(tx)
 
 	user, err := qtx.GetUserByID(context.Background(), participant.UserID)
 	if err != nil {
-		return err
+		fmt.Println(ErrParticipantNotFound)
+		return ErrParticipantNotFound
 	}
 
 	missionData, err := qtx.GetMissionByID(context.Background(), participant.MissionID)
 	if err != nil {
-		return err
+		fmt.Println(ErrMissionNotFound)
+		return ErrMissionNotFound
 	}
 
 	if user.Balance < missionData.DurationDays {
@@ -75,8 +83,15 @@ func (s *Services) AddParticipantToMission(participant sqlc.AddMissionParticipan
 		Role:      participant.Role,
 	})
 	if err != nil {
-		return err
+
+		return fmt.Errorf("error in adding participant: %w", err)
 	}
 
+	err = tx.Commit()
+	if err != nil {
+		return fmt.Errorf("transaction failed for: %w", err)
+
+	}
 	return nil
+
 }
