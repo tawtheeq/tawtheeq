@@ -7,6 +7,7 @@ package sqlc
 
 import (
 	"context"
+	"time"
 )
 
 const addMissionParticipant = `-- name: AddMissionParticipant :exec
@@ -24,6 +25,34 @@ type AddMissionParticipantParams struct {
 func (q *Queries) AddMissionParticipant(ctx context.Context, arg AddMissionParticipantParams) error {
 	_, err := q.db.ExecContext(ctx, addMissionParticipant, arg.MissionID, arg.UserID, arg.Role)
 	return err
+}
+
+const checkUserLeaveConflict = `-- name: CheckUserLeaveConflict :one
+SELECT EXISTS (
+    SELECT 1 
+    FROM leaves 
+    WHERE user_id = $1
+        AND (
+            (start_date >= $2 AND start_date <= $3)
+            OR
+            (end_date >= $2 AND end_date <= $3)
+            OR
+            (start_date <= $2 AND end_date >= $3)
+        )
+) as has_conflict
+`
+
+type CheckUserLeaveConflictParams struct {
+	UserID      int32
+	StartDate   time.Time
+	StartDate_2 time.Time
+}
+
+func (q *Queries) CheckUserLeaveConflict(ctx context.Context, arg CheckUserLeaveConflictParams) (bool, error) {
+	row := q.db.QueryRowContext(ctx, checkUserLeaveConflict, arg.UserID, arg.StartDate, arg.StartDate_2)
+	var has_conflict bool
+	err := row.Scan(&has_conflict)
+	return has_conflict, err
 }
 
 const deleteParticipantsByMission = `-- name: DeleteParticipantsByMission :exec

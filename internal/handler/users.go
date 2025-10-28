@@ -12,11 +12,6 @@ import (
 
 func (h *Handler) GetUsers(w http.ResponseWriter, r *http.Request) {
 
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
 	users, err := h.svc.GetAllUsers()
 	if err != nil {
 		http.Error(w, "Failed to get users", http.StatusInternalServerError)
@@ -42,7 +37,13 @@ func (h *Handler) AddUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if user.Name == "" || user.Email == "" || user.Mobile == "" {
+		response.Error(w, http.StatusBadRequest, "Missing data")
+		return
+	}
+
 	err = h.svc.RegisterUser(user)
+
 	if err != nil {
 		response.Error(w, http.StatusInternalServerError, "Failed to register user")
 		fmt.Println(err)

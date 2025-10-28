@@ -31,6 +31,7 @@ type Mission struct {
 	CoordinatorNum int32
 	MainCategory   int32
 	SubCategory    int32
+	Day            int32
 	Month          int32
 	Year           int32
 	DurationDays   int32

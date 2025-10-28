@@ -16,6 +16,7 @@ func main() {
 
 	database.Database()
 	svc := &service.Services{
+		DB:        database.DB,
 		DBQueries: sqlc.New(database.DB), // Initialize your database queries here
 	}
 

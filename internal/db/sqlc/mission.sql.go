@@ -16,14 +16,15 @@ INSERT INTO missions (
   coordinator_num,
   main_category,
   sub_category,
+  day,
   month,
   year,
   duration_days,
   created_by
 ) VALUES (
-  $1, $2, $3, $4, $5, $6, $7, $8
+  $1, $2, $3, $4, $5, $6, $7, $8, $9
 )
-RETURNING id, mission_name, coordinator_num, main_category, sub_category, month, year, duration_days, created_by, created_at
+RETURNING id, mission_name, coordinator_num, main_category, sub_category, day, month, year, duration_days, created_by, created_at
 `
 
 type CreateMissionParams struct {
@@ -31,6 +32,7 @@ type CreateMissionParams struct {
 	CoordinatorNum int32
 	MainCategory   int32
 	SubCategory    int32
+	Day            int32
 	Month          int32
 	Year           int32
 	DurationDays   int32
@@ -43,6 +45,7 @@ func (q *Queries) CreateMission(ctx context.Context, arg CreateMissionParams) (M
 		arg.CoordinatorNum,
 		arg.MainCategory,
 		arg.SubCategory,
+		arg.Day,
 		arg.Month,
 		arg.Year,
 		arg.DurationDays,
@@ -55,6 +58,7 @@ func (q *Queries) CreateMission(ctx context.Context, arg CreateMissionParams) (M
 		&i.CoordinatorNum,
 		&i.MainCategory,
 		&i.SubCategory,
+		&i.Day,
 		&i.Month,
 		&i.Year,
 		&i.DurationDays,
@@ -80,6 +84,7 @@ SELECT
   m.coordinator_num,
   m.main_category,
   m.sub_category,
+  m.day,
   m.month,
   m.year,
   m.duration_days,
@@ -97,6 +102,7 @@ type GetAllMissionsRow struct {
 	CoordinatorNum int32
 	MainCategory   int32
 	SubCategory    int32
+	Day            int32
 	Month          int32
 	Year           int32
 	DurationDays   int32
@@ -120,6 +126,7 @@ func (q *Queries) GetAllMissions(ctx context.Context) ([]GetAllMissionsRow, erro
 			&i.CoordinatorNum,
 			&i.MainCategory,
 			&i.SubCategory,
+			&i.Day,
 			&i.Month,
 			&i.Year,
 			&i.DurationDays,
@@ -147,6 +154,7 @@ SELECT
   m.coordinator_num,
   m.main_category,
   m.sub_category,
+  m.day,
   m.month,
   m.year,
   m.duration_days,
@@ -164,6 +172,7 @@ type GetMissionByIDRow struct {
 	CoordinatorNum int32
 	MainCategory   int32
 	SubCategory    int32
+	Day            int32
 	Month          int32
 	Year           int32
 	DurationDays   int32
@@ -181,6 +190,7 @@ func (q *Queries) GetMissionByID(ctx context.Context, id int32) (GetMissionByIDR
 		&i.CoordinatorNum,
 		&i.MainCategory,
 		&i.SubCategory,
+		&i.Day,
 		&i.Month,
 		&i.Year,
 		&i.DurationDays,
@@ -198,11 +208,12 @@ SET
   coordinator_num = $2,
   main_category = $3,
   sub_category = $4,
-  month = $5,
-    year = $6,
-    duration_days = $7
-WHERE id = $8
-RETURNING id, mission_name, coordinator_num, main_category, sub_category, month, year, duration_days, created_by, created_at
+  day = $5,
+  month = $6,
+    year = $7,
+    duration_days = $8
+WHERE id = $9
+RETURNING id, mission_name, coordinator_num, main_category, sub_category, day, month, year, duration_days, created_by, created_at
 `
 
 type UpdateMissionParams struct {
@@ -210,6 +221,7 @@ type UpdateMissionParams struct {
 	CoordinatorNum int32
 	MainCategory   int32
 	SubCategory    int32
+	Day            int32
 	Month          int32
 	Year           int32
 	DurationDays   int32
@@ -222,6 +234,7 @@ func (q *Queries) UpdateMission(ctx context.Context, arg UpdateMissionParams) (M
 		arg.CoordinatorNum,
 		arg.MainCategory,
 		arg.SubCategory,
+		arg.Day,
 		arg.Month,
 		arg.Year,
 		arg.DurationDays,
@@ -234,6 +247,7 @@ func (q *Queries) UpdateMission(ctx context.Context, arg UpdateMissionParams) (M
 		&i.CoordinatorNum,
 		&i.MainCategory,
 		&i.SubCategory,
+		&i.Day,
 		&i.Month,
 		&i.Year,
 		&i.DurationDays,

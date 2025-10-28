@@ -7,32 +7,23 @@ package sqlc
 
 import (
 	"context"
+	"database/sql"
 )
 
 const addUser = `-- name: AddUser :one
-INSERT INTO users (name, email, mobile, password, role, balance)
-VALUES ($1, $2, $3, $4, $5, $6)
+INSERT INTO users (name, email, mobile)
+VALUES ($1, $2, $3)
 RETURNING id, name, email, mobile, password, balance, role, created_at
 `
 
 type AddUserParams struct {
-	Name     string
-	Email    string
-	Mobile   string
-	Password string
-	Role     string
-	Balance  int32
+	Name   string
+	Email  string
+	Mobile string
 }
 
 func (q *Queries) AddUser(ctx context.Context, arg AddUserParams) (User, error) {
-	row := q.db.QueryRowContext(ctx, addUser,
-		arg.Name,
-		arg.Email,
-		arg.Mobile,
-		arg.Password,
-		arg.Role,
-		arg.Balance,
-	)
+	row := q.db.QueryRowContext(ctx, addUser, arg.Name, arg.Email, arg.Mobile)
 	var i User
 	err := row.Scan(
 		&i.ID,
@@ -181,6 +172,65 @@ func (q *Queries) GetUserByMobile(ctx context.Context, mobile string) (User, err
 		&i.CreatedAt,
 	)
 	return i, err
+}
+
+const getUserWithLeaves = `-- name: GetUserWithLeaves :many
+SELECT 
+    u.id as user_id,
+    u.name,
+    u.email,
+    l.id as leave_id,
+    l.start_date,
+    l.end_date,
+    l.reason,
+    l.created_at as leave_created_at
+FROM users u
+LEFT JOIN leaves l ON u.id = l.user_id
+WHERE u.id = $1
+ORDER BY l.start_date DESC
+`
+
+type GetUserWithLeavesRow struct {
+	UserID         int32
+	Name           string
+	Email          string
+	LeaveID        sql.NullInt32
+	StartDate      sql.NullTime
+	EndDate        sql.NullTime
+	Reason         sql.NullString
+	LeaveCreatedAt sql.NullTime
+}
+
+func (q *Queries) GetUserWithLeaves(ctx context.Context, id int32) ([]GetUserWithLeavesRow, error) {
+	rows, err := q.db.QueryContext(ctx, getUserWithLeaves, id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []GetUserWithLeavesRow
+	for rows.Next() {
+		var i GetUserWithLeavesRow
+		if err := rows.Scan(
+			&i.UserID,
+			&i.Name,
+			&i.Email,
+			&i.LeaveID,
+			&i.StartDate,
+			&i.EndDate,
+			&i.Reason,
+			&i.LeaveCreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const makeUserAdmin = `-- name: MakeUserAdmin :one

@@ -6,6 +6,7 @@ CREATE TABLE missions (
     coordinator_num INT NOT NULL,
     main_category INT NOT NULL,
     sub_category INT NOT NULL,
+    day INT NOT NULL,
     month INT NOT NULL,
     year INT NOT NULL,
     duration_days INT NOT NULL,

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -49,6 +50,20 @@ func (h *Handler) AddMission(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&missionParams)
 	if err != nil {
 		response.Error(w, http.StatusBadRequest, "Invalid request body")
+		fmt.Println(err)
+		return
+	}
+
+	if missionParams.MissionName == "" ||
+		missionParams.CoordinatorNum == 0 ||
+		missionParams.DurationDays == 0 ||
+		missionParams.Day == 0 ||
+		missionParams.Month == 0 ||
+		missionParams.Year == 0 ||
+		missionParams.MainCategory == 0 ||
+		missionParams.SubCategory == 0 ||
+		missionParams.CreatedBy == 0 {
+		response.Error(w, http.StatusBadRequest, "Missing data")
 		return
 	}
 
@@ -57,7 +72,7 @@ func (h *Handler) AddMission(w http.ResponseWriter, r *http.Request) {
 		response.Error(w, http.StatusInternalServerError, "Failed to add mission")
 		return
 	}
-
+	response.Success(w, "Mission added successfully", nil)
 }
 
 func (h *Handler) UpdateMission(w http.ResponseWriter, r *http.Request) {

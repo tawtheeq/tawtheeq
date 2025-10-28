@@ -1,6 +1,6 @@
 -- name: AddUser :one
-INSERT INTO users (name, email, mobile, password, role, balance)
-VALUES ($1, $2, $3, $4, $5, $6)
+INSERT INTO users (name, email, mobile)
+VALUES ($1, $2, $3)
 RETURNING *;
 
 -- name: GetUserByID :one
@@ -67,3 +67,18 @@ SELECT EXISTS(SELECT 1 FROM users WHERE email = $1);
 
 -- name: CheckUserByMobile :one
 SELECT EXISTS(SELECT 1 FROM users WHERE mobile = $1);
+
+-- name: GetUserWithLeaves :many
+SELECT 
+    u.id as user_id,
+    u.name,
+    u.email,
+    l.id as leave_id,
+    l.start_date,
+    l.end_date,
+    l.reason,
+    l.created_at as leave_created_at
+FROM users u
+LEFT JOIN leaves l ON u.id = l.user_id
+WHERE u.id = $1
+ORDER BY l.start_date DESC;

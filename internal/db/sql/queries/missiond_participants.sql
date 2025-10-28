@@ -44,4 +44,16 @@ WHERE mp.user_id = $1
 ORDER BY m.year DESC, m.month DESC;
 
 
-
+-- name: CheckUserLeaveConflict :one
+SELECT EXISTS (
+    SELECT 1 
+    FROM leaves 
+    WHERE user_id = $1
+        AND (
+            (start_date >= $2 AND start_date <= $3)
+            OR
+            (end_date >= $2 AND end_date <= $3)
+            OR
+            (start_date <= $2 AND end_date >= $3)
+        )
+) as has_conflict;
