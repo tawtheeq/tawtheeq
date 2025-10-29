@@ -47,3 +47,13 @@ func (s *Services) UpdateLeave(leave sqlc.UpdateLeaveParams) error {
 	}
 	return nil
 }
+
+func (s *Services) DeleteLeave(leave_id int32) error {
+	err := s.DBQueries.DeleteLeave(context.Background(), leave_id)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
