@@ -49,15 +49,29 @@ func (h *Handler) AddLeaveToUser(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) UpdateLeave(w http.ResponseWriter, r *http.Request) {
 
-	var leave sqlc.UpdateLeaveParams
+	id := r.PathValue("id")
 
-	err := json.NewDecoder(r.Body).Decode(&leave)
+	leave_id, err := strconv.Atoi(id)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "Invalid mission ID")
+		return
+	}
+
+	leaveParams := sqlc.UpdateLeaveParams{}
+	leaveParams.ID = int32(leave_id)
+
+	if leaveParams.ID == 0 {
+		response.Error(w, http.StatusBadRequest, "Leave ID is not correct !!!")
+		return
+	}
+
+	err = json.NewDecoder(r.Body).Decode(&leaveParams)
 	if err != nil {
 		response.Error(w, http.StatusBadRequest, "please give right data !!!")
 		return
 	}
 
-	err = h.svc.UpdateLeave(leave)
+	err = h.svc.UpdateLeave(leaveParams)
 	if err != nil {
 		response.Error(w, http.StatusInternalServerError, "error while updating leave data !!!")
 		return

@@ -9,29 +9,27 @@ import (
 func Router(h *handler.Handler) *http.ServeMux {
 	mux := http.NewServeMux()
 
-	// Define your routes here, for example:
-	// mux.HandleFunc("/api/users", handler.GetUsers)
-
+	// user routes
 	mux.HandleFunc("POST /api/users", h.AddUser)
 	mux.HandleFunc("GET /api/users", h.GetUsers)
 	mux.HandleFunc("GET /api/users/{id}", h.GetUserByID)
 	mux.HandleFunc("PUT /api/users/{id}", h.UpdateUser)
 	mux.HandleFunc("DELETE /api/users/{id}", h.DeleteUser)
 
-	// mux.HandleFunc("GET /api/users/{id}/password", h.Upd)
-
+	// missions routes
 	mux.HandleFunc("POST /api/missions", h.AddMission)
 	mux.HandleFunc("GET /api/missions", h.GetAllMissions)
 	mux.HandleFunc("GET /api/missions/{id}", h.GetMissionByID)
 	mux.HandleFunc("PUT /api/missions/{id}", h.UpdateMission)
 	mux.HandleFunc("DELETE /api/missions/{id}", h.DeleteMission)
 
+	// leaves routes
 	mux.HandleFunc("POST /api/users/{id}/leaves", h.AddLeaveToUser)
 	mux.HandleFunc("GET /api/users/{id}/leaves", h.GetUserLeaves)
-	mux.HandleFunc("PUT /api/users/leaves/{id}", h.UpdateLeave)
-	mux.HandleFunc("DELETE /api/users/leaves/{id}", h.DeleteLeave)
-	// mux.Han
+	mux.HandleFunc("PUT /api/leaves/{id}", h.UpdateLeave)
+	mux.HandleFunc("DELETE /api/leaves/{id}", h.DeleteLeave)
 
+	// participants routes
 	mux.HandleFunc("POST /api/missions/{id}/participants", h.AddParticipantsToMission)
 	mux.HandleFunc("GET /api/missions/{id}/participants", h.GetMissionParticipants)
 	mux.HandleFunc("DELETE /api/missions/{id}/participants", h.DeleteParticipantsByMission)
