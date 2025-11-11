@@ -77,92 +77,94 @@ export default function Missions() {
 
   };
 
-  // return (
-  //   <div className="users-container">
-  //     <div className="users-header">
-  //       <h1>قائمة المهام</h1>
-  //       <Link to="addmission" className="function-button">
-  //         <i className="fas fa-plus"></i>
-  //         إضافة مهمة
-  //       </Link>
-  //     </div>
+  return (
+    <div className="users-container">
+      <div className="users-header">
+        <h1>قائمة المهام</h1>
+        <Link to="addmission" className="function-button">
+          <i className="fas fa-plus"></i>
+          إضافة مهمة
+        </Link>
+      </div>
 
-  //     <div className="users-table">
-  //       <table>
-  //         <thead>
-  //           <tr>
-  //             <th>المناسبة</th>
-  //             <th>التاريخ </th>
-  //             <th>الممثل الرئيسي</th>
-  //             <th>التصنيف الأساسي</th>
-  //             {/* <th>المنطقة</th> */}
-  //             <th>إجراءات</th>
-  //           </tr>
-  //         </thead>
-  //         <tbody>
-  //           {missions.length > 0 ? (
-  //             missions.data.map(mission => (
-  //               <tr key={mission.id}>
-  //                 <td>{mission.mission_name}</td>
-  //                 <td>{mission.year}</td>
-  //                 <td>{mission.main_person}</td>
-  //                 <td>{mission.main_category}</td>
-  //                 {/* <td>
-  //                   <span className={`status ${user.status === 'نشط' ? 'active' : 'inactive'}`}>
-  //                     {user.status}
-  //                   </span>
-  //                 </td> */}
-  //                 <td className="user-actions">
-  //                   <button className=" procedure-button show">
-  //                     <i className="fas fa-eye"></i>
-  //                   </button>
-  //                   <button className=" procedure-button edit">
-  //                     <i className="fas fa-edit"></i>
-  //                   </button>
-  //                   <button
-  //                     className=" procedure-button delete"
-  //                     onClick={() => handleDelete(mission.id)}
-  //                   >
-  //                     <i className="fas fa-trash"></i>
-
-  //                   </button>
-  //                 </td>
-  //               </tr>
-  //             ))
-  //           ) : (
-  //             <tr>
-  //               <td colSpan="6" className="empty-state">
-  //                 <i className="fas fa-users"></i>
-  //                 <p>لا يوجد مستخدمين حالياً</p>
-  //               </td>
-  //             </tr>
-  //           )}
-  //         </tbody>
-  //       </table>
-  //     </div>
-  //   </div>
-  // );
+      <div className="users-table">
+        <table>
+          <thead>
+            <tr>
+              <th>اسم المناسبة</th>
+              <th>التاريخ </th>
+              <th>مدة المهمة</th>
+              <th>التصنيف الأساسي</th>
+              {/* <th>المنطقة</th> */}
+              <th>إجراءات</th>
+            </tr>
+          </thead>
+          <tbody>
+            {missions.length > 0 ? (
+              missions.map(mission => (
+                <tr key={mission.ID}>
+                  <td>{mission.MissionName}</td>
+                  <td>{mission.Day}/{mission.Month}/{mission.Year}</td>
+                  <td>{mission.DurationDays}</td>
+                  <td>{mission.CreatedByName}</td>
+                  {/* <td>
+                    <span className={`status ${user.status === 'نشط' ? 'active' : 'inactive'}`}>
+                      {user.status}
+                    </span>
+                  </td> */}
 
 
+                  <td className="user-actions">
+                    <button className=" procedure-button show">
+                      <i className="fas fa-eye"></i>
+                    </button>
+                    <button className="procedure-button edit">
+                      <i className="fas fa-edit"></i>
+                    </button>
+                    <button
+                      className="procedure-button delete"
+                      onClick={() => handleDelete(mission.id)}
+                    >
+                      <i className="fas fa-trash"></i>
 
-    return (
-    <div className="p-4 grid gap-4">
-      {missions.map((mission) => (
-        <div
-          key={mission.ID}
-          className="border rounded-xl p-4 shadow-md bg-white"
-        >
-          <h2 className="text-xl font-bold">{mission.MissionName}</h2>
-          <p>Coordinator: {mission.CoordinatorNum}</p>
-          <p>
-            Date: {mission.Day}/{mission.Month}/{mission.Year}
-          </p>
-          <p>Duration: {mission.DurationDays} days</p>
-          <p>Created by: {mission.CreatedByName}</p>
-        </div>
-      ))}
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6" className="empty-state">
+                  <i className="fas fa-users"></i>
+                  <p>لا يوجد مستخدمين حالياً</p>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
+
+
+
+  //   return (
+  //   <div className="p-4 grid gap-4">
+  //     {missions.map((mission) => (
+  //       <div
+  //         key={mission.ID}
+  //         className="border rounded-xl p-4 shadow-md bg-white"
+  //       >
+  //         <h2 className="text-xl font-bold">{mission.MissionName}</h2>
+  //         <p>Coordinator: {mission.CoordinatorNum}</p>
+  //         <p>
+  //           Date: {mission.Day}/{mission.Month}/{mission.Year}
+  //         </p>
+  //         <p>Duration: {mission.DurationDays} days</p>
+  //         <p>Created by: {mission.CreatedByName}</p>
+  //       </div>
+  //     ))}
+  //   </div>
+  // );
 }
 
   // return (

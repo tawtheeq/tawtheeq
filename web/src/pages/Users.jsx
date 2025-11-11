@@ -1,35 +1,58 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/pages/users.scss';
+import axios from 'axios';
 
 export default function Users() {
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: "أحمد محمد",
-      email: "ahmed@example.com",
-      role: "مدير",
-      department: "قسم التوثيق",
-      status: 0
-    },
-    {
-      id: 2,
-      name: "سارة أحمد",
-      email: "sara@example.com",
-      role: "محرر",
-      department: "قسم الإعلام",
-      status: 20
-    },
-    {
-      id: 3,
-      name: "محمد علي",
-      email: "mohammad@example.com",
-      role: "مصور",
-      department: "قسم المتابعة",
-      status: 45
-    }
-  ]);
+
+
+  const [users, setUsers] = useState([]);  // state to hold API data
+  const [loading, setLoading] = useState(true);  // loading indicator
+  const [error, setError] = useState(null);      // error handling
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get("/api/users")
+        setUsers(response.data.data)
+
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    };
+    fetchUsers();
+  }, []);
+
+
+  // const [users, setUsers] = useState([
+  //   {
+  //     id: 1,
+  //     name: "أحمد محمد",
+  //     email: "ahmed@example.com",
+  //     role: "مدير",
+  //     department: "قسم التوثيق",
+  //     status: 0
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "سارة أحمد",
+  //     email: "sara@example.com",
+  //     role: "محرر",
+  //     department: "قسم الإعلام",
+  //     status: 20
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "محمد علي",
+  //     email: "mohammad@example.com",
+  //     role: "مصور",
+  //     department: "قسم المتابعة",
+  //     status: 45
+  //   }
+  // ]);
 
   const handleDelete = (id) => {
     if (window.confirm('هل أنت متأكد من حذف هذا المستخدم؟')) {
@@ -48,7 +71,7 @@ export default function Users() {
         <h1>قائمة المستخدمين</h1>
         <Link to="addemp" className="function-button">
           <i className="fas fa-plus"></i>
-          إضافة موظف
+          إضافة مستخدم
         </Link>
       </div>
 
@@ -57,9 +80,8 @@ export default function Users() {
           <thead>
             <tr>
               <th>الاسم</th>
-              <th>البريد الإلكتروني</th>
+              <th> رقم الجوال</th>
               <th>الدور</th>
-              <th>القسم</th>
               <th>الرصيد المتبقي</th>
               <th>الإجراءات</th>
             </tr>
@@ -67,14 +89,13 @@ export default function Users() {
           <tbody>
             {users.length > 0 ? (
               users.map(user => (
-                <tr key={user.id}>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td>{user.role}</td>
-                  <td>{user.department}</td>
+                <tr key={user.ID}>
+                  <td>{user.Name}</td>
+                  <td>{user.Mobile}</td>
+                  <td>{user.Role}</td>
                   <td>
-                    <span className={`status ${user.status > 0 ? 'active' : 'inactive'}`}>
-                      {user.status}
+                    <span className={`status ${user.Balance > 10 ? 'active' : 'inactive'}`}>
+                      {user.Balance}
                     </span>
                   </td>
                   <td className="user-actions">
