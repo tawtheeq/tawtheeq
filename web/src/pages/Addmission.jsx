@@ -1,11 +1,30 @@
 import { useState } from 'react';
 import '../styles/pages/missions.scss';
 import { use } from 'react';
+import { useActionData } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Addmission() {
 
 
-    const [mainCategories, setMainCtegories] = useState([])
+    const [mainCategories, setMainCategories] = useState([])
+    const [subCategories, setSubCategories] = useState([])
+    const [error, setError] = useState(null)
+    const [loading, setLoading] = useState(true);
+
+    useState(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get("/api/categories")
+            } catch (err) {
+                setError(err.message)
+
+            } finally {
+                setLoading(false)
+            }
+        }
+    })
+
 
     const [form, setForm] = useState({
         mission_name: '',
@@ -16,6 +35,7 @@ export default function Addmission() {
         status: '',
     });
 
+
     // const photographers = [
     //     { id: 1, name: 'أحمد', delegationBalance: 5, leaves: [{ from: '2025-08-14', to: '2025-09-23' }] },
     //     { id: 2, name: 'سارة', delegationBalance: 0, leaves: [] },
@@ -24,12 +44,11 @@ export default function Addmission() {
     //     { id: 5, name: 'يوسف', delegationBalance: 1, leaves: [{ from: '2025-09-10', to: '2025-09-15' }] },
     // ];
 
- 
 
     // const taskStart = '2025-09-13';
     // const taskEnd = '2025-09-20';
 
-    
+
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -82,7 +101,7 @@ export default function Addmission() {
                             required
                         />
                     </div>
-                   <div className="form-group">
+                    <div className="form-group">
                         <label> رقم المنسق</label>
                         <input
                             type="text"
@@ -95,7 +114,7 @@ export default function Addmission() {
                 </div>
 
                 <div className="form-row">
-                        <div className="form-group">
+                    <div className="form-group">
                         <label>السنة</label>
                         <input
                             type="number"
@@ -153,10 +172,10 @@ export default function Addmission() {
                     </div>
                 </div>
 
-               
-                
+
+
                 <div className="form-row">
-                   
+
                     <div className="form-group">
                         <label>الوصف</label>
                         <input
