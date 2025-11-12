@@ -25,14 +25,15 @@ export default function Header() {
           </div>
         </div>
         
-        <div className="notifications">
+        {/* <div className="notifications">
           <span className="badge">3</span>
           <i className="fas fa-bell"></i>
-        </div>
+        </div> */}
         
-        <button className="logout-button" onClick={handleLogout}>
+        {/* <button className="logout-button" onClick={handleLogout}>
           تسجيل خروج
-        </button>
+        </button> */}
+
       </div>
     </header>
   );

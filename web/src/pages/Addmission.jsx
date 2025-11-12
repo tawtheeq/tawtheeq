@@ -6,34 +6,47 @@ import axios from 'axios';
 
 export default function Addmission() {
 
-
-    const [mainCategories, setMainCategories] = useState([])
-    const [subCategories, setSubCategories] = useState([])
-    const [error, setError] = useState(null)
+    const [mainCategories, setMainCategories] = useState([]);
+    const [subCategories, setSubCategories] = useState([]);
+    const [selectedMain, setSelectedMain] = useState("");
+    const [selectedSub, setSelectedSub] = useState("");
+    const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useState(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await axios.get("/api/categories")
-            } catch (err) {
-                setError(err.message)
-
-            } finally {
-                setLoading(false)
-            }
-        }
-    })
-
-
-    const [form, setForm] = useState({
+      const [form, setForm] = useState({
         mission_name: '',
         year: '',
-        location: '',
-        main_person: '',
+        month: '',
+        day: '',
         main_category: '',
-        status: '',
+        sub_category:'',
     });
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const [mainRes, subRes] = await Promise.all([
+                    axios.get("/api/maincategories"),
+                    axios.get("/api/subcategories"),
+                ]);
+
+                setMainCategories(mainRes.data || []);
+                setSubCategories(subRes.data || []);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
+    if (loading) return <p>Loading categories...</p>;
+    if (error) return <p className="text-red-500">Error: {error}</p>;
+
+
+  
 
 
     // const photographers = [

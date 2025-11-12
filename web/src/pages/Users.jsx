@@ -27,6 +27,10 @@ export default function Users() {
   }, []);
 
 
+    // ✅ Handle loading & error states
+  if (loading) return <p>Loading users...</p>;
+  if (error) return <p>Error: {error}</p>;
+
   // const [users, setUsers] = useState([
   //   {
   //     id: 1,
@@ -71,7 +75,7 @@ export default function Users() {
         <h1>قائمة المستخدمين</h1>
         <Link to="addemp" className="function-button">
           <i className="fas fa-plus"></i>
-          إضافة مستخدم
+          إضافة
         </Link>
       </div>
 

@@ -83,7 +83,7 @@ export default function Missions() {
         <h1>قائمة المهام</h1>
         <Link to="addmission" className="function-button">
           <i className="fas fa-plus"></i>
-          إضافة مهمة
+          إضافة
         </Link>
       </div>
 
