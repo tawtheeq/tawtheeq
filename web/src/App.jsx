@@ -9,6 +9,8 @@ import Settings from './pages/Settings';
 import Missions from './pages/Missions';
 import AddMission from './pages/Addmission';
 import AddEmp from './pages/Addemp';
+import Addcategory from "./pages/Addcategory";
+import Categories from "./pages/Categories";
 
 
 function App() {
@@ -19,16 +21,18 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<Dashboard />}>
           <Route index element={<Overview />} />
+          <Route path="categories" element ={<Categories/>} />
+          <Route path="categories/addcategory" element={<Addcategory/>}/>
           <Route path="users" element={<Users />} />
           <Route path="settings" element={<Settings />} />
-          <Route path="missions" element={<Missions/>} />
+          <Route path="missions" element={<Missions />} />
           <Route path="missions/addmission" element={<AddMission />} />
           <Route path="users/addemp" element={<AddEmp />} />
           <Route path="*" element={<h1>404 Not Found</h1>} />
 
-          </Route>
-      
-     
+        </Route>
+
+
       </Routes>
     </BrowserRouter>
   );

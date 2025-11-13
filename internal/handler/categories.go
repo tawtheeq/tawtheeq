@@ -35,7 +35,7 @@ func (h *Handler) GetMainCategories(w http.ResponseWriter, r *http.Request) {
 	mainCategories, err := h.svc.DBQueries.GetMainCategories(context.Background())
 
 	if err != nil {
-		response.Error(w, http.StatusInternalServerError, "error getting user leaves !!!")
+		response.Error(w, http.StatusInternalServerError, "error getting main categories !!!")
 		return
 	}
 
@@ -46,9 +46,21 @@ func (h *Handler) GetSubCategories(w http.ResponseWriter, r *http.Request) {
 	subCategories, err := h.svc.DBQueries.GetSubCategories(context.Background())
 
 	if err != nil {
-		response.Error(w, http.StatusInternalServerError, "error getting user leaves !!!")
+		response.Error(w, http.StatusInternalServerError, "error getting sub categories !!!")
 		return
 	}
 
 	response.Success(w, "subcategories retrieved successfully ...", subCategories)
+}
+
+func (h *Handler) GetAllCategories(w http.ResponseWriter, r *http.Request) {
+	categories, err := h.svc.DBQueries.GetAllCategories(context.Background())
+
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "error getting categories !!!")
+		return
+	}
+
+	response.Success(w, "all categories retrieved successfully ...", categories)
+
 }

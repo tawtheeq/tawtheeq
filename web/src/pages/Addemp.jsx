@@ -1,42 +1,41 @@
 import { useState } from 'react';
 import '../styles/pages/missions.scss';
+import axios from 'axios';
 
 export default function AddEmp() {
 
 
   const [form, setForm] = useState({
-    name: '',
-    mobile: '',
-    email: '',
+    Name: '',
+    Email: '',
+    Mobile: '',
   });
 
 
-  const taskStart = '2025-09-13';
-  const taskEnd = '2025-09-20';
 
 
-   const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    };
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-
+    try {
+      const response = await axios.post("/api/users", { ...form });
+      console.log("Server response:", response.data);
+      alert("Data submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting data:", error);
+      alert(error);
+    }
 
     setForm({
-      name: '',
-      mobile: '',
-      email: '',
-     
+      Name: '',
+      Email: '',
+      Mobile: '',ß
+
     });
-    // setSelectedPhotographers({
-    //   p1: '',
-    //   p2: '',
-    //   p3: '',
-    //   p4: '',
-    //   p5: '',
-    // });
   };
 
 
@@ -52,8 +51,8 @@ export default function AddEmp() {
             <label>الاسم</label>
             <input
               type="text"
-              name="name"
-              value={form.name}
+              name="Name"
+              value={form.Name}
               onChange={handleChange}
               required
             />
@@ -62,8 +61,8 @@ export default function AddEmp() {
             <label>رقم الجوال</label>
             <input
               type="text"
-              name="mobile"
-              value={form.mobile}
+              name="Mobile"
+              value={form.Mobile}
               onChange={handleChange}
               required
             />
@@ -74,14 +73,12 @@ export default function AddEmp() {
             <label>البريد الإلكتروني</label>
             <input
               type="email"
-              name="email"
-              value={form.email}
+              name="Email"
+              value={form.Email}
               onChange={handleChange}
               required
             />
           </div>
-
-    
         </div>
 
         <br />

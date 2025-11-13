@@ -17,7 +17,8 @@ func Router(h *handler.Handler) *http.ServeMux {
 	mux.HandleFunc("DELETE /api/users/{id}", h.DeleteUser)
 
 	// categories routes
-	// mux.HandleFunc("POST /")
+	mux.HandleFunc("POST /api/categories", h.AddCategory)
+	mux.HandleFunc("GET /api/categories", h.GetAllCategories)
 	mux.HandleFunc("GET /api/maincategories", h.GetMainCategories)
 	mux.HandleFunc("GET /api/subcategories", h.GetSubCategories)
 

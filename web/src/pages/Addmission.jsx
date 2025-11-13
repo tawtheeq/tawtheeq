@@ -13,13 +13,16 @@ export default function Addmission() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
-      const [form, setForm] = useState({
-        mission_name: '',
-        year: '',
-        month: '',
-        day: '',
-        main_category: '',
-        sub_category:'',
+    const [form, setForm] = useState({
+        MissionName: '',
+        CoordinatorNum:'',
+        MainCategory: '',
+        SubCategory: '',
+        Day:'',
+        Month: '',
+        Year: '',
+        DurationDays: '',
+        CreatedBy:'',
     });
 
     useEffect(() => {
@@ -30,8 +33,8 @@ export default function Addmission() {
                     axios.get("/api/subcategories"),
                 ]);
 
-                setMainCategories(mainRes.data || []);
-                setSubCategories(subRes.data || []);
+                setMainCategories(mainRes.data.data || []);
+                setSubCategories(subRes.data.data || []);
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -46,7 +49,7 @@ export default function Addmission() {
     if (error) return <p className="text-red-500">Error: {error}</p>;
 
 
-  
+
 
 
     // const photographers = [
@@ -67,34 +70,22 @@ export default function Addmission() {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // يمكنك هنا إرسال بيانات المهمة مع المصورين إلى الخادم
-        console.log('بيانات المهمة:', form);
-        console.log('المصورون المختارون:', selectedPhotographers);
+        try {
+            const response = await axios.post("/api/missions", {
+                name,
+                mobile,
+                email,
+            });
 
-
-        const misionData = {
-            ...form,
-            photographers
+            console.log("Server response:", response.data);
+            alert("Data submitted successfully!");
+        } catch (error) {
+            console.error("Error submitting data:", error);
+            alert("Error occurred while submitting data!");
         }
-
-        setForm({
-            mission_name: '',
-            year: '',
-            location: '',
-            main_person: '',
-            main_category: '',
-            status: '',
-        });
-        setSelectedPhotographers({
-            p1: '',
-            p2: '',
-            p3: '',
-            p4: '',
-            p5: '',
-        });
     };
 
     return (

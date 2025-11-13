@@ -10,7 +10,7 @@ export default function Sidebar() {
     {
       title: 'الرئيسية',
       path: '/dashboard',
-     
+
     },
     {
       title: 'المستخدمون',
@@ -18,11 +18,16 @@ export default function Sidebar() {
       icon: 'fas fa-users',
     },
     {
+      title: 'التصنيفات',
+      path: 'categories',
+      icon: 'fas fa-users',
+    },
+    {
       title: 'المهام',
       path: 'missions',
       icon: 'fas fa-tasks',
     },
-    
+
     {
       title: 'التقارير',
       path: 'reports',
@@ -39,16 +44,16 @@ export default function Sidebar() {
     <>
       <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
         {/* <h2 className="logo">لوحة التحكم</h2> */}
-        <img src="/assets/logo.png" alt="شعار المنصة" className='logo'/>
+        <img src="/assets/logo.png" alt="شعار المنصة" className='logo' />
         <nav>
           <ul>
             {menuItems.map((item, index) => (
               <li key={index}>
                 <Link
                   to={item.path}
-                  className={location.pathname === '/dashboard/'+item.path ? 'active' : ''}
+                  className={location.pathname === '/dashboard/' + item.path ? 'active' : ''}
                 >
-                
+
                   {item.title}
                   {item.submenu && <i className={`arrow fas fa-chevron-down ${isOpen ? 'open' : ''}`}></i>}
                 </Link>

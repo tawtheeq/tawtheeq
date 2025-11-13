@@ -12,7 +12,7 @@ export default function Header() {
   return (
     <header className="header">
       <div className="header__logo">
-        <img src="/assets/logo.png" alt="توثيق" />
+        <img src="/assets/justLogo.png" alt="توثيق" />
         <h1>منصة توثيق</h1>
       </div>
       
