@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../styles/pages/missions.scss';
 import { use } from 'react';
 import { useActionData } from 'react-router-dom';
@@ -37,6 +37,7 @@ export default function Addmission() {
                 setSubCategories(subRes.data.data || []);
             } catch (err) {
                 setError(err.message);
+                alert(err.message)
             } finally {
                 setLoading(false);
             }
@@ -73,25 +74,25 @@ export default function Addmission() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            const response = await axios.post("/api/missions", {
-                name,
-                mobile,
-                email,
-            });
+        // try {
+        //     const response = await axios.post("/api/missions", {
+        //         name,
+        //         mobile,
+        //         email,
+        //     });
 
-            console.log("Server response:", response.data);
-            alert("Data submitted successfully!");
-        } catch (error) {
-            console.error("Error submitting data:", error);
-            alert("Error occurred while submitting data!");
-        }
+        //     console.log("Server response:", response.data);
+        //     alert("Data submitted successfully!");
+        // } catch (error) {
+        //     console.error("Error submitting data:", error);
+        //     alert("Error occurred while submitting data!");
+        // }
     };
 
     return (
         <div className="users-container">
             <div className="users-header">
-                <h1>إضافة مهمة جديدة</h1>
+                <h1>إضافة</h1>
             </div>
             <form className="input-form" onSubmit={handleSubmit}>
                 <div className="form-row">
@@ -100,7 +101,7 @@ export default function Addmission() {
                         <input
                             type="text"
                             name="mission_name"
-                            value={form.mission_name}
+                            value={form.MissionName}
                             onChange={handleChange}
                             required
                         />
@@ -110,7 +111,7 @@ export default function Addmission() {
                         <input
                             type="text"
                             name="mission_name"
-                            value={form.mission_name}
+                            value={form.CoordinatorNum}
                             onChange={handleChange}
                             required
                         />
@@ -123,7 +124,7 @@ export default function Addmission() {
                         <input
                             type="number"
                             name="year"
-                            value={form.year}
+                            value={form.Year}
                             onChange={handleChange}
                             required
                         />
@@ -133,7 +134,7 @@ export default function Addmission() {
                         <input
                             type="number"
                             name="year"
-                            value={form.year}
+                            value={form.Month}
                             onChange={handleChange}
                             required
                         />
@@ -143,7 +144,7 @@ export default function Addmission() {
                         <input
                             type="number"
                             name="year"
-                            value={form.year}
+                            value={form.Day}
                             onChange={handleChange}
                             required
                         />
@@ -153,25 +154,37 @@ export default function Addmission() {
                 <div className="form-row">
                     <div className="form-group">
                         <label>التصنيف الرئيسي</label>
-                        <input
+                        <select
                             type="text"
                             name="main_category"
-                            value={form.main_category}
+                            value={form.MainCategory}
                             onChange={handleChange}
                             required
-                        />
+                        >
+                            <option value="">- اختر تصنيفًا -</option>
+                            {mainCategories.map((mainCat)=>(
+                                <option key={mainCat.ID} value={mainCat.ID}>
+                                    {mainCat.CategoryName}
+                                    </option>
+                            ))}
+                       
+                        </select>
                     </div>
                     <div className="form-group">
                         <label>التصنيف الفرعي</label>
                         <select
                             name="status"
-                            value={form.status}
+                            value={form.SubCategory}
                             onChange={handleChange}
                             required
                         >
-                            <option value="">اختر الحالة</option>
-                            <option value="نشط">نشط</option>
-                            <option value="غير نشط">غير نشط</option>
+                            <option value="">- اختر تصنيفًا -</option>
+                            {subCategories.map((subCat)=>(
+                                <option key={subCat.ID} value={subCat.ID}>
+                                    {subCat.CategoryName}
+                                </option>
+                            ))}
+                           
                         </select>
                     </div>
                 </div>
