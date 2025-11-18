@@ -28,7 +28,7 @@
   .title {
     margin-bottom: 1.5rem;
     font-size: 1.5rem;
-    color: $primary-color;
+    color: $primary-dark;
     font-weight: bold;
   }
 
@@ -36,13 +36,13 @@
     display: block;
     margin: 1rem 0 0.5rem;
     font-weight: 600;
-    color: #64748b;
+    color: $text-secondary;
   }
 
   .input {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #e2e8f0;
+  border: 1px solid $border-color;
     border-radius: 0.5rem;
 
     transition: all 0.2s ease;
@@ -51,7 +51,7 @@
     color: $text-primary;
 
     &:focus {
-      border-color: #2563eb;
+      border-color: $info-color;
       outline: none;
       box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     }
@@ -60,7 +60,7 @@
 
 
   .error-message {
-    color: #ef4444;
+    color: $danger-color;
     font-size: 0.875rem;
     margin-top: 0.5rem;
   }
@@ -72,5 +72,8 @@
     height: auto;
     margin-bottom: 1.5rem;
   }
-
+  // modern card look
+  border-radius: $radius-lg;
+  padding: 2.4rem;
+  box-shadow: $card-shadow;
 }

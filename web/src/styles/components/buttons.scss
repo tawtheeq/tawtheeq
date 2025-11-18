@@ -9,8 +9,12 @@ button {
   font-family: inherit;
   cursor: pointer;
 
-  background-color: $primary-color;
-  color: $button-text-color;
+  // modern default
+  padding: $btn-padding-y $btn-padding-x;
+  border-radius: $btn-radius;
+  background-color: $btn-primary-bg;
+  color: $btn-primary-text;
+  box-shadow: $shadow-sm;
   // transition: border-color 0.25s;
 
   // &:hover {
@@ -25,16 +29,16 @@ button {
 
 
 .edit-button {
-  background: grey;
-  color: $white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  background: $bg-light;
+  color: $text-primary;
+  border: 1px solid $border-color;
+  padding: 0.5rem 0.9rem;
+  border-radius: $radius-sm;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 
   &:hover {
-    opacity: 0.9;
+    transform: translateY(-2px);
   }
 }
 
@@ -42,9 +46,9 @@ button {
 .procedure-button {
   
   color: $white;
-  border-radius: 4px;
-  width: 3rem;
-  height: 3rem;
+  border-radius: $radius-sm;
+  width: 3.2rem;
+  height: 3.2rem;
   cursor: pointer;
   transition: opacity 0.2s;
 
@@ -71,18 +75,19 @@ button {
 }
 
 .login-button {
-  background: $primary-color;
-  color: $white;
+  background-color: $btn-primary-bg;
+  color: $btn-primary-text;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  padding: $btn-padding-y $btn-padding-x;
+  border-radius: $btn-radius;
 
   width: 100%;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 
   &:hover {
-    opacity: 0.9;
+    transform: translateY(-3px);
+    box-shadow: $shadow;
   }
 }
 
@@ -108,20 +113,22 @@ button {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: $gradient-primary;
-  color: $white;
+  background-color: $btn-default-bg;
+  color: $btn-default-text;
   padding: 0.75rem 1.25rem;
   border-radius: 0.5rem;
   border: none;
   font-size: 1rem;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 
   i {
     font-size: 1rem;
   }
 
   &:hover {
-    transform: $bg-secondary;
+    transform: translateY(-3px);
+    box-shadow: $shadow;
+    opacity: 0.98;
   }
 }

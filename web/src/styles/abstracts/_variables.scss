@@ -1,58 +1,87 @@
 
 // Variables for Tawtheeq Web Application Styles
 
-// // Font Family
-// $font-family: 'Cairo', sans-serif;
+// Font
+$font-family: 'Cairo', sans-serif;
 
-// Brand Colors - Blue Theme
-$primary-color: #0a2647;        // أزرق داكن جداً (للعناصر الرئيسية)
-$primary-light: #144272;        // أزرق داكن (للتأثيرات والتحويم)
-$primary-lighter: #205295;      // أزرق متوسط
-$primary-lightest: #2C74B3;     // أزرق فاتح
-$secondary-color: #5585b5;      // أزرق رمادي
+// Brand Colors - Green & Gold theme
+// High-contrast palette
+$primary-color: #052f21;        // very dark green (primary) - high contrast
+$primary-dark: #02341b;         // near-black green for accents
+$accent-gold: #ffd166;         // bright gold accent for strong contrast
+$accent-gold-dark: #f4b942;    // darker gold for borders/accents
+$secondary-color: #0b3f2d;     // secondary deep green
 
 // Status Colors
-$success-color: #0d9488;        // أخضر مائل للأزرق
-$danger-color: #b91c1c;         // أحمر غامق
-$warning-color: #0369a1;        // أزرق مائل للتحذير
-$info-color: #0ea5e9;          // أزرق فاتح للمعلومات
+$success-color: #16a34a;        // green success (kept)
+$danger-color: #dc2626;         // brighter red for errors
+$warning-color: $accent-gold;   // gold for warnings
+$info-color: #0ea5e9;           // blue for info (kept)
 
-// Neutral Colors - Cool Tones
+// Neutral Colors
 $white: #ffffff;
-$black: #1e293b;              // أزرق أسود
-$gray-100: #f1f5f9;
-$gray-200: #e2e8f0;
-$gray-300: #cbd5e1;
-$gray-400: #94a3b8;
-$gray-500: #64748b;
-$gray-600: #475569;
+$black: #071014;
+$gray-100: #f4f6f5;
+$gray-200: #e6e9e8;
+$gray-300: #cfcfcf;
+$gray-400: #9ea3a0;
+$gray-500: #6b6f6d;
+$gray-600: #3f4442;
 
 // Text Colors
-$text-primary: #0f172a;        // أزرق داكن للنصوص
+$text-primary: $black;        // high contrast text
 $text-secondary: $gray-600;
-$text-light: #f8fafc;         // أبيض مائل للأزرق
+$text-light: #ffffff;
 
 // Background Colors
-$bg-light: #f8fafc;           // خلفية فاتحة مائلة للأزرق
-$bg-dark: #0f172a;            // خلفية داكنة زرقاء
-$bg-secondary: #f1f5f9;       // خلفية ثانوية
+$bg-light: #ffffff;           // keep backgrounds bright for contrast
+$bg-dark: $black;
+$bg-secondary: #ffffff;
 
 // Interactive Elements
-$input-border-color: #bfdbfe;     // حدود زرقاء فاتحة
-$input-bg-color: #f8fafc;         // خلفية فاتحة للمدخلات
-$input-focus-border-color: #60a5fa; // حدود زرقاء عند التركيز
-$button-bg-color: $primary-color;   // خلفية الأزرار
-$button-text-color: $white;         // لون نص الأزرار
+$input-border-color: #d1d7d3;
+$input-bg-color: $white;
+$input-focus-border-color: $accent-gold;
+$button-bg-color: $primary-color;
+$button-text-color: $white;
 
-// Gradients
-$gradient-primary: linear-gradient(135deg, $primary-color, $primary-lighter);
-$gradient-secondary: linear-gradient(135deg, $primary-lighter, $primary-lightest);
+// Legacy gradient variables (now flattened to single colors for flat design)
+$gradient-primary: $primary-color; // kept for compatibility
+$gradient-secondary: $secondary-color; // kept for compatibility
 
-// Shadows with Blue Tint
-$shadow-sm: 0 1px 2px rgba($primary-color, 0.05);
-$shadow: 0 4px 6px rgba($primary-color, 0.1);
-$shadow-lg: 0 10px 15px rgba($primary-color, 0.1);
-
+// Shadows (subtle, use rgba black)
+$shadow-sm: 0 1px 2px rgba(11,20,32, 0.04);
+$shadow: 0 6px 18px rgba(11,20,32, 0.08);
+$shadow-lg: 0 14px 28px rgba(11,20,32, 0.12);
 
 // borders
-$border-color:#e7e7e7
+$border-color: #e7e7e7;
+
+// Design tokens
+$radius-sm: 6px;
+$radius-md: 10px;
+$radius-lg: 16px;
+
+$spacing-unit: 1rem; // base spacing unit
+$container-max-width: 1200px;
+
+// Layout
+$sidebar-width: 280px;
+
+// Card and surface
+$card-bg: #ffffff;
+$card-shadow: 0 8px 24px rgba(11,20,32, 0.06);
+
+// Buttons
+$btn-padding-y: 0.75rem;
+$btn-padding-x: 1.25rem;
+$btn-radius: $radius-md;
+
+// Accent (flat)
+$gradient-accent: $accent-gold; // kept name for compatibility but flat color
+
+// Button tokens (flat colors)
+$btn-primary-bg: $accent-gold;
+$btn-primary-text: $primary-dark;
+$btn-default-bg: $primary-color;
+$btn-default-text: $white;

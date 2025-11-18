@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/maadiab/tawtheeq/tawtheeq/internal/db/sqlc"
 	"github.com/maadiab/tawtheeq/tawtheeq/internal/response"
@@ -63,4 +64,22 @@ func (h *Handler) GetAllCategories(w http.ResponseWriter, r *http.Request) {
 
 	response.Success(w, "all categories retrieved successfully ...", categories)
 
+}
+
+func (h Handler) DeleteCategory(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+
+	categoryId, err := strconv.Atoi(id)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "Invalid category ID")
+		return
+	}
+
+	err = h.svc.DBQueries.DeleteCategory(context.Background(), int32(categoryId))
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "error getting categories !!!")
+		return
+	}
+
+	response.Success(w, "all categories retrieved successfully ...", categoryId)
 }

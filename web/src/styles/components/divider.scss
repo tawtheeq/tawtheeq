@@ -1,6 +1,8 @@
+@use '../abstracts/variables' as *;
+
 hr {
 
     margin: 16px 0;
     border: none;
-    border-top: 1px solid #eeeeeeff;
+    border-top: 1px solid $border-color;
 }

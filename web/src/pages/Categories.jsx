@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/pages/missions.scss';
@@ -6,55 +5,58 @@ import axios from 'axios';
 
 export default function Categories() {
 
-
-  const [categories, setCategories] = useState([]);  // state to hold API data
-  const [loading, setLoading] = useState(true);  // loading indicator
-  const [error, setError] = useState(null);      // error handling
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        // 👇 Replace this with your real API URL
         const response = await axios.get("/api/categories");
-        
-        // 👇 Fill the state with the 'data' array from your JSON
-        setCategories(response.data.data);
+        // تأكد أن الـ API ترجع data داخل response.data.data
+        setCategories(response.data.data || response.data);
       } catch (err) {
         setError(err.message);
-        alert(err.message)
+        console.error(err);
+        alert(err.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCategories(); // run the function once on mount
+    fetchCategories();
   }, []);
 
-  // ✅ Handle loading & error states
-  if (loading) return <p>Loading missions...</p>;
+  if (loading) return <p>Loading categories...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  // console.log(missions.data)
+  const handleDelete = async (id) => {
+    if (!id) return;
+    const confirmDelete = window.confirm("هل أنت متأكد من حذف التصنيف؟");
+    if (!confirmDelete) return;
 
-  const handleDelete = (id) => {
-    if (window.confirm('هل أنت متأكد من حذف هذا التصيف؟')) {
-      setUsers(users.filter(user => user.id !== id));
+    try {
+      console.log("Deleting category with id:", id);
+      await axios.delete(`/api/categories/${id}`);
+      // إزالة العنصر من الجدول بعد نجاح الحذف
+      setCategories(prev => prev.filter(c => c.ID !== id));
+      alert("تم الحذف بنجاح!");
+    } catch (err) {
+      console.error(err);
+      alert("حدث خطأ أثناء الحذف: " + err.message);
     }
   };
 
   const handleAdd = () => {
-    // يمكن إضافة توجيه إلى صفحة إضافة مستخدم جديد هنا
     console.log('إضافة تصنيف جديد');
-
   };
 
   return (
     <div className="users-container">
       <div className="users-header">
-        <h1> التصنيفات</h1>
+        <h1>التصنيفات</h1>
         <Link to="addcategory" className="function-button">
-          <i className="fas fa-plus"></i>
-          إضافة
+          <i className="fas fa-plus"></i> إضافة
         </Link>
       </div>
 
@@ -63,7 +65,7 @@ export default function Categories() {
           <thead>
             <tr>
               <th>اسم التصنيف</th>
-              <th>النوع </th>
+              <th>النوع</th>
               <th>مختصر الوصف</th>
               <th>إجراءات</th>
             </tr>
@@ -71,19 +73,16 @@ export default function Categories() {
           <tbody>
             {categories.length > 0 ? (
               categories.map(category => (
-                <tr key={category.id}>
+                <tr key={category.ID}>
                   <td>{category.CategoryName}</td>
-                    <td>
+                  <td>
                     <span className={`status ${category.CategoryType === 'main' ? 'active' : 'inactive'}`}>
                       {category.CategoryType}
                     </span>
                   </td>
                   <td>{category.Description}</td>
-                
-
-
                   <td className="user-actions">
-                    <button className=" procedure-button show">
+                    <button className="procedure-button show">
                       <i className="fas fa-eye"></i>
                     </button>
                     <button className="procedure-button edit">
@@ -91,10 +90,9 @@ export default function Categories() {
                     </button>
                     <button
                       className="procedure-button delete"
-                      // onClick={() => handleDelete(category.ID)}
+                      onClick={() => handleDelete(category.ID)}
                     >
                       <i className="fas fa-trash"></i>
-
                     </button>
                   </td>
                 </tr>
@@ -113,5 +111,3 @@ export default function Categories() {
     </div>
   );
 }
-
-

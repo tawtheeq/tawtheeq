@@ -4,19 +4,21 @@
   display: flex;
   height: 100vh; // تأخذ كامل الشاشة
   overflow: hidden; // خلفية عامة للوحة التحكم
-    background-color: #f9f9f9; // لون خلفية عام
+    background-color: $bg-light; // لون خلفية عام
 }
+
 
   .dashboard-main {
     flex: 1;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    margin-right: $sidebar-width; // reserve space for the fixed sidebar
 
     .dashboard-header {
       height: 60px;
-      background-color: #ffffff;
-      border-bottom: 1px solid #ddd;
+      background-color: $bg-secondary;
+      border-bottom: 1px solid $border-color;
       padding: 0 1rem;
       display: flex;
       align-items: center;
@@ -28,7 +30,17 @@
 .dashboard-content {
       flex: 1;
       overflow: hidden;
-      padding: 1rem;
-      margin-right: 280px;
+      padding: 1rem 1.6rem;
+      display: flex;
+      gap: 1.6rem;
+      align-items: flex-start;
+      width: 100%;
       // background-color: #1e1e2f;
     }
+
+.panel {
+  background: $card-bg;
+  border-radius: $radius-md;
+  padding: 1.25rem;
+  box-shadow: $card-shadow;
+}

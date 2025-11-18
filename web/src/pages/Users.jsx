@@ -102,15 +102,19 @@ export default function Users() {
                       {user.Balance}
                     </span>
                   </td>
-                  <td className="user-actions">
-                    <button className="procedure-button">
+                      <td className="user-actions">
+                    <button className=" procedure-button show">
+                      <i className="fas fa-eye"></i>
+                    </button>
+                    <button className="procedure-button edit">
                       <i className="fas fa-edit"></i>
                     </button>
                     <button
-                      className="procedure-button"
-                      onClick={() => handleDelete(user.id)}
+                      className="procedure-button delete"
+                      onClick={() => handleDelete(mission.id)}
                     >
                       <i className="fas fa-trash"></i>
+
                     </button>
                   </td>
                 </tr>

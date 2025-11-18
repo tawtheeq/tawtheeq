@@ -18,6 +18,16 @@ export default function Addcategory() {
     });
 
 
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete("api/items/${id}");
+      alert("Deleted!");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };

@@ -13,7 +13,7 @@ export default function Header() {
     <header className="header">
       <div className="header__logo">
         <img src="/assets/justLogo.png" alt="توثيق" />
-        <h1>منصة توثيق</h1>
+        <h1> إدارة العمليات الإعلامية</h1>
       </div>
       
       <div className="header__actions">

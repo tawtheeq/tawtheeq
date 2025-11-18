@@ -53,8 +53,9 @@ export default function Sidebar() {
                   to={item.path}
                   className={location.pathname === '/dashboard/' + item.path ? 'active' : ''}
                 >
-
-                  {item.title}
+                  {/* render icon if provided, fallback to a small circle */}
+                  <i className={`${item.icon ? item.icon : 'fas fa-circle'} menu-icon`} aria-hidden="true"></i>
+                  <span className="menu-title">{item.title}</span>
                   {item.submenu && <i className={`arrow fas fa-chevron-down ${isOpen ? 'open' : ''}`}></i>}
                 </Link>
                 {item.submenu && (

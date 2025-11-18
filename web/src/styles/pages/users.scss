@@ -3,8 +3,8 @@
 .users-container {
   direction: rtl;
   padding: 1.5rem;
-  height: calc(100vh - 70px); // ارتفاع الشاشة ناقص ارتفاع الهيدر
-  // width: 100%;
+  height: calc(100vh - 90px); // ارتفاع الشاشة ناقص ارتفاع الهيدر
+  width: 100%;
   
   .users-header {
     display: flex;
@@ -13,20 +13,20 @@
     margin-bottom: 1.5rem;
     // background-color: $white;
     padding: 1.25rem;
-    border-radius: 0.5rem;
-    // box-shadow: $shadow;
+    border-radius: $radius-md;
+    box-shadow: $card-shadow;
 
     h1 {
-      font-size: 1.5rem;
-      color: $primary-color;
+      font-size: 1.6rem;
+      color: $primary-dark;
       margin: 0;
     }
   }
 
   .users-table {
-    background: $white;
-    border-radius: 0.5rem;
-    box-shadow: $shadow;
+  background: $card-bg;
+  border-radius: $radius-md;
+  box-shadow: $card-shadow;
     overflow: hidden;
 
     table {
@@ -91,11 +91,11 @@
           transition: all 0.2s ease;
 
           &.edit-btn {
-            background-color: rgba($primary-lighter, 0.1);
-            color: $primary-lighter;
+            background-color: rgba($accent-gold, 0.08);
+            color: $accent-gold;
 
             &:hover {
-              background-color: $primary-lighter;
+              background-color: $accent-gold;
               color: $white;
             }
           }
