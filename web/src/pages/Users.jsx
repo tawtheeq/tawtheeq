@@ -58,9 +58,20 @@ export default function Users() {
   //   }
   // ]);
 
-  const handleDelete = (id) => {
-    if (window.confirm('هل أنت متأكد من حذف هذا المستخدم؟')) {
-      setUsers(users.filter(user => user.id !== id));
+  const handleDelete = async (id) => {
+    if (!id) return;
+    const confirmDelete = window.confirm("هل أنت متأكد من حذف التصنيف؟");
+    if (!confirmDelete) return;
+
+    try {
+      console.log("Deleting User with id:", id);
+      await axios.delete(`/api/users/${id}`);
+      // إزالة العنصر من الجدول بعد نجاح الحذف
+      setUsers(prev => prev.filter(c => c.ID !== id));
+      alert("تم الحذف بنجاح!");
+    } catch (err) {
+      console.error(err);
+      alert("حدث خطأ أثناء الحذف: " + err.message);
     }
   };
 
@@ -111,7 +122,7 @@ export default function Users() {
                     </button>
                     <button
                       className="procedure-button delete"
-                      onClick={() => handleDelete(mission.id)}
+                      onClick={() => handleDelete(user.ID)}
                     >
                       <i className="fas fa-trash"></i>
 

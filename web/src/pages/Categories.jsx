@@ -23,7 +23,6 @@ export default function Categories() {
         setLoading(false);
       }
     };
-
     fetchCategories();
   }, []);
 

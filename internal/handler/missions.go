@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -81,6 +82,9 @@ func (h *Handler) UpdateMission(w http.ResponseWriter, r *http.Request) {
 
 	id := r.PathValue("id")
 
+	// body, _ := io.ReadAll(r.Body)
+	// fmt.Println("BODY RECEIVED:", string(body))
+
 	mission_id, err := strconv.Atoi(id)
 	if err != nil {
 		response.Error(w, http.StatusBadRequest, "Invalid mission ID")
@@ -90,6 +94,15 @@ func (h *Handler) UpdateMission(w http.ResponseWriter, r *http.Request) {
 	missionsParams := sqlc.UpdateMissionParams{}
 	missionsParams.ID = int32(mission_id)
 
+	log.Println("Mission ID to update:", missionsParams.ID)
+
+	err = json.NewDecoder(r.Body).Decode(&missionsParams)
+
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "Invalid request body")
+		return
+	}
+
 	if missionsParams.ID == 0 {
 		response.Error(w, http.StatusBadRequest, "Mission ID is required")
 		return
@@ -97,12 +110,6 @@ func (h *Handler) UpdateMission(w http.ResponseWriter, r *http.Request) {
 
 	if missionsParams.MissionName == "" {
 		response.Error(w, http.StatusBadRequest, "Mission name is required")
-		return
-	}
-
-	err = json.NewDecoder(r.Body).Decode(&missionsParams)
-	if err != nil {
-		response.Error(w, http.StatusBadRequest, "Invalid request body")
 		return
 	}
 

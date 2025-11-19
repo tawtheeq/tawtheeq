@@ -1,0 +1,200 @@
+import { useEffect, useState } from 'react';
+import { useParams } from "react-router-dom";
+import '../styles/pages/missions.scss';
+import axios from 'axios';
+
+export default function UpdateMission() {
+    const { id } = useParams();
+
+    const [mainCategories, setMainCategories] = useState([]);
+    const [subCategories, setSubCategories] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    const [form, setForm] = useState({
+        MissionName: '',
+        CoordinatorNum: '',
+        MainCategory: '',
+        SubCategory: '',
+        Day: '',
+        Month: '',
+        Year: '',
+        DurationDays: '',
+        ID: Number(id) || 0,
+    });
+
+    const numericFields = ["CoordinatorNum", "MainCategory", "SubCategory", "Year", "Month", "Day", "DurationDays", "ID"];
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setForm(prev => ({
+            ...prev,
+            [name]: numericFields.includes(name) ? (value ? Number(value) : 0) : value
+        }));
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [mainRes, subRes, missionRes] = await Promise.all([
+                    axios.get("/api/maincategories"),
+                    axios.get("/api/subcategories"),
+                    axios.get(`/api/missions/${id}`)
+                ]);
+
+                console.log("Fetched mission data:", missionRes.data.data);
+                setMainCategories(mainRes.data.data || []);
+                setSubCategories(subRes.data.data || []);
+
+
+                const mission = missionRes.data.data;
+                alert(JSON.stringify(mission));
+                setForm({
+                    MissionName: mission.MissionName,
+                    CoordinatorNum: Number(mission.CoordinatorNum),
+                    MainCategory: Number(mission.MainCategory),
+                    SubCategory: Number(mission.SubCategory),
+                    Day: Number(mission.Day),
+                    Month: Number(mission.Month),
+                    Year: Number(mission.Year),
+                    DurationDays: Number(mission.DurationDays),
+                    ID: Number(mission.ID),
+                });
+
+            } catch (err) {
+                setError(err.message);
+                alert(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p className="text-red-500">Error: {error}</p>;
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+z
+        console.log("Payload to send:", form);
+
+        try {
+            const response = await axios.put(`/api/missions/${form.ID}`, form, {
+                headers: { "Content-Type": "application/json" }
+            });
+            console.log("Server response:", response.data);
+            alert("تم التحديث بنجاح!");
+        } catch (error) {
+            console.error("Error submitting data:", error);
+            alert(error.response?.data?.message || error.message || "حدث خطأ أثناء حفظ البيانات!");
+        }
+    };
+
+    return (
+        <div className="users-container">
+            <div className="users-header">
+                <h1>تعديل المهمة</h1>
+            </div>
+
+            <form className="input-form" onSubmit={handleSubmit}>
+                <div className="form-row">
+                    <div className="form-group">
+                        <label>اسم المهمة</label>
+                        <input
+                            type="text"
+                            name="MissionName"
+                            value={form.MissionName}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>رقم المنسق</label>
+                        <input
+                            type="number"
+                            name="CoordinatorNum"
+                            value={form.CoordinatorNum}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div className="form-row">
+                    <div className="form-group">
+                        <label>السنة</label>
+                        <select name="Year" value={form.Year} onChange={handleChange} required>
+                            <option value="">- اختر السنة -</option>
+                            <option value={2025}>2025</option>
+                            <option value={2026}>2026</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label>الشهر</label>
+                        <select name="Month" value={form.Month} onChange={handleChange} required>
+                            <option value="">- اختر الشهر -</option>
+                            {[...Array(12)].map((_, i) => (
+                                <option key={i + 1} value={i + 1}>{i + 1}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label>اليوم</label>
+                        <select name="Day" value={form.Day} onChange={handleChange} required>
+                            <option value="">- اختر اليوم -</option>
+                            {[...Array(31)].map((_, i) => (
+                                <option key={i + 1} value={i + 1}>{i + 1}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label>مدة المهمة (يوم)</label>
+                        <input
+                            type="number"
+                            name="DurationDays"
+                            value={form.DurationDays}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div className="form-row">
+                    <div className="form-group">
+                        <label>التصنيف الرئيسي</label>
+                        <select name="MainCategory" value={form.MainCategory} onChange={handleChange} required>
+                            <option value="">- اختر تصنيفًا -</option>
+                            {mainCategories.map(mainCat => (
+                                <option key={mainCat.ID} value={mainCat.ID}>
+                                    {mainCat.CategoryName}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label>التصنيف الفرعي</label>
+                        <select name="SubCategory" value={form.SubCategory} onChange={handleChange} required>
+                            <option value="">- اختر تصنيفًا -</option>
+                            {subCategories.map(subCat => (
+                                <option key={subCat.ID} value={subCat.ID}>
+                                    {subCat.CategoryName}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" className="function-button">
+                    <i className="fas fa-save"></i> حفظ
+                </button>
+            </form>
+        </div>
+    );
+}

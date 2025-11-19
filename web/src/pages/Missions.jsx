@@ -1,11 +1,12 @@
 
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import '../styles/pages/missions.scss';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 export default function Missions() {
-
+const navigate = useNavigate();
   // const [users, setUsers] = useState([
   //   {
   //     id: 1,
@@ -65,9 +66,20 @@ export default function Missions() {
 
   console.log(missions.data)
 
-  const handleDelete = (id) => {
-    if (window.confirm('هل أنت متأكد من حذف هذا المستخدم؟')) {
-      setUsers(users.filter(user => user.id !== id));
+  const handleDelete = async (id) => {
+    if (!id) return;
+    const confirmDelete = window.confirm("هل أنت متأكد من حذف التصنيف؟");
+    if (!confirmDelete) return;
+
+    try {
+      console.log("Deleting Mission with id:", id);
+      await axios.delete(`/api/missions/${id}`);
+      // إزالة العنصر من الجدول بعد نجاح الحذف
+      setMissions(prev => prev.filter(c => c.ID !== id));
+      alert("تم الحذف بنجاح!");
+    } catch (err) {
+      console.error(err);
+      alert("حدث خطأ أثناء الحذف: " + err.message);
     }
   };
 
@@ -94,7 +106,7 @@ export default function Missions() {
               <th>اسم المناسبة</th>
               <th>التاريخ </th>
               <th>مدة المهمة</th>
-              <th>التصنيف الأساسي</th>
+              <th>تمت الإضافة ب،واسطة</th>
               {/* <th>المنطقة</th> */}
               <th>إجراءات</th>
             </tr>
@@ -118,12 +130,16 @@ export default function Missions() {
                     <button className=" procedure-button show">
                       <i className="fas fa-eye"></i>
                     </button>
-                    <button className="procedure-button edit">
-                      <i className="fas fa-edit"></i>
-                    </button>
+       <button 
+  className="procedure-button edit"
+  onClick={() => navigate(`update/${mission.ID}`)}
+>
+  <i className="fas fa-edit"></i>
+</button>
+
                     <button
                       className="procedure-button delete"
-                      onClick={() => handleDelete(mission.id)}
+                      onClick={() => handleDelete(mission.ID)}
                     >
                       <i className="fas fa-trash"></i>
 

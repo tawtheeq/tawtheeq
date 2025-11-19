@@ -11,6 +11,7 @@ import AddMission from './pages/Addmission';
 import AddEmp from './pages/Addemp';
 import Addcategory from "./pages/Addcategory";
 import Categories from "./pages/Categories";
+import UpdateMission from "./pages/Updatemission";
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path="settings" element={<Settings />} />
           <Route path="missions" element={<Missions />} />
           <Route path="missions/addmission" element={<AddMission />} />
+          <Route path="/dashboard/missions/update/:id" element={<UpdateMission/>}/>
           <Route path="users/addemp" element={<AddEmp />} />
           <Route path="*" element={<h1>404 Not Found</h1>} />
 
