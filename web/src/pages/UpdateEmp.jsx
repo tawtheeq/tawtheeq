@@ -1,15 +1,50 @@
 import { useState } from 'react';
+import { useParams } from "react-router-dom";
+import { useEffect } from 'react';
 import '../styles/pages/missions.scss';
 import axios from 'axios';
 
-export default function AddEmp() {
+export default function UpdateEmp() {
+  const { id } = useParams();
 
-
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({
+    ID: Number(id) || 0,
     Name: '',
     Email: '',
     Mobile: '',
   });
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+
+        // alert("Fetching data for user ID: " + id);
+        const user = await axios.get(`/api/users/${id}`);
+
+        const userData = user.data.data;
+        console.log("Fetched users data:", userData);
+        // alert(JSON.stringify(userData));
+        setForm({
+          ID: Number(id) || 0,
+          Name: userData.Name,
+          Email: userData.Email,
+          Mobile: userData.Mobile,
+        });
+
+      } catch (err) {
+        setError(err.message);
+        console.log(err.response?.data || err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
 
 
   const handleChange = (e) => {
@@ -18,29 +53,26 @@ export default function AddEmp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Payload to send:", form);
 
     try {
-      const response = await axios.post("/api/users", { ...form });
+      const response = await axios.put(`/api/users/${id}`, form, {
+        headers: { "Content-Type": "application/json" }
+      });
       console.log("Server response:", response.data);
-      alert("Data submitted successfully!");
+      alert("تم التحديث بنجاح!");
     } catch (error) {
       console.error("Error submitting data:", error);
-      alert(error);
+      alert(error.response?.data?.message || error.message || "حدث خطأ أثناء حفظ البيانات!");
     }
 
-    setForm({
-      Name: '',
-      Email: '',
-      Mobile: '',
-    });
   };
-
 
 
   return (
     <div className="users-container">
       <div className="users-header">
-        <h1>إضافة موظف جديد</h1>
+        <h1>تحديث بيانات الموظف</h1>
       </div>
       <form className="input-form" onSubmit={handleSubmit}>
         <div className="form-row">
@@ -81,7 +113,7 @@ export default function AddEmp() {
         <br />
 
         <button type="submit" className="function-button">
-          <i className="fas fa-plus"></i> إضافة
+          <i className="fas fa-save"></i> حفظ التغييرات
         </button>
       </form>
     </div>

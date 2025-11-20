@@ -2,45 +2,83 @@
 
 .dashboard-layout {
   display: flex;
-  height: 100vh; // تأخذ كامل الشاشة
-  overflow: hidden; // خلفية عامة للوحة التحكم
-    background-color: $bg-light; // لون خلفية عام
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, $bg-light 0%, $gray-50 100%);
+  position: relative;
 }
 
+.dashboard-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin-right: $sidebar-width;
+  margin-top: $header-height;
+  transition: margin-right 0.3s ease;
 
-  .dashboard-main {
-    flex: 1;
+  .dashboard-header {
+    // height: $header-height;
+    background: transparent;
+    padding: 0;
     display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    margin-right: $sidebar-width; // reserve space for the fixed sidebar
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+}
 
-    .dashboard-header {
-      height: 60px;
-      background-color: $bg-secondary;
-      border-bottom: 1px solid $border-color;
-      padding: 0 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
+.dashboard-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 2rem 2.5rem;
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  width: 100%;
+  position: relative;
+
+  // Custom scrollbar
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $gray-300;
+    border-radius: $border-radius-full;
+
+    &:hover {
+      background: $gray-400;
     }
   }
 
-.dashboard-content {
-      flex: 1;
-      overflow: hidden;
-      padding: 1rem 1.6rem;
-      display: flex;
-      gap: 1.6rem;
-      align-items: flex-start;
-      width: 100%;
-      // background-color: #1e1e2f;
-    }
+  @media (max-width: 768px) {
+    padding: 1.5rem 1rem;
+    gap: 1.5rem;
+  }
+}
 
 .panel {
   background: $card-bg;
-  border-radius: $radius-md;
-  padding: 1.25rem;
-  box-shadow: $card-shadow;
+  border-radius: $radius-lg;
+  padding: 1.75rem;
+  box-shadow: $shadow-md;
+  border: 1px solid $border-color-light;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: $shadow-lg;
+    transform: translateY(-2px);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-main {
+    margin-right: 0;
+  }
 }

@@ -307,6 +307,31 @@ func (q *Queries) UpdateBalance(ctx context.Context, arg UpdateBalanceParams) (U
 	return i, err
 }
 
+const updateBasicInfo = `-- name: UpdateBasicInfo :exec
+UPDATE users
+SET name = $2,
+    email = $3,
+    mobile = $4
+WHERE id = $1
+`
+
+type UpdateBasicInfoParams struct {
+	ID     int32
+	Name   string
+	Email  string
+	Mobile string
+}
+
+func (q *Queries) UpdateBasicInfo(ctx context.Context, arg UpdateBasicInfoParams) error {
+	_, err := q.db.ExecContext(ctx, updateBasicInfo,
+		arg.ID,
+		arg.Name,
+		arg.Email,
+		arg.Mobile,
+	)
+	return err
+}
+
 const updatePassword = `-- name: UpdatePassword :one
 UPDATE users
 SET password = $1

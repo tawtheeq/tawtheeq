@@ -127,22 +127,26 @@ const navigate = useNavigate();
 
 
                   <td className="user-actions">
-                    <button className=" procedure-button show">
+                    <button 
+                      className="procedure-button show"
+                      onClick={() => navigate(`/dashboard/missions/${mission.ID}`)}
+                      title="عرض التفاصيل"
+                    >
                       <i className="fas fa-eye"></i>
                     </button>
-       <button 
-  className="procedure-button edit"
-  onClick={() => navigate(`update/${mission.ID}`)}
->
-  <i className="fas fa-edit"></i>
-</button>
-
+                    <button 
+                      className="procedure-button edit"
+                      onClick={() => navigate(`update/${mission.ID}`)}
+                      title="تعديل"
+                    >
+                      <i className="fas fa-edit"></i>
+                    </button>
                     <button
                       className="procedure-button delete"
                       onClick={() => handleDelete(mission.ID)}
+                      title="حذف"
                     >
                       <i className="fas fa-trash"></i>
-
                     </button>
                   </td>
                 </tr>

@@ -3,10 +3,11 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/pages/users.scss';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 export default function Users() {
 
-
+const navigate = useNavigate();
   const [users, setUsers] = useState([]);  // state to hold API data
   const [loading, setLoading] = useState(true);  // loading indicator
   const [error, setError] = useState(null);      // error handling
@@ -27,7 +28,7 @@ export default function Users() {
   }, []);
 
 
-    // ✅ Handle loading & error states
+  // ✅ Handle loading & error states
   if (loading) return <p>Loading users...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -113,11 +114,14 @@ export default function Users() {
                       {user.Balance}
                     </span>
                   </td>
-                      <td className="user-actions">
+                  <td className="user-actions">
                     <button className=" procedure-button show">
                       <i className="fas fa-eye"></i>
                     </button>
-                    <button className="procedure-button edit">
+                    <button
+                      className="procedure-button edit"
+                      onClick={() => navigate(`update/${user.ID}`)}
+                    >
                       <i className="fas fa-edit"></i>
                     </button>
                     <button
@@ -125,7 +129,6 @@ export default function Users() {
                       onClick={() => handleDelete(user.ID)}
                     >
                       <i className="fas fa-trash"></i>
-
                     </button>
                   </td>
                 </tr>

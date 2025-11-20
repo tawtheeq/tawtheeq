@@ -77,7 +77,6 @@ export default function UpdateMission() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-z
         console.log("Payload to send:", form);
 
         try {

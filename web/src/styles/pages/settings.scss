@@ -1,55 +1,143 @@
 @use '../abstracts/variables' as *;
 
 .settings-container {
-  
-
-//  background-color: $primary-color;
   padding: 2rem;
-  /* padding-top: 4rem; */
-  // width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  // border: 1rem solid $primary-color;
+  align-items: stretch;
   direction: rtl;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 2rem;
 }
 
-  .stats-cards {
-    //  background-color: $primary-color;
-  padding: 2rem;
+.stats-cards {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  // border: 1rem solid $primary-color;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 0;
 
-     .stat-card {
-      background: $white;
-      padding: 1.5rem;
-      border-radius: 8px;
-      box-shadow: $shadow;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+  .stat-card {
+    background: linear-gradient(135deg, $white 0%, $gray-50 100%);
+    padding: 2rem;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-md;
+    border: 1px solid $border-color-light;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, $primary-color 0%, $primary-light 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
- .card-content {
-         .title {
-           color: $gray-600;
-           font-size: 0.9rem;
-           margin-bottom: 0.5rem;
-         }
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: $shadow-lg;
+      border-color: $primary-color;
 
-         .value {
-           color: $primary-color;
-           font-size: 1.5rem;
-           font-weight: bold;
-         }
-       }
+      &::before {
+        opacity: 1;
+      }
+    }
+
+    .card-content {
+      flex: 1;
+
+      .title {
+        color: $text-secondary;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        letter-spacing: -0.01em;
+      }
+
+      .value {
+        color: $primary-dark;
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        background: linear-gradient(135deg, $primary-dark 0%, $primary-color 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    }
+
+    .function-button {
+      margin-right: 1rem;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.875rem;
+    }
   }
-   
- 
+}
+
+.form-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $primary-dark;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid $border-color-light;
+
+  .function-button {
+    min-width: 140px;
+
+    &:first-child {
+      background: $gray-100;
+      color: $text-primary;
+      border: 1px solid $border-color;
+
+      &:hover {
+        background: $gray-200;
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 1024px) {
+  .stats-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .settings-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .stats-cards {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+
+    .function-button {
+      width: 100%;
+    }
+  }
+}

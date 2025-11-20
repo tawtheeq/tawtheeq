@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -55,25 +56,15 @@ func (h *Handler) AddUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) GetUserByID(w http.ResponseWriter, r *http.Request) {
-	// Implementation for getting a user by ID
+	id := r.PathValue("id")
 
-	if r.Method != http.MethodGet {
-		response.Error(w, http.StatusMethodNotAllowed, "Method not allowed")
-		return
-	}
-	idStr := r.URL.Query().Get("id")
-	if idStr == "" {
-		response.Error(w, http.StatusBadRequest, "User ID is required")
-		return
-	}
-
-	id, err := strconv.Atoi(idStr)
+	userID, err := strconv.Atoi(id)
 	if err != nil {
-		response.Error(w, http.StatusBadRequest, "Invalid User ID")
+		response.Error(w, http.StatusBadRequest, "Invalid mission ID")
 		return
 	}
 
-	user, err := h.svc.GetUserByID(int32(id))
+	user, err := h.svc.GetUserByID(int32(userID))
 	if err != nil {
 		response.Error(w, http.StatusInternalServerError, "Failed to get user")
 		fmt.Println(err)
@@ -94,6 +85,27 @@ func (h *Handler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = h.svc.UpdateUser(user)
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "Failed to update user")
+		fmt.Println(err)
+		return
+	}
+
+	response.Success(w, "User updated successfully", nil)
+
+}
+
+func (h *Handler) UpdteUserBasicInfo(w http.ResponseWriter, r *http.Request) {
+
+	var user sqlc.UpdateBasicInfoParams
+
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "Invalid request body")
+		return
+	}
+
+	err = h.svc.DBQueries.UpdateBasicInfo(context.Background(), user)
 	if err != nil {
 		response.Error(w, http.StatusInternalServerError, "Failed to update user")
 		fmt.Println(err)

@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import '../styles/pages/missions.scss';
-import { use } from 'react';
-import { useActionData } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Addcategory() {

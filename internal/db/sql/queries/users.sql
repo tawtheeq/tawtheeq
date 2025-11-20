@@ -34,6 +34,14 @@ WHERE id = $1
 RETURNING *;
 
 
+-- name: UpdateBasicInfo :exec
+UPDATE users
+SET name = $2,
+    email = $3,
+    mobile = $4
+WHERE id = $1;
+
+
 -- name: DeleteUser :exec
 DELETE FROM users
 WHERE id = $1;
