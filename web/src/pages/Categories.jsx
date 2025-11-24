@@ -81,9 +81,6 @@ export default function Categories() {
                   </td>
                   <td>{category.Description}</td>
                   <td className="user-actions">
-                    <button className="procedure-button show">
-                      <i className="fas fa-eye"></i>
-                    </button>
                     <button className="procedure-button edit">
                       <i className="fas fa-edit"></i>
                     </button>

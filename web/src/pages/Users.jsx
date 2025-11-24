@@ -115,9 +115,9 @@ const navigate = useNavigate();
                     </span>
                   </td>
                   <td className="user-actions">
-                    <button className=" procedure-button show">
+                    {/* <button className=" procedure-button show">
                       <i className="fas fa-eye"></i>
-                    </button>
+                    </button> */}
                     <button
                       className="procedure-button edit"
                       onClick={() => navigate(`update/${user.ID}`)}
