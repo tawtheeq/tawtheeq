@@ -4,20 +4,16 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-
 export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-
- 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form submitted");
-    console.log("Email:", email);
-    console.log("Password:", password);
+    // console.log("Email:", email);
+    // console.log("Password:", password);
     try {
       navigate('/dashboard');
       console.log("Navigation attempted");
@@ -48,20 +44,10 @@ export default function LoginPage() {
         onChange={(e) => setPassword(e.target.value)}
         dir="rtl"
         required />
-
     <button className="login-button" type="submit">تسجيل الدخول</button>
-
       </form>
-
-
 </div>
-
    </>
-
-
-
-
-
     // <form onSubmit={handleSubmit}>
     //   <input type="text" placeholder="Email" required />
     //   <button type="submit">Submit</button>

@@ -23,12 +23,20 @@ export default function AddParticipantsToMission() {
 
         // Fetch all users
         const usersRes = await axios.get('/api/users');
-        setUsers(usersRes.data.data);
+        setUsers(usersRes.data.data || []);
 
         // Fetch existing participants
         const participantsRes = await axios.get(`/api/missions/${id}/participants`);
-        const participantIds = participantsRes.data.data.map(p => p.id);
-        setExistingParticipants(new Set(participantIds));
+        
+        // Handle empty or undefined participants response
+        const participantsData = participantsRes.data?.data;
+        if (participantsData && Array.isArray(participantsData) && participantsData.length > 0) {
+          const participantIds = participantsData.map(p => p.id || p.ID);
+          setExistingParticipants(new Set(participantIds));
+        } else {
+          // No participants yet - initialize with empty Set
+          setExistingParticipants(new Set());
+        }
       } catch (err) {
         setError(err.message);
         console.error('Error fetching data:', err);
