@@ -49,7 +49,7 @@ const navigate = useNavigate();
         const response = await axios.get("/api/missions");
         
         // 👇 Fill the state with the 'data' array from your JSON
-        setMissions(response.data.data);
+        setMissions(response.data.data || response.data);
       } catch (err) {
         setError(err.message);
       } finally {
