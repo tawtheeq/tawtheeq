@@ -12,17 +12,17 @@ export default function Settings() {
 
   const statsData = [
     {
-      title: ' حد الانتداب الأقصى ',
+      title: 'إجمالي عدد المهام',
       value: '12',
       type: 'department'
     },
     {
-      title: 'التصنيفات',
+      title: 'إجمالي عدد المصورين',
       value: '24',
       type: 'category'
     },
     {
-      title: 'الحالات',
+      title: 'متوسط مدة المهمة',
       value: '8',
       type: 'status'
     },

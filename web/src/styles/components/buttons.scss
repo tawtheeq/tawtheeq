@@ -72,18 +72,19 @@ button {
 }
 
 .show {
-  background: $info-color;
+  background: $primary-light;
   
   &:hover {
-    background: $info-light;
+    background: $btn-primary-bg;
   }
 }
 
 .edit {
-  background: $warning-color;
+  background: $primary-light;
   
   &:hover {
-    background: $warning-light;
+  background: $btn-primary-bg;
+
   }
 }
 
@@ -91,7 +92,7 @@ button {
   background: $danger-color;
   
   &:hover {
-    background: $danger-light;
+    // background: $danger-light;
   }
 }
 

@@ -11,9 +11,7 @@ export default function Overview() {
   // const [count, setCount] = useState(0)
 
   return (
-
     <div className="overview-container">
-
       <div className="overview-header">
         <img src="../assets/mohanadLogo.png" alt="Mohanad logo" className="logo-home" />
       </div>
@@ -22,7 +20,6 @@ export default function Overview() {
         <p>هذه المنصة مخصصة لإدارة وتوثيق المهام الداخلية والخارجية بشكل فعال.</p>
       </div> */}
     </div>
-
 
   );
 }

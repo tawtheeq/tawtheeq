@@ -82,14 +82,14 @@
           letter-spacing: 0.02em;
 
           &.active {
-            background: $success-color;
-            color: $white;
+            background: rgba($success-color, 0.2);
+            color: $success-color;
             border: 1px solid rgba($success-color, 0.2);
           }
 
           &.inactive {
-            background: $danger-color;
-            color: $white;
+            background: rgba($danger-color, 0.2);
+            color: $danger-color;
             border: 1px solid rgba($danger-color, 0.2);
           }
         }
