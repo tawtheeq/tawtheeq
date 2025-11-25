@@ -52,3 +52,4 @@ export $(grep -v '^#' .env | xargs) && goose -dir ./migrations postgres "user=$D
 
 
 
+# sudafix
