@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import '../styles/pages/missions.scss';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function UpdateMission() {
     const { id } = useParams();
-
+    const navigate = useNavigate();
     const [mainCategories, setMainCategories] = useState([]);
     const [subCategories, setSubCategories] = useState([]);
     const [error, setError] = useState(null);
@@ -95,6 +96,13 @@ export default function UpdateMission() {
         <div className="users-container">
             <div className="users-header">
                 <h1>تعديل المهمة</h1>
+                <button 
+            className="function-button"
+            onClick={() => navigate(-1)}
+          >
+            <i className="fas fa-arrow-right"></i>
+            رجوع
+          </button>
             </div>
 
             <form className="input-form" onSubmit={handleSubmit}>

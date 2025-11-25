@@ -97,7 +97,7 @@ export default function Categories() {
               <tr>
                 <td colSpan="6" className="empty-state">
                   <i className="fas fa-users"></i>
-                  <p>لا يوجد مستخدمين حالياً</p>
+                  <p>لا يوجد تصنيفات حالياً</p>
                 </td>
               </tr>
             )}

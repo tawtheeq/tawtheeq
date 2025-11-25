@@ -16,7 +16,7 @@ const navigate = useNavigate();
     const fetchUsers = async () => {
       try {
         const response = await axios.get("/api/users")
-        setUsers(response.data.data)
+        setUsers(response.data.data || response.data)
 
       } catch (err) {
         setError(err.message)
