@@ -20,7 +20,7 @@ export default function Addmission() {
         Month: '',
         Year: '',
         DurationDays: '',
-        CreatedBy: 3,
+        CreatedBy: '',
     });
 
     useEffect(() => {
@@ -65,29 +65,30 @@ export default function Addmission() {
 
 
 
- const numericFields = ["CoordinatorNum", "MainCategory", "SubCategory", "Year", "Month", "Day" ,"DurationDays","CreatedBy"];
+    const numericFields = ["CoordinatorNum", "MainCategory", "SubCategory", "Year", "Month", "Day", "DurationDays", "CreatedBy"];
 
-const handleChange = (e) => {
-    const { name, value } = e.target;
+    const handleChange = (e) => {
+        const { name, value } = e.target;
 
-    setForm((prev) => ({
-        ...prev,
-        [name]: numericFields.includes(name) ? Number(value) : value,
-    }));
-};
+        setForm((prev) => ({
+            ...prev,
+            [name]: numericFields.includes(name) ? Number(value) : value,
+        }));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        console.log(form);
         try {
             const response = await axios.post("/api/missions", {
-              ... form
+                ...form
             });
 
             console.log("Server response:", response.data);
             alert("Data submitted successfully!");
         } catch (error) {
-            console.error("Error submitting data:", error);
+            console.log("SERVER ERROR:", error.response?.data);
             alert("Error occurred while submitting data!");
         }
     };
@@ -208,7 +209,7 @@ const handleChange = (e) => {
 
                         </select>
                     </div>
-                      <div className="form-group">
+                    <div className="form-group">
                         <label>مدة المهمة بالأيام</label>
                         <input
                             type="number"
@@ -256,13 +257,22 @@ const handleChange = (e) => {
 
                         </select>
                     </div>
+                    <div className="form-group">
+                        <label> تمت الإضافة بواسطة</label>
+                        <input
+                            name="CreatedBy"
+                            value={form.CreatedBy}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
                 </div>
 
 
 
                 <div className="form-row">
 
-                    <div className="form-group">
+                    {/* <div className="form-group">
                         <label>الوصف</label>
                         <input
                             type="text"
@@ -271,12 +281,8 @@ const handleChange = (e) => {
                             onChange={handleChange}
                             required
                         />
-                    </div>
-                    <input
-                        type="hidden"
-                        name="CreatedBy"
-                        value={form.CreatedBy}
-                    />
+                    </div> */}
+
                 </div>
 
                 <button type="submit" className="function-button">

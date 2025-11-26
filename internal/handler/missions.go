@@ -72,6 +72,7 @@ func (h *Handler) AddMission(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 		response.Error(w, http.StatusInternalServerError, "Failed to add mission")
+		log.Println(err)
 		return
 	}
 

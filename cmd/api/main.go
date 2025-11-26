@@ -13,7 +13,6 @@ import (
 )
 
 func main() {
-
 	database.Database()
 	svc := &service.Services{
 		DB:        database.DB,
