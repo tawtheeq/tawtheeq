@@ -27,7 +27,7 @@ export default function LoginPage() {
   <div className="signin-container">
       <form className="login-form" onSubmit={handleSubmit}>
         <img src="/assets/logo.png" alt="Logo" className="logo-signin" />
-      <h2 className="title">تسجيل الدخول</h2>
+      <h2 className="title">إدارة العمليات الإعلامية</h2>
 
       <input type="email"
        className="input"
