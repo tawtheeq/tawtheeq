@@ -50,14 +50,12 @@ export default function AddParticipantsToMission() {
 
   // Placeholder function for conditions - to be implemented later
   const canAddUserToMission = (user) => {
-    // TODO: Add conditions here (e.g., balance check, leave conflicts, etc.)
-    // For now, just check if user is already a participant
     return !existingParticipants.has(user.ID);
   };
 
   const handleAddUserToMission = async (user) => {
     if (!canAddUserToMission(user)) {
-      alert('لا يمكن إضافة هذا المستخدم (سيتم تحديد الشروط لاحقاً)');
+      alert('المستخدم موجود بالفعل في المهمة');
       return;
     }
 

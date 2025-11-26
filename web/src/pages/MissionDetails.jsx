@@ -61,6 +61,29 @@ export default function MissionDetails() {
   if (loading) return <p>Loading mission details...</p>;
   if (error || !mission) return <p>Error: {error || 'Mission not found'}</p>;
 
+  const formatParticipantsForShare = () => {
+    if (!participants.length) return 'لا يوجد مشاركون حتى الآن.';
+    return participants
+      .map((participant, index) => `${index + 1}. ${participant.Name} - ${participant.role || 'مشارك'}`)
+      .join('\n');
+  };
+
+  const handleShareWhatsApp = () => {
+    const shareText = [
+      '📋 *تفاصيل المهمة*',
+      `• الاسم: ${mission.MissionName}`,
+      `• التاريخ: ${formatDate(mission.Day, mission.Month, mission.Year)}`,
+      `• المدة: ${mission.DurationDays} يوم`,
+      `• رقم المنسق: ${mission.CoordinatorNum || 'غير محدد'}`,
+      '',
+      '👥 *المشاركون*',
+      formatParticipantsForShare()
+    ].join('\n');
+
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   return (
     <div className="users-container">
       <div className="users-header">
@@ -77,13 +100,6 @@ export default function MissionDetails() {
           >
             <i className="fas fa-user-plus"></i>
             إضافة مشاركين
-          </button>
-          <button 
-            className="function-button"
-            onClick={() => navigate(`/dashboard/missions/update/${id}`)}
-          >
-            <i className="fas fa-edit"></i>
-            تعديل
           </button>
           <button 
             className="function-button"
@@ -135,7 +151,7 @@ export default function MissionDetails() {
             <tbody>
               {participants.map(participant => (
                 <tr key={participant.id}>
-                  <td>{participant.name}</td>
+                  <td>{participant.Name}</td>
                   <td>{participant.role || 'مشارك'}</td>
                   <td className="user-actions">
                     <button
@@ -168,6 +184,24 @@ export default function MissionDetails() {
           </div>
         </div>
       )}
+
+      <div className="mission-share-card">
+        <div>
+          <p className="share-label">إعداد بطاقة للمشاركة</p>
+          <h2>{mission.MissionName}</h2>
+          <p className="share-meta">
+            {formatDate(mission.Day, mission.Month, mission.Year)} • {mission.DurationDays} يوم • {participants.length} مشارك
+          </p>
+          <ul>
+            <li><span>رقم المنسق:</span> {mission.CoordinatorNum || 'غير محدد'}</li>
+            <li><span>تمت الإضافة بواسطة:</span> {mission.CreatedByName || 'غير محدد'}</li>
+          </ul>
+        </div>
+        <button className="share-button" onClick={handleShareWhatsApp}>
+          <i className="fab fa-whatsapp"></i>
+          مشاركة عبر واتساب
+        </button>
+      </div>
     </div>
   );
 }
