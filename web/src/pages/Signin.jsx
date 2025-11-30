@@ -1,8 +1,5 @@
 import { useState } from "react";
-// import "../styles/pages/signin.scss"; 
-// import '../styles/components/buttons.scss';
 import { useNavigate } from "react-router-dom";
-
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -11,46 +8,45 @@ export default function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted");
-    // console.log("Email:", email);
-    // console.log("Password:", password);
-    try {
-      navigate('/dashboard');
-      console.log("Navigation attempted");
-    } catch (error) {
-      console.error("Navigation error:", error);
-    }
+    navigate('/dashboard');
   };
 
   return (
-  <>
-  <div className="signin-container">
-      <form className="login-form" onSubmit={handleSubmit}>
-        <img src="/assets/logo.png" alt="Logo" className="logo-signin" />
-      <h2 className="title">إدارة العمليات الإعلامية</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 via-white to-gray-200 dark:bg-gray-900">
+      <div className="relative p-8 w-full max-w-md bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-200 animate-fade-in">
+        <form onSubmit={handleSubmit} className="flex flex-col items-center gap-5">
+          <img src="/assets/logo.png" alt="Logo" className="w-24 mb-2" />
 
-      <input type="email"
-       className="input"
-        placeholder="البريد الإلكتروني"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        dir="rtl"
-        required />
+          <h2 className="text-2xl font-bold text-green-800">إدارة العمليات الإعلامية</h2>
 
-      <input type="password"
-       className="input"
-        placeholder="كلمة المرور"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        dir="rtl"
-        required />
-    <button className="login-button" type="submit">تسجيل الدخول</button>
-      </form>
-</div>
-   </>
-    // <form onSubmit={handleSubmit}>
-    //   <input type="text" placeholder="Email" required />
-    //   <button type="submit">Submit</button>
-    // </form>
+          <input
+            type="email"
+            placeholder="البريد الإلكتروني"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            dir="rtl"
+            required
+            className="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-700 focus:outline-none text-right"
+          />
+
+          <input
+            type="password"
+            placeholder="كلمة المرور"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            dir="rtl"
+            required
+            className="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-700 focus:outline-none text-right"
+          />
+
+          <button
+            type="submit"
+            className="w-full py-3 rounded-xl bg-green-800 text-white font-semibold hover:bg-green-900 transition-all shadow-md"
+          >
+            تسجيل الدخول
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }

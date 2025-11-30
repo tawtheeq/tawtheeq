@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import '../styles/pages/users.scss';
+
 import axios from 'axios';
 
 export default function MissionDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  
+
   const [mission, setMission] = useState(null);
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -85,122 +85,154 @@ export default function MissionDetails() {
   };
 
   return (
-    <div className="users-container">
-      <div className="users-header">
+    <div className="p-6 max-w-7xl mx-auto">
+      <div className="flex justify-between items-start mb-8">
         <div>
-          <h1>{mission.MissionName}</h1>
-          <p style={{ margin: '0.5rem 0 0 0', color: '#64748b', fontSize: '1rem' }}>
-            {formatDate(mission.Day, mission.Month, mission.Year)} - مدة المهمة: {mission.DurationDays} يوم
-          </p>
+          <h1 className="text-3xl font-bold text-gray-800">{mission.MissionName}</h1>
+          <div className="flex items-center gap-3 mt-2 text-gray-500">
+            <span className="flex items-center gap-1">
+              <i className="far fa-calendar-alt"></i>
+              {formatDate(mission.Day, mission.Month, mission.Year)}
+            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+            <span className="flex items-center gap-1">
+              <i className="far fa-clock"></i>
+              مدة المهمة: {mission.DurationDays} يوم
+            </span>
+          </div>
         </div>
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <button 
-            className="function-button"
+        <div className="flex gap-3">
+          <button
+            className="flex items-center gap-2 px-4 py-2 bg-green-800 text-white rounded-xl hover:bg-green-900 transition-all shadow-md hover:shadow-lg"
             onClick={() => navigate(`/dashboard/missions/${id}/add-participants`)}
           >
             <i className="fas fa-user-plus"></i>
-            إضافة مشاركين
+            <span>إضافة مشاركين</span>
           </button>
-          <button 
-            className="function-button"
+          <button
+            className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 border border-gray-200 rounded-xl hover:bg-gray-50 transition-all shadow-sm hover:shadow-md"
             onClick={() => navigate(-1)}
           >
             <i className="fas fa-arrow-right"></i>
-            رجوع
+            <span>رجوع</span>
           </button>
         </div>
       </div>
 
-      <div className="users-table" style={{ marginBottom: '2rem' }}>
-        <table>
-          <thead>
-            <tr>
-              <th>رقم المنسق</th>
-              <th>تمت الإضافة بواسطة</th>
-              <th>عدد المشاركين</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{mission.CoordinatorNum || 'غير محدد'}</td>
-              <td>{mission.CreatedByName || 'غير محدد'}</td>
-              <td>
-                <span className={`status ${participants.length > 0 ? 'active' : 'inactive'}`}>
-                  {participants.length} مشارك
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div className="lg:col-span-2 space-y-6">
+          {/* Mission Stats */}
+          <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-gray-50/50 border-b border-gray-100">
+                    <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">رقم المنسق</th>
+                    <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">تمت الإضافة بواسطة</th>
+                    <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">عدد المشاركين</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="px-6 py-4 text-gray-800 font-medium">{mission.CoordinatorNum || 'غير محدد'}</td>
+                    <td className="px-6 py-4 text-gray-800">{mission.CreatedByName || 'غير محدد'}</td>
+                    <td className="px-6 py-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${participants.length > 0 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
+                        {participants.length} مشارك
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
 
-      <div className="users-header" style={{ marginBottom: '1.5rem' }}>
-        <h1 style={{ fontSize: '1.5rem' }}>المشاركون في المهمة</h1>
-      </div>
+          {/* Participants List */}
+          <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/30">
+              <h2 className="text-lg font-bold text-gray-800">المشاركون في المهمة</h2>
+            </div>
 
-      {participants.length > 0 ? (
-        <div className="users-table">
-          <table>
-            <thead>
-              <tr>
-                <th>الاسم</th>
-                <th>الدور</th>
-                <th>الإجراءات</th>
-              </tr>
-            </thead>
-            <tbody>
-              {participants.map(participant => (
-                <tr key={participant.id}>
-                  <td>{participant.Name}</td>
-                  <td>{participant.role || 'مشارك'}</td>
-                  <td className="user-actions">
-                    <button
-                      className="procedure-button delete"
-                      onClick={() => handleRemoveParticipant(participant.id)}
-                      title="إزالة من المهمة"
-                    >
-                      <i className="fas fa-times"></i>
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            {participants.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="bg-gray-50/50 border-b border-gray-100">
+                      <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الاسم</th>
+                      <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الدور</th>
+                      <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الإجراءات</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {participants.map(participant => (
+                      <tr key={participant.id} className="hover:bg-gray-50/50 transition-colors">
+                        <td className="px-6 py-4 font-medium text-gray-800">{participant.Name}</td>
+                        <td className="px-6 py-4 text-gray-600">{participant.role || 'مشارك'}</td>
+                        <td className="px-6 py-4">
+                          <button
+                            className="w-8 h-8 rounded-lg flex items-center justify-center text-red-600 hover:bg-red-50 transition-colors"
+                            onClick={() => handleRemoveParticipant(participant.id)}
+                            title="إزالة من المهمة"
+                          >
+                            <i className="fas fa-times"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center text-gray-300 mb-4">
+                  <i className="fas fa-user-slash text-2xl"></i>
+                </div>
+                <p className="text-gray-500 mb-4">لا يوجد مشاركين في هذه المهمة</p>
+                <button
+                  className="px-4 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors text-sm font-medium"
+                  onClick={() => navigate(`/dashboard/missions/${id}/add-participants`)}
+                >
+                  <i className="fas fa-user-plus ml-2"></i>
+                  إضافة مشاركين
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-      ) : (
-        <div className="users-table">
-          <div style={{ textAlign: 'center', padding: '4rem 2rem' }}>
-            <i className="fas fa-user-slash" style={{ fontSize: '4rem', color: '#cbd5e1', marginBottom: '1.5rem', opacity: 0.5 }}></i>
-            <p style={{ fontSize: '1.125rem', color: '#64748b', marginBottom: '1.5rem' }}>
-              لا يوجد مشاركين في هذه المهمة
+
+        {/* Share Card */}
+        <div className="lg:col-span-1">
+          <div className="bg-gradient-to-br from-green-800 to-green-900 rounded-2xl shadow-xl p-6 text-white sticky top-6">
+            <div className="flex items-center gap-3 mb-4 opacity-90">
+              <i className="fas fa-share-alt"></i>
+              <span className="text-sm font-medium">بطاقة المشاركة</span>
+            </div>
+
+            <h3 className="text-xl font-bold mb-2">{mission.MissionName}</h3>
+            <p className="text-green-100 text-sm mb-6 leading-relaxed">
+              {formatDate(mission.Day, mission.Month, mission.Year)} • {mission.DurationDays} يوم • {participants.length} مشارك
             </p>
-            <button 
-              className="function-button"
-              onClick={() => navigate(`/dashboard/missions/${id}/add-participants`)}
+
+            <div className="space-y-3 mb-8 text-sm text-green-50">
+              <div className="flex justify-between border-b border-green-700/50 pb-2">
+                <span>رقم المنسق:</span>
+                <span className="font-mono">{mission.CoordinatorNum || 'غير محدد'}</span>
+              </div>
+              <div className="flex justify-between border-b border-green-700/50 pb-2">
+                <span>تمت الإضافة بواسطة:</span>
+                <span>{mission.CreatedByName || 'غير محدد'}</span>
+              </div>
+            </div>
+
+            <button
+              className="w-full py-3 bg-white text-green-900 rounded-xl font-bold hover:bg-green-50 transition-all shadow-lg flex items-center justify-center gap-2"
+              onClick={handleShareWhatsApp}
             >
-              <i className="fas fa-user-plus"></i>
-              إضافة مشاركين
+              <i className="fab fa-whatsapp text-lg"></i>
+              <span>مشاركة عبر واتساب</span>
             </button>
           </div>
         </div>
-      )}
-
-      <div className="mission-share-card">
-        <div>
-          <p className="share-label">إعداد بطاقة للمشاركة</p>
-          <h2>{mission.MissionName}</h2>
-          <p className="share-meta">
-            {formatDate(mission.Day, mission.Month, mission.Year)} • {mission.DurationDays} يوم • {participants.length} مشارك
-          </p>
-          <ul>
-            <li><span>رقم المنسق:</span> {mission.CoordinatorNum || 'غير محدد'}</li>
-            <li><span>تمت الإضافة بواسطة:</span> {mission.CreatedByName || 'غير محدد'}</li>
-          </ul>
-        </div>
-        <button className="share-button" onClick={handleShareWhatsApp}>
-          <i className="fab fa-whatsapp"></i>
-          مشاركة عبر واتساب
-        </button>
       </div>
     </div>
   );

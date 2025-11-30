@@ -1,41 +1,13 @@
 
 import { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import '../styles/pages/missions.scss';
+
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
 export default function Missions() {
-const navigate = useNavigate();
-  // const [users, setUsers] = useState([
-  //   {
-  //     id: 1,
-  //     mission_name: "أحمد محمد",
-  //     year: "2025",
-  //     location: "مدير",
-  //     main_person: "نائب رئيس الأركان",
-  //     main_category: "VIP",
-  //     status: "نشط"
-  //   },
-  //   {
-  //     id: 2,
-  //     mission_name: "محمد محمد",
-  //     year: "2015",
-  //     location: "مدير",
-  //     main_person: "نائب رئيس الأركان",
-  //     main_category: "VIP",
-  //     status: "نشط"
-  //   },
-  //   {
-  //     id: 3,
-  //     mission_name: "خالد محمد",
-  //     year: "2020",
-  //     location: "مدير",
-  //     main_person: "نائب رئيس الأركان",
-  //     main_category: "VIP",
-  //     status: "نشط"
-  //   },
-  // ]);
+  const navigate = useNavigate();
+
 
 
   const [missions, setMissions] = useState([]);  // state to hold API data
@@ -47,7 +19,7 @@ const navigate = useNavigate();
       try {
         // 👇 Replace this with your real API URL
         const response = await axios.get("/api/missions");
-        
+
         // 👇 Fill the state with the 'data' array from your JSON
         setMissions(response.data.data || response.data);
       } catch (err) {
@@ -90,114 +62,93 @@ const navigate = useNavigate();
   };
 
   return (
-    <div className="users-container">
-      <div className="users-header">
-        <h1>قائمة المهام</h1>
-        <Link to="addmission" className="function-button">
+    <div className="max-w-7xl mx-auto">
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800">قائمة المهام</h1>
+          <p className="text-gray-500 mt-1">إدارة المهام والمناسبات</p>
+        </div>
+        <Link
+          to="addmission"
+          className="flex items-center gap-2 px-6 py-3 bg-green-800 text-white rounded-xl hover:bg-green-900 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+        >
           <i className="fas fa-plus"></i>
-          إضافة
+          <span>إضافة مهمة</span>
         </Link>
       </div>
 
-      <div className="users-table">
-        <table>
-          <thead>
-            <tr>
-              <th>اسم المناسبة</th>
-              <th>التاريخ </th>
-              <th>مدة المهمة</th>
-              <th>تمت الإضافة ب،واسطة</th>
-              {/* <th>المنطقة</th> */}
-              <th>إجراءات</th>
-            </tr>
-          </thead>
-          <tbody>
-            {missions.length > 0 ? (
-              missions.map(mission => (
-                <tr key={mission.ID}>
-                  <td>{mission.MissionName}</td>
-                  <td>{mission.Day}/{mission.Month}/{mission.Year}</td>
-                  <td>{mission.DurationDays}</td>
-                  <td>{mission.CreatedByName}</td>
-                  {/* <td>
-                    <span className={`status ${user.status === 'نشط' ? 'active' : 'inactive'}`}>
-                      {user.status}
-                    </span>
-                  </td> */}
-
-
-                  <td className="user-actions">
-                    <button 
-                      className="procedure-button show"
-                      onClick={() => navigate(`/dashboard/missions/${mission.ID}`)}
-                      title="عرض التفاصيل"
-                    >
-                      <i className="fas fa-eye"></i>
-                    </button>
-                    <button 
-                      className="procedure-button edit"
-                      onClick={() => navigate(`update/${mission.ID}`)}
-                      title="تعديل"
-                    >
-                      <i className="fas fa-edit"></i>
-                    </button>
-                    <button
-                      className="procedure-button delete"
-                      onClick={() => handleDelete(mission.ID)}
-                      title="حذف"
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
+      <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-gray-50/50 border-b border-gray-100">
+                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">اسم المناسبة</th>
+                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">التاريخ</th>
+                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">مدة المهمة</th>
+                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">تمت الإضافة بواسطة</th>
+                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">إجراءات</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {missions.length > 0 ? (
+                missions.map(mission => (
+                  <tr key={mission.ID} className="hover:bg-gray-50/50 transition-colors">
+                    <td className="px-6 py-4">
+                      <span className="font-medium text-gray-800">{mission.MissionName}</span>
+                    </td>
+                    <td className="px-6 py-4 text-gray-600 text-sm font-mono">
+                      {mission.Day}/{mission.Month}/{mission.Year}
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
+                        {mission.DurationDays} يوم
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-gray-600 text-sm">{mission.CreatedByName}</td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        <button
+                          className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors"
+                          onClick={() => navigate(`/dashboard/missions/${mission.ID}`)}
+                          title="عرض التفاصيل"
+                        >
+                          <i className="fas fa-eye"></i>
+                        </button>
+                        <button
+                          className="w-8 h-8 rounded-lg flex items-center justify-center text-blue-600 hover:bg-blue-50 transition-colors"
+                          onClick={() => navigate(`update/${mission.ID}`)}
+                          title="تعديل"
+                        >
+                          <i className="fas fa-edit"></i>
+                        </button>
+                        <button
+                          className="w-8 h-8 rounded-lg flex items-center justify-center text-red-600 hover:bg-red-50 transition-colors"
+                          onClick={() => handleDelete(mission.ID)}
+                          title="حذف"
+                        >
+                          <i className="fas fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="px-6 py-12 text-center text-gray-500">
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center text-gray-300">
+                        <i className="fas fa-tasks text-2xl"></i>
+                      </div>
+                      <p className="text-lg font-medium">لا يوجد مهام حالياً</p>
+                      <p className="text-sm">قم بإضافة مهمة جديدة للبدء</p>
+                    </div>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="6" className="empty-state">
-                  <i className="fas fa-users"></i>
-                  <p>لا يوجد مستخدمين حالياً</p>
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
-
-
-
-  //   return (
-  //   <div className="p-4 grid gap-4">
-  //     {missions.map((mission) => (
-  //       <div
-  //         key={mission.ID}
-  //         className="border rounded-xl p-4 shadow-md bg-white"
-  //       >
-  //         <h2 className="text-xl font-bold">{mission.MissionName}</h2>
-  //         <p>Coordinator: {mission.CoordinatorNum}</p>
-  //         <p>
-  //           Date: {mission.Day}/{mission.Month}/{mission.Year}
-  //         </p>
-  //         <p>Duration: {mission.DurationDays} days</p>
-  //         <p>Created by: {mission.CreatedByName}</p>
-  //       </div>
-  //     ))}
-  //   </div>
-  // );
 }
-
-  // return (
-  //   <ul>
-
-  //   {missions.map((mission)=>{
-
-  //     <li key={mission.id}> {mission.name}</li>
-      
-  //   })}
-    
-  //   </ul>
-  // );
-
-// }
-

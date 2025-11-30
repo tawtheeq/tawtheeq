@@ -1,13 +1,13 @@
 
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/pages/users.scss';
+
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
 export default function Users() {
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);  // state to hold API data
   const [loading, setLoading] = useState(true);  // loading indicator
   const [error, setError] = useState(null);      // error handling
@@ -82,67 +82,95 @@ const navigate = useNavigate();
   };
 
   return (
-    <div className="users-container">
-      <div className="users-header">
-        <h1>قائمة المستخدمين</h1>
-        <Link to="addemp" className="function-button">
+    <div className="max-w-7xl mx-auto">
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800">قائمة المستخدمين</h1>
+          <p className="text-gray-500 mt-1">إدارة المستخدمين وصلاحياتهم</p>
+        </div>
+        <Link
+          to="addemp"
+          className="flex items-center gap-2 px-6 py-3 bg-green-800 text-white rounded-xl hover:bg-green-900 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+        >
           <i className="fas fa-plus"></i>
-          إضافة
+          <span>إضافة مستخدم</span>
         </Link>
       </div>
 
-      <div className="users-table">
-        <table>
-          <thead>
-            <tr>
-              <th>الاسم</th>
-              <th> رقم الجوال</th>
-              <th>الدور</th>
-              <th>الرصيد المتبقي</th>
-              <th>الإجراءات</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.length > 0 ? (
-              users.map(user => (
-                <tr key={user.ID}>
-                  <td>{user.Name}</td>
-                  <td>{user.Mobile}</td>
-                  <td>{user.Role}</td>
-                  <td>
-                    <span className={`status ${user.Balance > 10 ? 'active' : 'inactive'}`}>
-                      {user.Balance}
-                    </span>
-                  </td>
-                  <td className="user-actions">
-                    {/* <button className=" procedure-button show">
-                      <i className="fas fa-eye"></i>
-                    </button> */}
-                    <button
-                      className="procedure-button edit"
-                      onClick={() => navigate(`update/${user.ID}`)}
-                    >
-                      <i className="fas fa-edit"></i>
-                    </button>
-                    <button
-                      className="procedure-button delete"
-                      onClick={() => handleDelete(user.ID)}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
+      <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-gray-50/50 border-b border-gray-100">
+                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الاسم</th>
+                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">رقم الجوال</th>
+                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الدور</th>
+                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الرصيد المتبقي</th>
+                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {users.length > 0 ? (
+                users.map(user => (
+                  <tr key={user.ID} className="hover:bg-gray-50/50 transition-colors">
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold text-sm border border-green-200">
+                          {user.Name.charAt(0)}
+                        </div>
+                        <span className="font-medium text-gray-800">{user.Name}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-gray-600 font-mono text-sm">{user.Mobile}</td>
+                    <td className="px-6 py-4">
+                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
+                        {user.Role}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium border ${user.Balance > 10
+                        ? 'bg-green-50 text-green-700 border-green-100'
+                        : 'bg-red-50 text-red-700 border-red-100'
+                        }`}>
+                        {user.Balance}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        <button
+                          className="w-8 h-8 rounded-lg flex items-center justify-center text-blue-600 hover:bg-blue-50 transition-colors"
+                          onClick={() => navigate(`update/${user.ID}`)}
+                          title="تعديل"
+                        >
+                          <i className="fas fa-edit"></i>
+                        </button>
+                        <button
+                          className="w-8 h-8 rounded-lg flex items-center justify-center text-red-600 hover:bg-red-50 transition-colors"
+                          onClick={() => handleDelete(user.ID)}
+                          title="حذف"
+                        >
+                          <i className="fas fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="px-6 py-12 text-center text-gray-500">
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center text-gray-300">
+                        <i className="fas fa-users text-2xl"></i>
+                      </div>
+                      <p className="text-lg font-medium">لا يوجد مستخدمين حالياً</p>
+                      <p className="text-sm">قم بإضافة مستخدم جديد للبدء</p>
+                    </div>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="6" className="empty-state">
-                  <i className="fas fa-users"></i>
-                  <p>لا يوجد مستخدمين حالياً</p>
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
