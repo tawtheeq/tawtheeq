@@ -111,7 +111,7 @@ export default function Addmission() {
                 <form className="space-y-6" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">اسم المهمة</label>
+                            {/* <label className="text-sm font-medium text-gray-700">اسم المهمة</label> */}
                             <input
                                 type="text"
                                 name="MissionName"
@@ -123,7 +123,7 @@ export default function Addmission() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">رقم المنسق</label>
+                            {/* <label className="text-sm font-medium text-gray-700">رقم المنسق</label> */}
                             <input
                                 type="number"
                                 name="CoordinatorNum"
@@ -138,7 +138,7 @@ export default function Addmission() {
 
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">السنة</label>
+                            {/* <label className="text-sm font-medium text-gray-700">السنة</label> */}
                             <select
                                 name="Year"
                                 value={form.Year}
@@ -152,7 +152,7 @@ export default function Addmission() {
                             </select>
                         </div>
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">الشهر</label>
+                            {/* <label className="text-sm font-medium text-gray-700">الشهر</label> */}
                             <select
                                 name="Month"
                                 value={form.Month}
@@ -176,7 +176,7 @@ export default function Addmission() {
                             </select>
                         </div>
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">اليوم</label>
+                            {/* <label className="text-sm font-medium text-gray-700">اليوم</label> */}
                             <select
                                 name="Day"
                                 value={form.Day}
@@ -191,7 +191,7 @@ export default function Addmission() {
                             </select>
                         </div>
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">مدة المهمة (أيام)</label>
+                            {/* <label className="text-sm font-medium text-gray-700">مدة المهمة (أيام)</label> */}
                             <input
                                 type="number"
                                 name="DurationDays"
@@ -206,7 +206,7 @@ export default function Addmission() {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">التصنيف الرئيسي</label>
+                            {/* <label className="text-sm font-medium text-gray-700">التصنيف الرئيسي</label> */}
                             <select
                                 name="MainCategory"
                                 value={form.MainCategory}
@@ -223,7 +223,7 @@ export default function Addmission() {
                             </select>
                         </div>
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">التصنيف الفرعي</label>
+                            {/* <label className="text-sm font-medium text-gray-700">التصنيف الفرعي</label> */}
                             <select
                                 name="SubCategory"
                                 value={form.SubCategory}
@@ -240,7 +240,7 @@ export default function Addmission() {
                             </select>
                         </div>
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">تمت الإضافة بواسطة</label>
+                            {/* <label className="text-sm font-medium text-gray-700">تمت الإضافة بواسطة</label> */}
                             <input
                                 name="CreatedBy"
                                 value={form.CreatedBy}

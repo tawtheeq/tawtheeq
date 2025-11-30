@@ -60,7 +60,7 @@ export default function Addcategory() {
                 <form className="space-y-6" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">اسم التصنيف</label>
+                            {/* <label className="text-sm font-medium text-gray-700">اسم التصنيف</label> */}
                             <input
                                 type="text"
                                 name="CategoryName"
@@ -72,7 +72,7 @@ export default function Addcategory() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">نوع التصنيف</label>
+                            {/* <label className="text-sm font-medium text-gray-700">نوع التصنيف</label> */}
                             <select
                                 name="CategoryType"
                                 value={form.CategoryType}
@@ -89,7 +89,7 @@ export default function Addcategory() {
 
                     <div className="grid grid-cols-1 gap-6">
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">الوصف</label>
+                            {/* <label className="text-sm font-medium text-gray-700">الوصف</label> */}
                             <input
                                 type="text"
                                 name="Description"

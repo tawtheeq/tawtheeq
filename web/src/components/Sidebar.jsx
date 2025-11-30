@@ -37,12 +37,17 @@ export default function Sidebar() {
       title: 'الإعدادات',
       path: 'settings',
       icon: 'fas fa-cog'
+    },
+    {
+      title: 'عن البرنامج',
+      path: 'about',
+      icon: 'fas fa-info-circle'
     }
   ];
 
   return (
     <>
-      <aside className={`fixed inset-y-0 right-0 z-50 w-64 bg-white/80 backdrop-blur-md border-l border-gray-200 shadow-xl transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'} md:translate-x-0 md:static md:shadow-none`}>
+      <aside className={`relative fixed inset-y-0 right-0 z-50 w-64 bg-white/80 backdrop-blur-md border-l border-gray-200 shadow-xl transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'} md:translate-x-0 md:static md:shadow-none`}>
         {/* <h2 className="text-2xl font-bold text-center py-6 text-green-800">لوحة التحكم</h2> */}
         <div className="flex justify-center py-6 border-b border-gray-100">
           <img src="/assets/logo.png" alt="شعار المنصة" className='w-24' />
@@ -92,11 +97,14 @@ export default function Sidebar() {
             <span className="text-sm font-medium text-gray-600">متصل</span>
           </div>
         </div>
+
       </aside>
       <div
         className={`fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={() => setIsOpen(false)}
       ></div>
+
+
     </>
   );
 }

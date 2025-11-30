@@ -16,7 +16,7 @@ import UpdateEmp from "./pages/UpdateEmp";
 import MissionDetails from "./pages/MissionDetails";
 import AddParticipantsToMission from "./pages/AddParticipantsToMission";
 import Reports from "./pages/Reports";
-
+import About from "./pages/About";
 
 function App() {
   return (
@@ -33,8 +33,7 @@ function App() {
           <Route path="settings" element={<Settings />} />
           <Route path="missions" element={<Missions />} />
           <Route path="missions/addmission" element={<AddMission />} />
-
-
+          <Route path="about" element={<About />} />
           <Route path="/dashboard/missions/update/:id" element={<UpdateMission />} />
           <Route path="/dashboard/missions/:id" element={<MissionDetails />} />
           <Route path="/dashboard/missions/:id/add-participants" element={<AddParticipantsToMission />} />

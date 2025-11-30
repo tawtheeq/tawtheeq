@@ -50,7 +50,7 @@ export default function AddEmp() {
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">الاسم</label>
+              {/* <label className="text-sm font-medium text-gray-700">الاسم</label> */}
               <input
                 type="text"
                 name="Name"
@@ -62,7 +62,7 @@ export default function AddEmp() {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">رقم الجوال</label>
+              {/* <label className="text-sm font-medium text-gray-700">رقم الجوال</label> */}
               <input
                 type="text"
                 name="Mobile"
@@ -77,7 +77,7 @@ export default function AddEmp() {
 
           <div className="grid grid-cols-1 gap-6">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">البريد الإلكتروني</label>
+              {/* <label className="text-sm font-medium text-gray-700">البريد الإلكتروني</label> */}
               <input
                 type="email"
                 name="Email"

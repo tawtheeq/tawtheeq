@@ -127,7 +127,7 @@ export default function Reports() {
             </div>
 
             {/* Export Options */}
-            <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 p-8">
+            {/* <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 p-8">
                 <h2 className="text-xl font-bold text-gray-800 mb-6">تصدير التقارير</h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -155,7 +155,7 @@ export default function Reports() {
                         <span className="text-sm font-medium text-gray-700 group-hover:text-green-800">تصدير CSV</span>
                     </button>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }

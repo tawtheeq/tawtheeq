@@ -71,7 +71,7 @@ export default function UpdateEmp() {
 
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">تحديث بيانات الموظف</h1>

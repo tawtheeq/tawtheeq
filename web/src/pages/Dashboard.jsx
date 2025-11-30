@@ -6,8 +6,14 @@ import Header from "../components/Header";
 export default function Dashboard() {
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-gray-100 via-white to-gray-200 dark:bg-gray-900 font-sans text-gray-900" dir="rtl">
-      <aside className="w-64 fixed inset-y-0 right-0 z-50 transition-transform duration-300 ease-in-out transform translate-x-0 bg-white/80 backdrop-blur-md border-l border-gray-200 shadow-xl">
+      <aside className=" w-64 fixed inset-y-0 right-0 z-50 transition-transform duration-300 ease-in-out transform translate-x-0 bg-white/80 backdrop-blur-md border-l border-gray-200 shadow-xl">
         <Sidebar />
+        <div className="absolute bottom-0 right-0 w-full p-3 bg-white/90 ">
+          {/* <img src="../assets/justLogo.png" alt="" className="w-12 h-12 object-contain" /> */}
+          <p className="text-center text-xs text-gray-500">
+            برمجة وتطوير | مهند دياب
+          </p>
+        </div>
       </aside>
 
       <main className="flex-1 mr-64 min-h-screen flex flex-col transition-all duration-300">

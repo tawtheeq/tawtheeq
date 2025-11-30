@@ -102,7 +102,7 @@ export default function AddParticipantsToMission() {
           onClick={() => navigate(-1)}
         >
           <i className="fas fa-arrow-right"></i>
-          <span>رجوع</span>
+          <span>عودة للمهمة</span>
         </button>
       </div>
 
@@ -145,8 +145,8 @@ export default function AddParticipantsToMission() {
                         ) : (
                           <button
                             className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${canAdd
-                                ? 'text-white bg-green-800 hover:bg-green-900 shadow-md hover:shadow-lg'
-                                : 'text-gray-400 bg-gray-100 cursor-not-allowed'
+                              ? 'text-white bg-green-800 hover:bg-green-900 shadow-md hover:shadow-lg'
+                              : 'text-gray-400 bg-gray-100 cursor-not-allowed'
                               }`}
                             onClick={() => handleAddUserToMission(user)}
                             disabled={!canAdd || isAdding}

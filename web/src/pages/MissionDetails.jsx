@@ -114,7 +114,7 @@ export default function MissionDetails() {
             onClick={() => navigate(-1)}
           >
             <i className="fas fa-arrow-right"></i>
-            <span>رجوع</span>
+            <span>عودة</span>
           </button>
         </div>
       </div>
