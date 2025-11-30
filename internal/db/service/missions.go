@@ -7,8 +7,9 @@ import (
 	"github.com/maadiab/tawtheeq/tawtheeq/internal/db/sqlc"
 )
 
-func (s *Services) RegisterMission(mission sqlc.CreateMissionParams) error {
-	_, err := s.DBQueries.CreateMission(context.Background(), sqlc.CreateMissionParams{
+func (s *Services) RegisterMission(mission sqlc.CreateMissionParams) (sqlc.Mission, error) {
+
+	newMission, err := s.DBQueries.CreateMission(context.Background(), sqlc.CreateMissionParams{
 		MissionName:    mission.MissionName,
 		CoordinatorNum: mission.CoordinatorNum,
 		MainCategory:   mission.MainCategory,
@@ -21,9 +22,9 @@ func (s *Services) RegisterMission(mission sqlc.CreateMissionParams) error {
 	})
 	if err != nil {
 		fmt.Println(err)
-		return err
+		return sqlc.Mission{}, err
 	}
-	return nil
+	return newMission, nil
 }
 func (s *Services) GetAllMissions() ([]sqlc.GetAllMissionsRow, error) {
 	missions, err := s.DBQueries.GetAllMissions(context.Background())

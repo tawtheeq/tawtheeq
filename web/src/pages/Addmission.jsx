@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function Addmission() {
+
+    const navigate = useNavigate();
 
     const [mainCategories, setMainCategories] = useState([]);
     const [subCategories, setSubCategories] = useState([]);
@@ -48,9 +51,6 @@ export default function Addmission() {
     if (error) return <p className="text-red-500">Error: {error}</p>;
 
 
-
-
-
     // const photographers = [
     //     { id: 1, name: 'أحمد', delegationBalance: 5, leaves: [{ from: '2025-08-14', to: '2025-09-23' }] },
     //     { id: 2, name: 'سارة', delegationBalance: 0, leaves: [] },
@@ -87,6 +87,11 @@ export default function Addmission() {
 
             console.log("Server response:", response.data);
             alert("Data submitted successfully!");
+            const missionId = response.data.data.ID;
+
+            const missionIdInt = Number(missionId);
+            alert("missionIdInt: " + missionIdInt);
+            navigate(`/dashboard/missions/${missionIdInt}`);
         } catch (error) {
             console.log("SERVER ERROR:", error.response?.data);
             alert("Error occurred while submitting data!");

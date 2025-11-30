@@ -33,6 +33,8 @@ function App() {
           <Route path="settings" element={<Settings />} />
           <Route path="missions" element={<Missions />} />
           <Route path="missions/addmission" element={<AddMission />} />
+
+
           <Route path="/dashboard/missions/update/:id" element={<UpdateMission />} />
           <Route path="/dashboard/missions/:id" element={<MissionDetails />} />
           <Route path="/dashboard/missions/:id/add-participants" element={<AddParticipantsToMission />} />
