@@ -49,9 +49,9 @@ export default function Reports() {
                     <div key={index} className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 p-6">
                         <div className="flex items-center justify-between mb-4">
                             <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${stat.color === 'blue' ? 'bg-blue-50 text-blue-600' :
-                                    stat.color === 'green' ? 'bg-green-50 text-green-600' :
-                                        stat.color === 'yellow' ? 'bg-yellow-50 text-yellow-600' :
-                                            'bg-purple-50 text-purple-600'
+                                stat.color === 'green' ? 'bg-green-50 text-green-600' :
+                                    stat.color === 'yellow' ? 'bg-yellow-50 text-yellow-600' :
+                                        'bg-purple-50 text-purple-600'
                                 }`}>
                                 <i className={`${stat.icon} text-xl`}></i>
                             </div>
@@ -77,8 +77,8 @@ export default function Reports() {
                                     key={type.id}
                                     onClick={() => setSelectedReport(type.id)}
                                     className={`p-4 rounded-xl border-2 transition-all ${selectedReport === type.id
-                                            ? 'border-green-800 bg-green-50 text-green-800'
-                                            : 'border-gray-200 bg-white hover:border-green-300 text-gray-600'
+                                        ? 'border-green-800 bg-green-50 text-green-800'
+                                        : 'border-gray-200 bg-white hover:border-green-300 text-gray-600'
                                         }`}
                                 >
                                     <i className={`${type.icon} text-2xl mb-2 block`}></i>
@@ -113,7 +113,7 @@ export default function Reports() {
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex gap-3 pt-6 border-t border-gray-100">
+                    <div className="flex gap-3 pt-6 border-t border-gray-100 flex justify-end">
                         <button
                             onClick={handleGenerateReport}
                             disabled={!selectedReport}

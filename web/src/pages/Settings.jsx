@@ -114,7 +114,7 @@ export default function Settings() {
             ))}
           </div>
 
-          <div className="flex gap-3 pt-6 border-t border-gray-100">
+          <div className="flex gap-3 pt-6 border-t border-gray-100 flex justify-end">
             <button
               type="button"
               className="px-6 py-3 bg-white text-gray-700 border border-gray-200 rounded-xl hover:bg-gray-50 transition-all shadow-sm hover:shadow-md font-semibold"
