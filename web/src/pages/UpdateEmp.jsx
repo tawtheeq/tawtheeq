@@ -66,7 +66,6 @@ export default function UpdateEmp() {
       console.error("Error submitting data:", error);
       alert(error.response?.data?.message || error.message || "حدث خطأ أثناء حفظ البيانات!");
     }
-
   };
 
 
@@ -82,7 +81,7 @@ export default function UpdateEmp() {
           onClick={() => navigate(-1)}
         >
           <i className="fas fa-arrow-right"></i>
-          <span>رجوع</span>
+          <span>عودة</span>
         </button>
       </div>
 
@@ -102,7 +101,7 @@ export default function UpdateEmp() {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">رقم الجوال</label>
+              {/* <label className="text-sm font-medium text-gray-700">رقم الجوال</label> */}
               <input
                 type="text"
                 name="Mobile"
