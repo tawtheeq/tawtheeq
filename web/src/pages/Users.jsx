@@ -104,7 +104,7 @@ export default function Users() {
               <tr className="bg-gray-50/50 border-b border-gray-100">
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الاسم</th>
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">رقم الجوال</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الدور</th>
+                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الوظيفة</th>
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الرصيد المتبقي</th>
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الإجراءات</th>
               </tr>
@@ -124,7 +124,7 @@ export default function Users() {
                     <td className="px-6 py-4 text-gray-600 font-mono text-sm">{user.Mobile}</td>
                     <td className="px-6 py-4">
                       <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
-                        {user.Role}
+                        {user.Job == 'photo' ? 'مصور فوتو' : user.Job == 'video' ? 'مصور فيديو' : user.job}
                       </span>
                     </td>
                     <td className="px-6 py-4">

@@ -13,6 +13,8 @@ func (s *Services) RegisterUser(user sqlc.AddUserParams) error {
 		Name:   user.Name,
 		Email:  user.Email,
 		Mobile: user.Mobile,
+		Job:    user.Job,
+		Role:   user.Role,
 	})
 
 	if err != nil {
@@ -46,12 +48,11 @@ func (s *Services) GetUserByID(id int32) (sqlc.User, error) {
 func (s *Services) UpdateUser(user sqlc.UpdateUserParams) error {
 
 	_, err := s.DBQueries.UpdateUser(context.Background(), sqlc.UpdateUserParams{
-		ID:      user.ID,
-		Name:    user.Name,
-		Email:   user.Email,
-		Mobile:  user.Mobile,
-		Balance: user.Balance,
-		Role:    user.Role,
+		ID:     user.ID,
+		Name:   user.Name,
+		Email:  user.Email,
+		Mobile: user.Mobile,
+		Role:   user.Role,
 	})
 	if err != nil {
 		return err

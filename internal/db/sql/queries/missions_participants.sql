@@ -16,6 +16,8 @@ WHERE mission_id = $1 AND user_id = $2;
 SELECT 
   u.id,
   u.name,
+  u.role,
+  u.job,
   mp.role
 FROM mission_participants mp
 JOIN users u ON mp.user_id = u.id
@@ -30,6 +32,7 @@ DELETE FROM mission_participants WHERE mission_id = $1;
 SELECT 
   m.id,
   m.mission_name,
+  m.coordinator_name,
   m.coordinator_num,
   m.main_category,
   m.sub_category,

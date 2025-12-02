@@ -1,6 +1,6 @@
 -- name: AddUser :one
-INSERT INTO users (name, email, mobile)
-VALUES ($1, $2, $3)
+INSERT INTO users (name, email, mobile, job, role)
+VALUES ($1, $2, $3, $4, $5)
 RETURNING *;
 
 -- name: GetUserByID :one
@@ -28,8 +28,8 @@ UPDATE users
 SET name = $2,
     email = $3,
     mobile = $4,
-    role = $5,
-    balance = $6
+    job = $5,   
+    role = $6
 WHERE id = $1
 RETURNING *;
 
@@ -38,7 +38,8 @@ RETURNING *;
 UPDATE users
 SET name = $2,
     email = $3,
-    mobile = $4
+    mobile = $4,
+    job = $5
 WHERE id = $1;
 
 

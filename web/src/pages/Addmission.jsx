@@ -16,6 +16,7 @@ export default function Addmission() {
 
     const [form, setForm] = useState({
         MissionName: '',
+        CoordinatorName: '',
         CoordinatorNum: '',
         MainCategory: '',
         SubCategory: '',
@@ -147,8 +148,6 @@ export default function Addmission() {
                         <h2 className="text-lg font-bold text-gray-800">البيانات الأساسية</h2>
                     </div> */}
 
-
-
                     {/* Date Grid: Start Date (Row 1) + End Date (Row 2) + Duration (Spans both rows) */}
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                         {/* Start Date - Row 1, Columns 1-3 */}
@@ -159,15 +158,16 @@ export default function Addmission() {
                             </div>
                             <div className="grid grid-cols-3 gap-4">
                                 <select
-                                    name="Year"
-                                    value={form.Year}
+                                    name="Day"
+                                    value={form.Day}
                                     onChange={handleChange}
                                     required
                                     className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
                                 >
-                                    <option value="">- اختر السنة -</option>
-                                    <option value={2025}>2025</option>
-                                    <option value={2026}>2026</option>
+                                    <option value="">- اختر اليوم -</option>
+                                    {[...Array(31)].map((_, i) => (
+                                        <option key={i + 1} value={i + 1}>{i + 1}</option>
+                                    ))}
                                 </select>
                                 <select
                                     name="Month"
@@ -190,17 +190,17 @@ export default function Addmission() {
                                     <option value={11}>نوفمبر</option>
                                     <option value={12}>ديسمبر</option>
                                 </select>
+
                                 <select
-                                    name="Day"
-                                    value={form.Day}
+                                    name="Year"
+                                    value={form.Year}
                                     onChange={handleChange}
                                     required
                                     className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
                                 >
-                                    <option value="">- اختر اليوم -</option>
-                                    {[...Array(31)].map((_, i) => (
-                                        <option key={i + 1} value={i + 1}>{i + 1}</option>
-                                    ))}
+                                    <option value="">- اختر السنة -</option>
+                                    <option value={2025}>2025</option>
+                                    <option value={2026}>2026</option>
                                 </select>
                             </div>
                         </div>
@@ -227,15 +227,16 @@ export default function Addmission() {
                             </div>
                             <div className="grid grid-cols-3 gap-4">
                                 <select
-                                    name="Year"
-                                    value={endDate.Year}
+                                    name="Day"
+                                    value={endDate.Day}
                                     onChange={handleEndDateChange}
                                     required
                                     className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
                                 >
-                                    <option value="">- اختر السنة -</option>
-                                    <option value={2025}>2025</option>
-                                    <option value={2026}>2026</option>
+                                    <option value="">- اختر اليوم -</option>
+                                    {[...Array(31)].map((_, i) => (
+                                        <option key={i + 1} value={i + 1}>{i + 1}</option>
+                                    ))}
                                 </select>
                                 <select
                                     name="Month"
@@ -258,23 +259,21 @@ export default function Addmission() {
                                     <option value={11}>نوفمبر</option>
                                     <option value={12}>ديسمبر</option>
                                 </select>
+
                                 <select
-                                    name="Day"
-                                    value={endDate.Day}
+                                    name="Year"
+                                    value={endDate.Year}
                                     onChange={handleEndDateChange}
                                     required
                                     className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
                                 >
-                                    <option value="">- اختر اليوم -</option>
-                                    {[...Array(31)].map((_, i) => (
-                                        <option key={i + 1} value={i + 1}>{i + 1}</option>
-                                    ))}
+                                    <option value="">- اختر السنة -</option>
+                                    <option value={2025}>2025</option>
+                                    <option value={2026}>2026</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-
-
 
 
 
@@ -296,7 +295,19 @@ export default function Addmission() {
                                         onChange={handleChange}
                                         required
                                         className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                                        placeholder="أدخل اسم المهمة"
+                                        placeholder=" اسم المهمة"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    {/* <label className="text-sm font-medium text-gray-700">رقم المنسق</label> */}
+                                    <input
+                                        type="text"
+                                        name="CoordinatorName"
+                                        value={form.CoordinatorName}
+                                        onChange={handleChange}
+                                        required
+                                        className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
+                                        placeholder=" اسم المنسق من الجهة"
                                     />
                                 </div>
                                 <div className="space-y-2">
@@ -308,9 +319,10 @@ export default function Addmission() {
                                         onChange={handleChange}
                                         required
                                         className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                                        placeholder="أدخل رقم المنسق"
+                                        placeholder=" رقم جوال المنسق"
                                     />
                                 </div>
+
                                 <div className="space-y-2">
                                     {/* <label className="text-sm font-medium text-gray-700">التصنيف الرئيسي</label> */}
                                     <select
@@ -320,7 +332,7 @@ export default function Addmission() {
                                         required
                                         className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
                                     >
-                                        <option value="">- اختر تصنيفًا -</option>
+                                        <option value="">- اختر التصنيف الرئيسي -</option>
                                         {mainCategories.map((mainCat) => (
                                             <option key={mainCat.ID} value={mainCat.ID}>
                                                 {mainCat.CategoryName}
@@ -337,7 +349,7 @@ export default function Addmission() {
                                         required
                                         className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
                                     >
-                                        <option value="">- اختر تصنيفًا -</option>
+                                        <option value="">- اختر التصنيف الفرعي -</option>
                                         {subCategories.map((subCat) => (
                                             <option key={subCat.ID} value={subCat.ID}>
                                                 {subCat.CategoryName}

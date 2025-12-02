@@ -1,6 +1,7 @@
 -- name: CreateMission :one
 INSERT INTO missions (
   mission_name,
+  coordinator_name,
   coordinator_num,
   main_category,
   sub_category,
@@ -10,7 +11,7 @@ INSERT INTO missions (
   duration_days,
   created_by
 ) VALUES (
-  $1, $2, $3, $4, $5, $6, $7, $8, $9
+  $1, $2, $3, $4, $5, $6, $7, $8, $9 , $10
 )
 RETURNING *;
 
@@ -18,6 +19,7 @@ RETURNING *;
 SELECT 
   m.id,
   m.mission_name,
+  m.coordinator_name,
   m.coordinator_num,
   m.main_category,
   m.sub_category,
@@ -36,6 +38,7 @@ ORDER BY m.id DESC;
 SELECT 
   m.id,
   m.mission_name,
+  m.coordinator_name,
   m.coordinator_num,
   m.main_category,
   m.sub_category,
@@ -57,12 +60,13 @@ DELETE FROM missions WHERE id = $1;
 UPDATE missions
 SET
   mission_name = $1,
-  coordinator_num = $2,
-  main_category = $3,
-  sub_category = $4,
-  day = $5,
-  month = $6,
-    year = $7,
-    duration_days = $8
-WHERE id = $9
+  coordinator_name = $2,
+  coordinator_num = $3,
+  main_category = $4,
+  sub_category = $5,
+  day = $6,
+  month = $7,
+    year = $8,
+    duration_days = $9
+WHERE id = $10
 RETURNING *;

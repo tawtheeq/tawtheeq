@@ -26,17 +26,19 @@ type Leafe struct {
 }
 
 type Mission struct {
-	ID             int32
-	MissionName    string
-	CoordinatorNum int32
-	MainCategory   int32
-	SubCategory    int32
-	Day            int32
-	Month          int32
-	Year           int32
-	DurationDays   int32
-	CreatedBy      int32
-	CreatedAt      time.Time
+	ID              int32
+	MissionName     string
+	CoordinatorName string
+	CoordinatorNum  int32
+	MainCategory    int32
+	SubCategory     int32
+	Day             int32
+	Month           int32
+	Year            int32
+	DurationDays    int32
+	CreatedBy       int32
+	CreatedAt       time.Time
+	Status          string
 }
 
 type MissionParticipant struct {
@@ -50,6 +52,7 @@ type User struct {
 	Name      string
 	Email     string
 	Mobile    string
+	Job       string
 	Password  string
 	Balance   int32
 	Role      string

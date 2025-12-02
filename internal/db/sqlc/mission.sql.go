@@ -13,6 +13,7 @@ import (
 const createMission = `-- name: CreateMission :one
 INSERT INTO missions (
   mission_name,
+  coordinator_name,
   coordinator_num,
   main_category,
   sub_category,
@@ -22,26 +23,28 @@ INSERT INTO missions (
   duration_days,
   created_by
 ) VALUES (
-  $1, $2, $3, $4, $5, $6, $7, $8, $9
+  $1, $2, $3, $4, $5, $6, $7, $8, $9 , $10
 )
-RETURNING id, mission_name, coordinator_num, main_category, sub_category, day, month, year, duration_days, created_by, created_at
+RETURNING id, mission_name, coordinator_name, coordinator_num, main_category, sub_category, day, month, year, duration_days, created_by, created_at, status
 `
 
 type CreateMissionParams struct {
-	MissionName    string
-	CoordinatorNum int32
-	MainCategory   int32
-	SubCategory    int32
-	Day            int32
-	Month          int32
-	Year           int32
-	DurationDays   int32
-	CreatedBy      int32
+	MissionName     string
+	CoordinatorName string
+	CoordinatorNum  int32
+	MainCategory    int32
+	SubCategory     int32
+	Day             int32
+	Month           int32
+	Year            int32
+	DurationDays    int32
+	CreatedBy       int32
 }
 
 func (q *Queries) CreateMission(ctx context.Context, arg CreateMissionParams) (Mission, error) {
 	row := q.db.QueryRowContext(ctx, createMission,
 		arg.MissionName,
+		arg.CoordinatorName,
 		arg.CoordinatorNum,
 		arg.MainCategory,
 		arg.SubCategory,
@@ -55,6 +58,7 @@ func (q *Queries) CreateMission(ctx context.Context, arg CreateMissionParams) (M
 	err := row.Scan(
 		&i.ID,
 		&i.MissionName,
+		&i.CoordinatorName,
 		&i.CoordinatorNum,
 		&i.MainCategory,
 		&i.SubCategory,
@@ -64,6 +68,7 @@ func (q *Queries) CreateMission(ctx context.Context, arg CreateMissionParams) (M
 		&i.DurationDays,
 		&i.CreatedBy,
 		&i.CreatedAt,
+		&i.Status,
 	)
 	return i, err
 }
@@ -81,6 +86,7 @@ const getAllMissions = `-- name: GetAllMissions :many
 SELECT 
   m.id,
   m.mission_name,
+  m.coordinator_name,
   m.coordinator_num,
   m.main_category,
   m.sub_category,
@@ -97,18 +103,19 @@ ORDER BY m.id DESC
 `
 
 type GetAllMissionsRow struct {
-	ID             int32
-	MissionName    string
-	CoordinatorNum int32
-	MainCategory   int32
-	SubCategory    int32
-	Day            int32
-	Month          int32
-	Year           int32
-	DurationDays   int32
-	CreatedBy      int32
-	CreatedByName  string
-	CreatedAt      time.Time
+	ID              int32
+	MissionName     string
+	CoordinatorName string
+	CoordinatorNum  int32
+	MainCategory    int32
+	SubCategory     int32
+	Day             int32
+	Month           int32
+	Year            int32
+	DurationDays    int32
+	CreatedBy       int32
+	CreatedByName   string
+	CreatedAt       time.Time
 }
 
 func (q *Queries) GetAllMissions(ctx context.Context) ([]GetAllMissionsRow, error) {
@@ -123,6 +130,7 @@ func (q *Queries) GetAllMissions(ctx context.Context) ([]GetAllMissionsRow, erro
 		if err := rows.Scan(
 			&i.ID,
 			&i.MissionName,
+			&i.CoordinatorName,
 			&i.CoordinatorNum,
 			&i.MainCategory,
 			&i.SubCategory,
@@ -151,6 +159,7 @@ const getMissionByID = `-- name: GetMissionByID :one
 SELECT 
   m.id,
   m.mission_name,
+  m.coordinator_name,
   m.coordinator_num,
   m.main_category,
   m.sub_category,
@@ -167,18 +176,19 @@ WHERE m.id = $1
 `
 
 type GetMissionByIDRow struct {
-	ID             int32
-	MissionName    string
-	CoordinatorNum int32
-	MainCategory   int32
-	SubCategory    int32
-	Day            int32
-	Month          int32
-	Year           int32
-	DurationDays   int32
-	CreatedBy      int32
-	CreatedByName  string
-	CreatedAt      time.Time
+	ID              int32
+	MissionName     string
+	CoordinatorName string
+	CoordinatorNum  int32
+	MainCategory    int32
+	SubCategory     int32
+	Day             int32
+	Month           int32
+	Year            int32
+	DurationDays    int32
+	CreatedBy       int32
+	CreatedByName   string
+	CreatedAt       time.Time
 }
 
 func (q *Queries) GetMissionByID(ctx context.Context, id int32) (GetMissionByIDRow, error) {
@@ -187,6 +197,7 @@ func (q *Queries) GetMissionByID(ctx context.Context, id int32) (GetMissionByIDR
 	err := row.Scan(
 		&i.ID,
 		&i.MissionName,
+		&i.CoordinatorName,
 		&i.CoordinatorNum,
 		&i.MainCategory,
 		&i.SubCategory,
@@ -205,32 +216,35 @@ const updateMission = `-- name: UpdateMission :one
 UPDATE missions
 SET
   mission_name = $1,
-  coordinator_num = $2,
-  main_category = $3,
-  sub_category = $4,
-  day = $5,
-  month = $6,
-    year = $7,
-    duration_days = $8
-WHERE id = $9
-RETURNING id, mission_name, coordinator_num, main_category, sub_category, day, month, year, duration_days, created_by, created_at
+  coordinator_name = $2,
+  coordinator_num = $3,
+  main_category = $4,
+  sub_category = $5,
+  day = $6,
+  month = $7,
+    year = $8,
+    duration_days = $9
+WHERE id = $10
+RETURNING id, mission_name, coordinator_name, coordinator_num, main_category, sub_category, day, month, year, duration_days, created_by, created_at, status
 `
 
 type UpdateMissionParams struct {
-	MissionName    string
-	CoordinatorNum int32
-	MainCategory   int32
-	SubCategory    int32
-	Day            int32
-	Month          int32
-	Year           int32
-	DurationDays   int32
-	ID             int32
+	MissionName     string
+	CoordinatorName string
+	CoordinatorNum  int32
+	MainCategory    int32
+	SubCategory     int32
+	Day             int32
+	Month           int32
+	Year            int32
+	DurationDays    int32
+	ID              int32
 }
 
 func (q *Queries) UpdateMission(ctx context.Context, arg UpdateMissionParams) (Mission, error) {
 	row := q.db.QueryRowContext(ctx, updateMission,
 		arg.MissionName,
+		arg.CoordinatorName,
 		arg.CoordinatorNum,
 		arg.MainCategory,
 		arg.SubCategory,
@@ -244,6 +258,7 @@ func (q *Queries) UpdateMission(ctx context.Context, arg UpdateMissionParams) (M
 	err := row.Scan(
 		&i.ID,
 		&i.MissionName,
+		&i.CoordinatorName,
 		&i.CoordinatorNum,
 		&i.MainCategory,
 		&i.SubCategory,
@@ -253,6 +268,7 @@ func (q *Queries) UpdateMission(ctx context.Context, arg UpdateMissionParams) (M
 		&i.DurationDays,
 		&i.CreatedBy,
 		&i.CreatedAt,
+		&i.Status,
 	)
 	return i, err
 }
