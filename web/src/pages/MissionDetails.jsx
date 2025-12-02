@@ -167,7 +167,7 @@ export default function MissionDetails() {
                     {participants.map(participant => (
                       <tr key={participant.id} className="hover:bg-gray-50/50 transition-colors">
                         <td className="px-6 py-4 font-medium text-gray-800">{participant.Name}</td>
-                        <td className="px-6 py-4 text-gray-600">{participant.role || 'مشارك'}</td>
+                        <td className="px-6 py-4 text-gray-600">{participant.Job || 'مشارك'}</td>
                         <td className="px-6 py-4">
                           <button
                             className="w-8 h-8 rounded-lg flex items-center justify-center text-red-600 hover:bg-red-50 transition-colors"

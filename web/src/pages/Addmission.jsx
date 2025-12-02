@@ -23,6 +23,7 @@ export default function Addmission() {
         Day: '',
         Month: '',
         Year: '',
+        Type: '',
         DurationDays: '',
         CreatedBy: '',
     });
@@ -214,7 +215,7 @@ export default function Addmission() {
                                 </div>
                                 <div className="flex-1 flex flex-col items-center justify-center bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl border-2 border-purple-200 p-8 min-h-[160px]">
                                     <div className="text-5xl font-bold text-purple-800">{form.DurationDays || '0'}</div>
-                                    <div className="text-base font-medium text-purple-600 mt-2">يوم</div>
+                                    <div className="text-base font-medium text-purple-600 mt-2">يوم / أيام</div>
                                 </div>
                             </div>
                         </div>
@@ -321,6 +322,21 @@ export default function Addmission() {
                                         className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
                                         placeholder=" رقم جوال المنسق"
                                     />
+                                </div>
+
+                                <div className="space-y-2">
+                                    {/* <label className="text-sm font-medium text-gray-700">التصنيف الرئيسي</label> */}
+                                    <select
+                                        name="Type"
+                                        value={form.Type}
+                                        onChange={handleChange}
+                                        required
+                                        className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
+                                    >
+                                        <option value="">- اختر نوع المهمة -</option>
+                                        <option value="internal">داخلية</option>
+                                        <option value="external">خارجية</option>
+                                    </select>
                                 </div>
 
                                 <div className="space-y-2">

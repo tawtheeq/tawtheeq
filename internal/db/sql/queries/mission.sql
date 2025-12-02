@@ -8,10 +8,11 @@ INSERT INTO missions (
   day,
   month,
   year,
+  type,
   duration_days,
   created_by
 ) VALUES (
-  $1, $2, $3, $4, $5, $6, $7, $8, $9 , $10
+  $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
 )
 RETURNING *;
 
@@ -26,6 +27,7 @@ SELECT
   m.day,
   m.month,
   m.year,
+  m.type,
   m.duration_days,
   m.created_by,
   u.name AS created_by_name,
@@ -45,6 +47,7 @@ SELECT
   m.day,
   m.month,
   m.year,
+  m.type,
   m.duration_days,
   m.created_by,
   u.name AS created_by_name,
@@ -67,6 +70,7 @@ SET
   day = $6,
   month = $7,
     year = $8,
-    duration_days = $9
-WHERE id = $10
+    type = $9,
+    duration_days = $10
+WHERE id = $11
 RETURNING *;

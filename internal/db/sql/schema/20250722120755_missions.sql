@@ -10,6 +10,7 @@ CREATE TABLE missions (
     day INT NOT NULL,
     month INT NOT NULL,
     year INT NOT NULL,
+    type VARCHAR(255) NOT NULL DEFAULT 'internal',
     duration_days INT NOT NULL,
     created_by INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
