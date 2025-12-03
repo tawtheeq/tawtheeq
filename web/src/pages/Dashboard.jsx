@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import Header from "../components/Header";
 
 
 export default function Dashboard() {
@@ -17,9 +16,7 @@ export default function Dashboard() {
       </aside>
 
       <main className="flex-1 mr-64 min-h-screen flex flex-col transition-all duration-300">
-        <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200 shadow-sm">
-          <Header />
-        </header>
+
         <div className="p-6 overflow-y-auto h-full">
           <Outlet />
         </div>

@@ -136,11 +136,20 @@ export default function Addmission() {
     };
 
     return (
-        <div className="max-w-7xl mx-auto">
+        <div className="p-6 max-w-7xl mx-auto">
+            {/* Header */}
             <div className="flex justify-between items-center mb-8">
-                <div>
-                    <h1 className="text-2xl font-bold text-gray-800">إضافة مهمة جديدة</h1>
-                    <p className="text-gray-500 mt-1">أدخل تفاصيل المهمة الجديدة</p>
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={() => navigate('/dashboard/missions')}
+                        className="w-10 h-10 rounded-xl flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors"
+                    >
+                        <i className="fas fa-arrow-right"></i>
+                    </button>
+                    <div>
+                        <h1 className="text-2xl font-bold text-gray-800">إضافة مهمة جديدة</h1>
+                        <p className="text-sm text-gray-500 mt-1">أدخل تفاصيل المهمة الجديدة</p>
+                    </div>
                 </div>
             </div>
 
@@ -394,13 +403,20 @@ export default function Addmission() {
 
 
 
-                    <div className="pt-6 border-t border-gray-100 flex justify-end">
+                    <div className="pt-6 border-t border-gray-100 flex justify-end gap-3">
+                        <button
+                            type="button"
+                            onClick={() => navigate('/dashboard/missions')}
+                            className="px-6 py-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-colors"
+                        >
+                            إلغاء
+                        </button>
                         <button
                             type="submit"
-                            className="w-full md:w-auto px-8 py-3 bg-green-800 text-white font-semibold rounded-xl hover:bg-green-900 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                            className="px-6 py-2 bg-green-700 text-white rounded-xl hover:bg-green-800 transition-colors flex items-center gap-2"
                         >
                             <i className="fas fa-plus"></i>
-                            <span>حفظ المهمة</span>
+                            حفظ المهمة
                         </button>
                     </div>
                 </form>

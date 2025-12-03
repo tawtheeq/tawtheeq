@@ -1,23 +1,14 @@
 import { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Addcategory() {
-
-
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);
-
+    const navigate = useNavigate();
     const [form, setForm] = useState({
         CategoryName: '',
         CategoryType: '',
         Description: '',
-
     });
-
-
-
-
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -32,27 +23,38 @@ export default function Addcategory() {
             });
 
             console.log("Server response:", response.data);
-            alert("Data submitted successfully!");
+            alert("تم إضافة التصنيف بنجاح!");
+
+            // Reset form
+            setForm({
+                CategoryName: '',
+                CategoryType: '',
+                Description: '',
+            });
+
+            // Navigate back to categories page
+            navigate('/dashboard/categories');
         } catch (error) {
             console.error("Error submitting data:", error);
-            alert(error);
-            // alert("Error occurred while submitting data!",error);
+            alert("حدث خطأ أثناء إضافة التصنيف: " + (error.response?.data?.message || error.message));
         }
-
-
-        setForm({
-            name: '',
-            mobile: '',
-            email: '',
-        });
     };
 
     return (
-        <div className="max-w-7xl mx-auto">
+        <div className="p-6 max-w-7xl mx-auto">
+            {/* Header */}
             <div className="flex justify-between items-center mb-8">
-                <div>
-                    <h1 className="text-2xl font-bold text-gray-800">إضافة تصنيف جديد</h1>
-                    <p className="text-gray-500 mt-1">أدخل تفاصيل التصنيف الجديد</p>
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={() => navigate('/dashboard/categories')}
+                        className="w-10 h-10 rounded-xl flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors"
+                    >
+                        <i className="fas fa-arrow-right"></i>
+                    </button>
+                    <div>
+                        <h1 className="text-2xl font-bold text-gray-800">إضافة تصنيف جديد</h1>
+                        <p className="text-sm text-gray-500 mt-1">أدخل تفاصيل التصنيف الجديد</p>
+                    </div>
                 </div>
             </div>
 
@@ -60,7 +62,6 @@ export default function Addcategory() {
                 <form className="space-y-6" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            {/* <label className="text-sm font-medium text-gray-700">اسم التصنيف</label> */}
                             <input
                                 type="text"
                                 name="CategoryName"
@@ -72,7 +73,6 @@ export default function Addcategory() {
                             />
                         </div>
                         <div className="space-y-2">
-                            {/* <label className="text-sm font-medium text-gray-700">نوع التصنيف</label> */}
                             <select
                                 name="CategoryType"
                                 value={form.CategoryType}
@@ -89,7 +89,6 @@ export default function Addcategory() {
 
                     <div className="grid grid-cols-1 gap-6">
                         <div className="space-y-2">
-                            {/* <label className="text-sm font-medium text-gray-700">الوصف</label> */}
                             <input
                                 type="text"
                                 name="Description"
@@ -102,13 +101,20 @@ export default function Addcategory() {
                         </div>
                     </div>
 
-                    <div className="pt-6 border-t border-gray-100 flex justify-end">
+                    <div className="pt-6 border-t border-gray-100 flex justify-end gap-3">
+                        <button
+                            type="button"
+                            onClick={() => navigate('/dashboard/categories')}
+                            className="px-6 py-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-colors"
+                        >
+                            إلغاء
+                        </button>
                         <button
                             type="submit"
-                            className="w-full md:w-auto px-8 py-3 bg-green-800 text-white font-semibold rounded-xl hover:bg-green-900 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                            className="px-6 py-2 bg-green-700 text-white rounded-xl hover:bg-green-800 transition-colors flex items-center gap-2"
                         >
                             <i className="fas fa-plus"></i>
-                            <span>إضافة</span>
+                            إضافة
                         </button>
                     </div>
                 </form>

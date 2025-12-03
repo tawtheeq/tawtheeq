@@ -10,7 +10,7 @@ export default function About() {
     // const [count, setCount] = useState(0)
 
     return (
-        <div className="h-full bg-gradient-to-br from-gray-100 via-white to-gray-200 flex items-center justify-center">
+        <div className="p-6 h-full bg-gradient-to-br from-gray-100 via-white to-gray-200 flex items-center justify-center">
             <div className="text-center">
                 <div className="mb-8">
                     <img src="../assets/mohanadLogo.png" alt="Mohanad logo" className="mx-auto h-64 w-auto" />
@@ -27,5 +27,3 @@ export default function About() {
 
     );
 }
-
-

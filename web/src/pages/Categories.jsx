@@ -18,7 +18,6 @@ export default function Categories() {
       } catch (err) {
         setError(err.message);
         console.error(err);
-        alert(err.message);
       } finally {
         setLoading(false);
       }
@@ -26,8 +25,21 @@ export default function Categories() {
     fetchCategories();
   }, []);
 
-  if (loading) return <p>Loading categories...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg text-gray-600">جاري التحميل...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg text-red-600">حدث خطأ: {error}</div>
+      </div>
+    );
+  }
 
   const handleDelete = async (id) => {
     if (!id) return;
@@ -51,21 +63,23 @@ export default function Categories() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="p-6 max-w-7xl mx-auto">
+      {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">التصنيفات</h1>
-          <p className="text-gray-500 mt-1">إدارة تصنيفات المحتوى</p>
+          <p className="text-sm text-gray-500 mt-1">إدارة تصنيفات المحتوى ({categories.length})</p>
         </div>
         <Link
           to="addcategory"
-          className="flex items-center gap-2 px-6 py-3 bg-green-800 text-white rounded-xl hover:bg-green-900 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+          className="px-4 py-2 bg-green-700 text-white rounded-xl hover:bg-green-800 transition-colors flex items-center gap-2"
         >
           <i className="fas fa-plus"></i>
-          <span>إضافة تصنيف</span>
+          إضافة تصنيف
         </Link>
       </div>
 
+      {/* Categories Table */}
       <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">

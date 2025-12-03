@@ -58,10 +58,11 @@ export default function Settings() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="p-6 max-w-7xl mx-auto">
+      {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-800">الإعدادات</h1>
-        <p className="text-gray-500 mt-1">إدارة إعدادات النظام والإحصائيات</p>
+        <p className="text-sm text-gray-500 mt-1">إدارة إعدادات النظام والإحصائيات</p>
       </div>
 
       {/* Stats Cards */}
@@ -73,7 +74,7 @@ export default function Settings() {
               <div className="text-3xl font-bold text-gray-800">{stat.value}</div>
             </div>
             <button
-              className="w-full px-4 py-2 bg-green-800 text-white text-sm font-semibold rounded-xl hover:bg-green-900 transition-all shadow-md hover:shadow-lg"
+              className="w-full px-4 py-2 bg-green-700 text-white text-sm rounded-xl hover:bg-green-800 transition-colors"
               onClick={() => handleEdit(stat.type)}
             >
               تعديل
