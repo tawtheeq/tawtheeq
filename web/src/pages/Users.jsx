@@ -29,8 +29,21 @@ export default function Users() {
 
 
   // ✅ Handle loading & error states
-  if (loading) return <p>Loading users...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg text-gray-600">جاري التحميل...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg text-red-600">حدث خطأ: {error}</div>
+      </div>
+    );
+  }
 
   // const [users, setUsers] = useState([
   //   {
@@ -61,7 +74,7 @@ export default function Users() {
 
   const handleDelete = async (id) => {
     if (!id) return;
-    const confirmDelete = window.confirm("هل أنت متأكد من حذف التصنيف؟");
+    const confirmDelete = window.confirm("هل أنت متأكد من حذف المستخدم؟");
     if (!confirmDelete) return;
 
     try {
@@ -82,21 +95,23 @@ export default function Users() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="p-6 max-w-7xl mx-auto">
+      {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">قائمة المستخدمين</h1>
-          <p className="text-gray-500 mt-1">إدارة المستخدمين وصلاحياتهم</p>
+          <p className="text-sm text-gray-500 mt-1">إدارة المستخدمين وصلاحياتهم ({users.length})</p>
         </div>
         <Link
           to="addemp"
-          className="flex items-center gap-2 px-6 py-3 bg-green-800 text-white rounded-xl hover:bg-green-900 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+          className="px-4 py-2 bg-green-700 text-white rounded-xl hover:bg-green-800 transition-colors flex items-center gap-2"
         >
           <i className="fas fa-plus"></i>
-          <span>إضافة مستخدم</span>
+          إضافة مستخدم
         </Link>
       </div>
 
+      {/* Users Table */}
       <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -137,6 +152,13 @@ export default function Users() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
+                        <button
+                          className="w-8 h-8 rounded-lg flex items-center justify-center text-green-600 hover:bg-green-50 transition-colors"
+                          onClick={() => navigate(`${user.ID}/report`)}
+                          title="عرض التقرير"
+                        >
+                          <i className="fas fa-file-alt"></i>
+                        </button>
                         <button
                           className="w-8 h-8 rounded-lg flex items-center justify-center text-blue-600 hover:bg-blue-50 transition-colors"
                           onClick={() => navigate(`update/${user.ID}`)}

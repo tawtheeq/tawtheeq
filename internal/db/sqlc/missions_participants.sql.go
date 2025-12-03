@@ -68,6 +68,7 @@ const getMissionParticipants = `-- name: GetMissionParticipants :many
 SELECT 
   u.id,
   u.name,
+  u.mobile,
   u.role,
   u.job,
   mp.role
@@ -80,6 +81,7 @@ ORDER BY u.name
 type GetMissionParticipantsRow struct {
 	ID     int32
 	Name   string
+	Mobile string
 	Role   string
 	Job    string
 	Role_2 string
@@ -97,6 +99,7 @@ func (q *Queries) GetMissionParticipants(ctx context.Context, missionID int32) (
 		if err := rows.Scan(
 			&i.ID,
 			&i.Name,
+			&i.Mobile,
 			&i.Role,
 			&i.Job,
 			&i.Role_2,

@@ -16,6 +16,7 @@ WHERE mission_id = $1 AND user_id = $2;
 SELECT 
   u.id,
   u.name,
+  u.mobile,
   u.role,
   u.job,
   mp.role

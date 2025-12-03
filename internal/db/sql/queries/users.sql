@@ -91,3 +91,10 @@ FROM users u
 LEFT JOIN leaves l ON u.id = l.user_id
 WHERE u.id = $1
 ORDER BY l.start_date DESC;
+
+
+
+-- name: GetUserWithSufficientBalance :many
+SELECT *
+FROM users
+WHERE balance >= $1;

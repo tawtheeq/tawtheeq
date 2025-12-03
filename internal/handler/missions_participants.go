@@ -85,11 +85,11 @@ func (h *Handler) DeleteParticipantsByMission(w http.ResponseWriter, r *http.Req
 func (h *Handler) RemoveMissionParticipant(w http.ResponseWriter, r *http.Request) {
 
 	mid := r.PathValue("id")
-	pid := r.PathValue("participant_id")
+	pid := r.PathValue("participantId")
 
 	mission_id, err := strconv.Atoi(mid)
 	if err != nil {
-		response.Error(w, http.StatusBadRequest, "Invalid participant ID")
+		response.Error(w, http.StatusBadRequest, "Invalid mission ID")
 		return
 	}
 

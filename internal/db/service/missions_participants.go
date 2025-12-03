@@ -35,9 +35,11 @@ func (s *Services) AddParticipantToMission(participant sqlc.AddMissionParticipan
 		return ErrMissionNotFound
 	}
 
-	if user.Balance < missionData.DurationDays {
-		return fmt.Errorf("insufficient balance: user has %d days, mission requires %d days",
-			user.Balance, missionData.DurationDays)
+	if missionData.Type == "external" {
+		if user.Balance < missionData.DurationDays {
+			return fmt.Errorf("insufficient balance: user has %d days, mission requires %d days",
+				user.Balance, missionData.DurationDays)
+		}
 	}
 
 	missionStart := time.Date(
@@ -66,15 +68,18 @@ func (s *Services) AddParticipantToMission(participant sqlc.AddMissionParticipan
 		return fmt.Errorf("failed to check leave conflict: %w", err)
 	}
 
-	newBalance := user.Balance - missionData.DurationDays
+	// Only deduct balance for external missions
+	if missionData.Type == "external" {
+		newBalance := user.Balance - missionData.DurationDays
 
-	_, err = qtx.UpdateBalance(context.Background(), sqlc.UpdateBalanceParams{
-		Balance: newBalance,
-		ID:      participant.UserID,
-	})
+		_, err = qtx.UpdateBalance(context.Background(), sqlc.UpdateBalanceParams{
+			Balance: newBalance,
+			ID:      participant.UserID,
+		})
 
-	if err != nil {
-		return fmt.Errorf("failed to update balance: %w", err)
+		if err != nil {
+			return fmt.Errorf("failed to update balance: %w", err)
+		}
 	}
 
 	err = qtx.AddMissionParticipant(context.Background(), sqlc.AddMissionParticipantParams{
@@ -83,7 +88,6 @@ func (s *Services) AddParticipantToMission(participant sqlc.AddMissionParticipan
 		Role:      participant.Role,
 	})
 	if err != nil {
-
 		return fmt.Errorf("error in adding participant: %w", err)
 	}
 

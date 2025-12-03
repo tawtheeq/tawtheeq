@@ -17,6 +17,7 @@ import MissionDetails from "./pages/MissionDetails";
 import AddParticipantsToMission from "./pages/AddParticipantsToMission";
 import Reports from "./pages/Reports";
 import About from "./pages/About";
+import UserReport from "./pages/UserReport";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="categories/addcategory" element={<Addcategory />} />
           <Route path="users" element={<Users />} />
           <Route path="/dashboard/users/update/:id" element={<UpdateEmp />} />
+          <Route path="/dashboard/users/:id/report" element={<UserReport />} />
           <Route path="settings" element={<Settings />} />
           <Route path="missions" element={<Missions />} />
           <Route path="missions/addmission" element={<AddMission />} />

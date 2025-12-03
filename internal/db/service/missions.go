@@ -10,15 +10,17 @@ import (
 func (s *Services) RegisterMission(mission sqlc.CreateMissionParams) (sqlc.Mission, error) {
 
 	newMission, err := s.DBQueries.CreateMission(context.Background(), sqlc.CreateMissionParams{
-		MissionName:    mission.MissionName,
-		CoordinatorNum: mission.CoordinatorNum,
-		MainCategory:   mission.MainCategory,
-		SubCategory:    mission.SubCategory,
-		Day:            mission.Day,
-		Month:          mission.Month,
-		Year:           mission.Year,
-		DurationDays:   mission.DurationDays,
-		CreatedBy:      mission.CreatedBy,
+		MissionName:     mission.MissionName,
+		CoordinatorName: mission.CoordinatorName,
+		CoordinatorNum:  mission.CoordinatorNum,
+		MainCategory:    mission.MainCategory,
+		SubCategory:     mission.SubCategory,
+		Day:             mission.Day,
+		Month:           mission.Month,
+		Year:            mission.Year,
+		Type:            mission.Type,
+		DurationDays:    mission.DurationDays,
+		CreatedBy:       mission.CreatedBy,
 	})
 	if err != nil {
 		fmt.Println(err)

@@ -85,7 +85,7 @@ export default function Missions() {
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">اسم المناسبة</th>
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">التاريخ</th>
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">مدة المهمة بالآيام</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">تمت الإضافة بواسطة</th>
+                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">نوع المهمة</th>
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">إجراءات</th>
               </tr>
             </thead>
@@ -104,7 +104,7 @@ export default function Missions() {
                         {mission.DurationDays}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-gray-600 text-sm">{mission.CreatedByName}</td>
+                    <td className="px-6 py-4 text-gray-600 text-sm">{mission.Type == 'internal' ? 'داخلية' : 'خارجية'}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <button

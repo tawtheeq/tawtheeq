@@ -42,10 +42,15 @@ export default function MissionDetails() {
       // Note: The route uses {mid} and {pid}, but we'll use the standard format
       // If this doesn't work, the backend route may need to be fixed
       await axios.delete(`/api/missions/${id}/participants/${participantId}`);
-      setParticipants(prev => prev.filter(p => p.id !== participantId));
+
+      // Reload participants list from server
+      const participantsRes = await axios.get(`/api/missions/${id}/participants`);
+      setParticipants(participantsRes.data.data || []);
+
       alert('تم إزالة المشارك بنجاح!');
     } catch (err) {
       console.error('Error removing participant:', err);
+      console.error("SERVER ERROR:", err.response?.data);
       alert(`حدث خطأ أثناء إزالة المشارك: ${err.response?.data?.message || err.message}`);
     }
   };
@@ -64,22 +69,23 @@ export default function MissionDetails() {
   const formatParticipantsForShare = () => {
     if (!participants.length) return 'لا يوجد مشاركون حتى الآن.';
     return participants
-      .map((participant, index) => `${index + 1}. ${participant.Name} - ${participant.role || 'مشارك'}`)
+      .map((participant, index) => `${index + 1}. ${participant.Name} - ${participant.Mobile} - ${participant.Job || 'مشارك'}`)
       .join('\n');
   };
 
   const handleShareWhatsApp = () => {
     const shareText = [
-      '📋 *تفاصيل المهمة*',
-      `• الاسم: ${mission.MissionName}`,
-      `• التاريخ: ${formatDate(mission.Day, mission.Month, mission.Year)}`,
-      `• المدة: ${mission.DurationDays} يوم`,
-      `• رقم المنسق: ${mission.CoordinatorNum || 'غير محدد'}`,
+      '*أمر إسناد مهمة عمل*',
+      `اسم المهمة: ${mission.MissionName}`,
+      `التاريخ: ${formatDate(mission.Day, mission.Month, mission.Year)}`,
+      `المدة: ${mission.DurationDays} يوم / أيام`,
+      `رقم المنسق: ${mission.CoordinatorNum || 'غير محدد'}`,
       '',
-      '👥 *المشاركون*',
+      '*فريق المهمة*',
       formatParticipantsForShare()
     ].join('\n');
 
+    // WhatsApp API works best with this approach
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
     window.open(whatsappUrl, '_blank');
   };
@@ -98,6 +104,11 @@ export default function MissionDetails() {
             <span className="flex items-center gap-1">
               <i className="far fa-clock"></i>
               مدة المهمة: {mission.DurationDays} يوم
+            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+            <span className="flex items-center gap-1">
+              <i className="far fa-category"></i>
+              نوع المهمة: {mission.Type == 'external' ? 'خارجية' : 'داخلية'}
             </span>
           </div>
         </div>
@@ -171,7 +182,7 @@ export default function MissionDetails() {
                         <td className="px-6 py-4">
                           <button
                             className="w-8 h-8 rounded-lg flex items-center justify-center text-red-600 hover:bg-red-50 transition-colors"
-                            onClick={() => handleRemoveParticipant(participant.id)}
+                            onClick={() => handleRemoveParticipant(participant.ID)}
                             title="إزالة من المهمة"
                           >
                             <i className="fas fa-times"></i>

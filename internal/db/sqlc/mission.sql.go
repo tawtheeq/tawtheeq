@@ -20,12 +20,13 @@ INSERT INTO missions (
   day,
   month,
   year,
+  type,
   duration_days,
   created_by
 ) VALUES (
-  $1, $2, $3, $4, $5, $6, $7, $8, $9 , $10
+  $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
 )
-RETURNING id, mission_name, coordinator_name, coordinator_num, main_category, sub_category, day, month, year, duration_days, created_by, created_at, status
+RETURNING id, mission_name, coordinator_name, coordinator_num, main_category, sub_category, day, month, year, type, duration_days, created_by, created_at, status
 `
 
 type CreateMissionParams struct {
@@ -37,6 +38,7 @@ type CreateMissionParams struct {
 	Day             int32
 	Month           int32
 	Year            int32
+	Type            string
 	DurationDays    int32
 	CreatedBy       int32
 }
@@ -51,6 +53,7 @@ func (q *Queries) CreateMission(ctx context.Context, arg CreateMissionParams) (M
 		arg.Day,
 		arg.Month,
 		arg.Year,
+		arg.Type,
 		arg.DurationDays,
 		arg.CreatedBy,
 	)
@@ -65,6 +68,7 @@ func (q *Queries) CreateMission(ctx context.Context, arg CreateMissionParams) (M
 		&i.Day,
 		&i.Month,
 		&i.Year,
+		&i.Type,
 		&i.DurationDays,
 		&i.CreatedBy,
 		&i.CreatedAt,
@@ -93,6 +97,7 @@ SELECT
   m.day,
   m.month,
   m.year,
+  m.type,
   m.duration_days,
   m.created_by,
   u.name AS created_by_name,
@@ -112,6 +117,7 @@ type GetAllMissionsRow struct {
 	Day             int32
 	Month           int32
 	Year            int32
+	Type            string
 	DurationDays    int32
 	CreatedBy       int32
 	CreatedByName   string
@@ -137,6 +143,7 @@ func (q *Queries) GetAllMissions(ctx context.Context) ([]GetAllMissionsRow, erro
 			&i.Day,
 			&i.Month,
 			&i.Year,
+			&i.Type,
 			&i.DurationDays,
 			&i.CreatedBy,
 			&i.CreatedByName,
@@ -166,6 +173,7 @@ SELECT
   m.day,
   m.month,
   m.year,
+  m.type,
   m.duration_days,
   m.created_by,
   u.name AS created_by_name,
@@ -185,6 +193,7 @@ type GetMissionByIDRow struct {
 	Day             int32
 	Month           int32
 	Year            int32
+	Type            string
 	DurationDays    int32
 	CreatedBy       int32
 	CreatedByName   string
@@ -204,6 +213,7 @@ func (q *Queries) GetMissionByID(ctx context.Context, id int32) (GetMissionByIDR
 		&i.Day,
 		&i.Month,
 		&i.Year,
+		&i.Type,
 		&i.DurationDays,
 		&i.CreatedBy,
 		&i.CreatedByName,
@@ -223,9 +233,10 @@ SET
   day = $6,
   month = $7,
     year = $8,
-    duration_days = $9
-WHERE id = $10
-RETURNING id, mission_name, coordinator_name, coordinator_num, main_category, sub_category, day, month, year, duration_days, created_by, created_at, status
+    type = $9,
+    duration_days = $10
+WHERE id = $11
+RETURNING id, mission_name, coordinator_name, coordinator_num, main_category, sub_category, day, month, year, type, duration_days, created_by, created_at, status
 `
 
 type UpdateMissionParams struct {
@@ -237,6 +248,7 @@ type UpdateMissionParams struct {
 	Day             int32
 	Month           int32
 	Year            int32
+	Type            string
 	DurationDays    int32
 	ID              int32
 }
@@ -251,6 +263,7 @@ func (q *Queries) UpdateMission(ctx context.Context, arg UpdateMissionParams) (M
 		arg.Day,
 		arg.Month,
 		arg.Year,
+		arg.Type,
 		arg.DurationDays,
 		arg.ID,
 	)
@@ -265,6 +278,7 @@ func (q *Queries) UpdateMission(ctx context.Context, arg UpdateMissionParams) (M
 		&i.Day,
 		&i.Month,
 		&i.Year,
+		&i.Type,
 		&i.DurationDays,
 		&i.CreatedBy,
 		&i.CreatedAt,

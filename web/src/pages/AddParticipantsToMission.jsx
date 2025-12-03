@@ -21,8 +21,15 @@ export default function AddParticipantsToMission() {
         const missionRes = await axios.get(`/api/missions/${id}`);
         setMission(missionRes.data.data);
 
-        // Fetch all users
-        const usersRes = await axios.get('/api/users');
+        console.log(missionRes.data.data);
+        const missionDuration = missionRes.data.data.DurationDays;
+
+
+
+        console.log(missionDuration);
+
+        // Fetch all users with sufficient balance
+        const usersRes = await axios.get(`/api/usersbalance/${missionDuration}`);
         setUsers(usersRes.data.data || []);
 
         // Fetch existing participants

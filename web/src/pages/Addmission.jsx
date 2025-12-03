@@ -116,6 +116,8 @@ export default function Addmission() {
 
         console.log(form);
         try {
+
+            console.log("Form data:", form);
             const response = await axios.post("/api/missions", {
                 ...form
             });
@@ -376,6 +378,7 @@ export default function Addmission() {
                                 <div className="space-y-2">
                                     {/* <label className="text-sm font-medium text-gray-700">تمت الإضافة بواسطة</label> */}
                                     <input
+                                        type="number"
                                         name="CreatedBy"
                                         value={form.CreatedBy}
                                         onChange={handleChange}

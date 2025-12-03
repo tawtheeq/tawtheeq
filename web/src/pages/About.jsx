@@ -16,8 +16,8 @@ export default function About() {
                     <img src="../assets/mohanadLogo.png" alt="Mohanad logo" className="mx-auto h-64 w-auto" />
                 </div>
                 <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 p-8 max-w-2xl">
-                    <h1 className="text-3xl font-bold text-gray-800 mb-4">مرحبًا بكم في منصة توثيق</h1>
-                    <p className="text-gray-600 text-lg">هذه المنصة مخصصة لإدارة وتوثيق المهام الداخلية والخارجية بشكل فعال.</p>
+                    <h1 className="text-3xl font-bold text-gray-800 mb-4">إدارة العمليات الإعلامية</h1>
+                    <p className="text-gray-600 text-lg">منصة لإدارة العمليات الإعلامية وتوثيقها.</p>
                     {/* <img src="../assets/mohanadLogo.png" alt="Mohanad logo" className="mx-auto h-64 w-auto" /> */}
 
 

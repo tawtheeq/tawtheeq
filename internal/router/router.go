@@ -12,9 +12,10 @@ func Router(h *handler.Handler) *http.ServeMux {
 	// user routes
 	mux.HandleFunc("POST /api/users", h.AddUser)
 	mux.HandleFunc("GET /api/users", h.GetUsers)
+	mux.HandleFunc("GET /api/usersbalance/{balance}", h.GetUserWithSufficientBalance)
+	mux.HandleFunc("GET /api/users/{id}/report", h.GetUserReport)
 	mux.HandleFunc("GET /api/users/{id}", h.GetUserByID)
 	mux.HandleFunc("PUT /api/users/{id}", h.UpdteUserBasicInfo)
-	// mux.HandleFunc("PUT /api/users/{id}", h.UpdteUserBasicInfo)
 	mux.HandleFunc("DELETE /api/users/{id}", h.DeleteUser)
 
 	// categories routes
@@ -41,7 +42,7 @@ func Router(h *handler.Handler) *http.ServeMux {
 	mux.HandleFunc("POST /api/missions/{id}/participants", h.AddParticipantsToMission)
 	mux.HandleFunc("GET /api/missions/{id}/participants", h.GetMissionParticipants)
 	mux.HandleFunc("DELETE /api/missions/{id}/participants", h.DeleteParticipantsByMission)
-	mux.HandleFunc("DELETE /api/missions/{mid}/participants/{pid}", h.RemoveMissionParticipant)
+	mux.HandleFunc("DELETE /api/missions/{id}/participants/{participantId}", h.RemoveMissionParticipant)
 
 	return mux
 }

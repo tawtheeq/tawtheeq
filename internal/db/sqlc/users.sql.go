@@ -246,6 +246,45 @@ func (q *Queries) GetUserWithLeaves(ctx context.Context, id int32) ([]GetUserWit
 	return items, nil
 }
 
+const getUserWithSufficientBalance = `-- name: GetUserWithSufficientBalance :many
+SELECT id, name, email, mobile, job, password, balance, role, created_at
+FROM users
+WHERE balance >= $1
+`
+
+func (q *Queries) GetUserWithSufficientBalance(ctx context.Context, balance int32) ([]User, error) {
+	rows, err := q.db.QueryContext(ctx, getUserWithSufficientBalance, balance)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []User
+	for rows.Next() {
+		var i User
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Email,
+			&i.Mobile,
+			&i.Job,
+			&i.Password,
+			&i.Balance,
+			&i.Role,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const makeUserAdmin = `-- name: MakeUserAdmin :one
 UPDATE users
 SET role = 'admin'

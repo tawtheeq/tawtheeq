@@ -28,6 +28,31 @@ func (h *Handler) GetUsers(w http.ResponseWriter, r *http.Request) {
 	response.Send(w, http.StatusOK, true, "Data retrieved successfully ...", users)
 }
 
+func (h *Handler) GetUserWithSufficientBalance(w http.ResponseWriter, r *http.Request) {
+
+	balance := r.PathValue("balance")
+
+	balanceInt, err := strconv.Atoi(balance)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "Invalid user balance")
+		return
+	}
+	users, err := h.svc.DBQueries.GetUserWithSufficientBalance(context.Background(), int32(balanceInt))
+	if err != nil {
+		http.Error(w, "Failed to get users with sufficient balance", http.StatusInternalServerError)
+		fmt.Println(err)
+		return
+	}
+
+	if len(users) == 0 {
+		response.Send(w, http.StatusOK, false, "No users found", users)
+		return
+	}
+
+	response.Send(w, http.StatusOK, true, "Data retrieved successfully ...", users)
+
+}
+
 func (h *Handler) AddUser(w http.ResponseWriter, r *http.Request) {
 
 	var user sqlc.AddUserParams
@@ -131,4 +156,38 @@ func (h *Handler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response.Success(w, "User deleted successfully", nil)
+}
+
+func (h *Handler) GetUserReport(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+
+	userID, err := strconv.Atoi(id)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "Invalid user ID")
+		return
+	}
+
+	// Get user details
+	user, err := h.svc.GetUserByID(int32(userID))
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "Failed to get user")
+		fmt.Println(err)
+		return
+	}
+
+	// Get user missions
+	missions, err := h.svc.DBQueries.GetMissionsByParticipant(context.Background(), int32(userID))
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "Failed to get user missions")
+		fmt.Println(err)
+		return
+	}
+
+	// Combine data
+	reportData := map[string]interface{}{
+		"user":     user,
+		"missions": missions,
+	}
+
+	response.Success(w, "User report retrieved successfully", reportData)
 }
