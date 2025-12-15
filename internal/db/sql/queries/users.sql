@@ -59,6 +59,17 @@ SET role = 'user'
 WHERE id = $1
 RETURNING *;
 
+
+-- name: AllowNegativeBalance :exec
+UPDATE users
+SET negative_balance = 'yes'
+WHERE id = $1;
+
+-- name: DisallowNegativeBalance :exec
+UPDATE users
+SET negative_balance = 'no'
+WHERE id = $1;
+
 -- name: UpdatePassword :one
 UPDATE users
 SET password = $1

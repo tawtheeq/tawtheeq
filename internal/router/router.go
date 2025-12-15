@@ -44,5 +44,12 @@ func Router(h *handler.Handler) *http.ServeMux {
 	mux.HandleFunc("DELETE /api/missions/{id}/participants", h.DeleteParticipantsByMission)
 	mux.HandleFunc("DELETE /api/missions/{id}/participants/{participantId}", h.RemoveMissionParticipant)
 
+	// signal routes
+	mux.HandleFunc("POST /api/signal/send", h.SendMessage)
+
+	// negative balance routes
+	mux.HandleFunc("POST /api/users/{id}/allow-negative-balance", h.AllowNegativeBalance)
+	mux.HandleFunc("POST /api/users/{id}/disallow-negative-balance", h.DisallowNegativeBalance)
+
 	return mux
 }

@@ -37,6 +37,7 @@ func (h *Handler) GetUserWithSufficientBalance(w http.ResponseWriter, r *http.Re
 		response.Error(w, http.StatusBadRequest, "Invalid user balance")
 		return
 	}
+
 	users, err := h.svc.DBQueries.GetUserWithSufficientBalance(context.Background(), int32(balanceInt))
 	if err != nil {
 		http.Error(w, "Failed to get users with sufficient balance", http.StatusInternalServerError)
@@ -139,6 +140,23 @@ func (h *Handler) UpdteUserBasicInfo(w http.ResponseWriter, r *http.Request) {
 
 	response.Success(w, "User updated successfully", nil)
 
+}
+
+func (h *Handler) DisallowNegativeBalance(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	userId, err := strconv.Atoi(id)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "Invalid user ID")
+		return
+	}
+
+	err = h.svc.DisallowNegativeBalance(int32(userId))
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "Failed to disallow negative balance")
+		return
+	}
+
+	response.Success(w, "Negative balance disallowed successfully", nil)
 }
 
 func (h *Handler) DeleteUser(w http.ResponseWriter, r *http.Request) {

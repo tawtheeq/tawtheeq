@@ -44,7 +44,6 @@ func (h *Handler) AddParticipantsToMission(w http.ResponseWriter, r *http.Reques
 	if err != nil {
 		response.Error(w, http.StatusBadRequest, "Invalid request body")
 		return
-
 	}
 
 	err = h.svc.AddParticipantToMission(participant)
@@ -112,4 +111,23 @@ func (h *Handler) RemoveMissionParticipant(w http.ResponseWriter, r *http.Reques
 	}
 
 	response.Success(w, "Mission participant removed successfully", nil)
+}
+
+func (h *Handler) AllowNegativeBalance(w http.ResponseWriter, r *http.Request) {
+
+	id := r.PathValue("id")
+
+	userId, err := strconv.Atoi(id)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "Invalid user ID")
+		return
+	}
+
+	err = h.svc.AllowNegativeBalance(int32(userId))
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "Failed to allow negative balance")
+		return
+	}
+
+	response.Success(w, "Negative balance allowed successfully", nil)
 }

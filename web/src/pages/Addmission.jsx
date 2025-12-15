@@ -165,8 +165,8 @@ export default function Addmission() {
                         {/* Start Date - Row 1, Columns 1-3 */}
                         <div className="md:col-span-3 space-y-3">
                             <div className="flex items-center gap-2 px-3 py-2 bg-green-50 rounded-xl border border-green-100">
-                                <i className="fas fa-calendar-alt text-green-700"></i>
-                                <span className="text-sm font-semibold text-green-800">تاريخ بداية المهمة</span>
+                                <i className="fas fa-calendar-alt text-dark-green"></i>
+                                <span className="text-sm font-semibold text-dark-green">تاريخ بداية المهمة</span>
                             </div>
                             <div className="grid grid-cols-3 gap-4">
                                 <select
@@ -220,22 +220,22 @@ export default function Addmission() {
                         {/* Duration - Spans 2 rows, Column 4 */}
                         <div className="md:row-span-2 flex flex-col items-center justify-center">
                             <div className="flex flex-col h-full w-full space-y-3">
-                                <div className="flex items-center justify-center gap-2 px-3 py-2 bg-purple-50 rounded-xl border border-purple-100">
-                                    <i className="fas fa-clock text-purple-700"></i>
-                                    <span className="text-sm font-semibold text-purple-800">إجمالي المدة</span>
+                                <div className="flex items-center justify-center gap-2 px-3 py-2 bg-green-50 rounded-xl border border-green-100">
+                                    <i className="fas fa-clock text-dark-green"></i>
+                                    <span className="text-sm font-semibold text-dark-green">إجمالي المدة</span>
                                 </div>
-                                <div className="flex-1 flex flex-col items-center justify-center bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl border-2 border-purple-200 p-8 min-h-[160px]">
-                                    <div className="text-5xl font-bold text-purple-800">{form.DurationDays || '0'}</div>
-                                    <div className="text-base font-medium text-purple-600 mt-2">يوم / أيام</div>
+                                <div className="flex-1 flex flex-col items-center justify-center bg-gradient-to-br from-green-50 to-green-100 rounded-2xl border-2 border-green-100 p-8 min-h-[160px]">
+                                    <div className="text-5xl font-bold text-dark-green">{form.DurationDays || '0'}</div>
+                                    <div className="text-base font-medium text-dark-green mt-2">يوم / أيام</div>
                                 </div>
                             </div>
                         </div>
 
                         {/* End Date - Row 2, Columns 1-3 */}
                         <div className="md:col-span-3 space-y-3">
-                            <div className="flex items-center gap-2 px-3 py-2 bg-blue-50 rounded-xl border border-blue-100">
-                                <i className="fas fa-calendar-check text-blue-700"></i>
-                                <span className="text-sm font-semibold text-blue-800">تاريخ نهاية المهمة</span>
+                            <div className="flex items-center gap-2 px-3 py-2 bg-green-50 rounded-xl border border-green-100">
+                                <i className="fas fa-calendar-check text-dark-green"></i>
+                                <span className="text-sm font-semibold text-dark-green">تاريخ نهاية المهمة</span>
                             </div>
                             <div className="grid grid-cols-3 gap-4">
                                 <select
@@ -292,9 +292,9 @@ export default function Addmission() {
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                         <div className="md:col-span-4 space-y-3">
 
-                            <div className="md:col-span-2 flex items-center gap-2 px-3 py-2 bg-blue-50 rounded-xl border border-blue-100">
-                                <i className="fas fa-calendar-check text-blue-700"></i>
-                                <span className="text-sm font-semibold text-blue-800">  تفاصيل المهمة</span>
+                            <div className="md:col-span-2 flex items-center gap-2 px-3 py-2 bg-green-50 rounded-xl border border-green-100">
+                                <i className="fas fa-calendar-check text-dark-green"></i>
+                                <span className="text-sm font-semibold text-dark-green">  تفاصيل المهمة</span>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -413,10 +413,10 @@ export default function Addmission() {
                         </button>
                         <button
                             type="submit"
-                            className="px-6 py-2 bg-green-700 text-white rounded-xl hover:bg-green-800 transition-colors flex items-center gap-2"
+                            className="px-6 py-2 bg-dark-green text-white rounded-xl hover:bg-light-green transition-colors flex items-center gap-2"
                         >
                             <i className="fas fa-plus"></i>
-                            حفظ المهمة
+                            تسجيل المهمة
                         </button>
                     </div>
                 </form>

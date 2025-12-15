@@ -134,12 +134,11 @@ func (h *Handler) DeleteMission(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.svc.DeleteMission(int32(mission_id))
+	err = h.svc.DeleteMission(int32(mission_id))
 
 	if err != nil {
 		response.Error(w, http.StatusInternalServerError, "Failed to delete mission")
 		return
-
 	}
 
 	response.Success(w, "Mission deleted successfully", nil)

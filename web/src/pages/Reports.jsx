@@ -164,11 +164,11 @@ export default function Reports() {
                                     key={type.id}
                                     onClick={() => handleReportTypeChange(type.id)}
                                     className={`p-4 rounded-xl border-2 transition-all ${selectedReport === type.id
-                                        ? 'border-green-700 bg-green-50 text-green-700'
-                                        : 'border-gray-200 bg-white hover:border-green-300 text-gray-600'
+                                        ? 'border-dark-green bg-dark-green text-white'
+                                        : 'border-gray-200 bg-white hover:border-dark-green text-gray-600'
                                         }`}
                                 >
-                                    <i className={`${type.icon} text-2xl mb-2 block`}></i>
+                                    <i className={`${type.icon} text-2xl mb-2 ml-3 block`}></i>
                                     <span className="text-sm font-medium">{type.name}</span>
                                 </button>
                             ))}
@@ -205,7 +205,7 @@ export default function Reports() {
                     <div className="flex gap-3">
                         <button
                             onClick={handleGenerateReport}
-                            className="px-6 py-2 bg-green-700 text-white rounded-xl hover:bg-green-800 transition-colors flex items-center gap-2"
+                            className="px-6 py-2 bg-dark-green text-white rounded-xl hover:bg-light-green transition-colors flex items-center gap-2"
                         >
                             <i className="fas fa-sync-alt"></i>
                             تحديث التقرير
@@ -258,8 +258,8 @@ export default function Reports() {
                                         </td>
                                         <td className="px-6 py-4">
                                             <span className={`px-3 py-1 rounded-full text-xs font-medium ${user.Balance >= 60 ? 'bg-green-100 text-green-700' :
-                                                    user.Balance >= 20 ? 'bg-yellow-100 text-yellow-700' :
-                                                        'bg-red-100 text-red-700'
+                                                user.Balance >= 20 ? 'bg-yellow-100 text-yellow-700' :
+                                                    'bg-red-100 text-red-700'
                                                 }`}>
                                                 {user.Balance >= 60 ? 'ممتاز' : user.Balance >= 20 ? 'جيد' : 'منخفض'}
                                             </span>
@@ -298,8 +298,8 @@ export default function Reports() {
                                         </td>
                                         <td className="px-6 py-4">
                                             <span className={`px-3 py-1 rounded-full text-xs font-medium ${mission.Type === 'external'
-                                                    ? 'bg-purple-100 text-purple-700'
-                                                    : 'bg-green-100 text-green-700'
+                                                ? 'bg-purple-100 text-purple-700'
+                                                : 'bg-green-100 text-green-700'
                                                 }`}>
                                                 {mission.Type === 'external' ? 'خارجية' : 'داخلية'}
                                             </span>

@@ -49,13 +49,14 @@ type MissionParticipant struct {
 }
 
 type User struct {
-	ID        int32
-	Name      string
-	Email     string
-	Mobile    string
-	Job       string
-	Password  string
-	Balance   int32
-	Role      string
-	CreatedAt time.Time
+	ID              int32
+	Name            string
+	Email           string
+	Mobile          string
+	Job             string
+	Password        string
+	Balance         int32
+	NegativeBalance string
+	Role            string
+	CreatedAt       time.Time
 }

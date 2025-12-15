@@ -89,6 +89,35 @@ export default function Users() {
     }
   };
 
+  const handleToggleNegativeBalance = async (userId, currentStatus) => {
+    try {
+      const action = currentStatus === 'yes' ? 'disallow' : 'allow';
+      const confirmMessage = currentStatus === 'yes'
+        ? 'هل تريد منع الرصيد السالب لهذا المستخدم؟'
+        : 'هل تريد السماح بالرصيد السالب لهذا المستخدم؟';
+
+      if (!window.confirm(confirmMessage)) return;
+
+      if (action === 'allow') {
+        await axios.post(`/api/users/${userId}/allow-negative-balance`);
+      } else {
+        await axios.post(`/api/users/${userId}/disallow-negative-balance`);
+      }
+
+      // Update local state
+      setUsers(prev => prev.map(user =>
+        user.ID === userId
+          ? { ...user, NegativeBalance: currentStatus === 'yes' ? 'no' : 'yes' }
+          : user
+      ));
+
+      alert('تم تحديث الإعدادات بنجاح!');
+    } catch (err) {
+      console.error(err);
+      alert('حدث خطأ أثناء التحديث: ' + err.message);
+    }
+  };
+
   const handleAdd = () => {
     // يمكن إضافة توجيه إلى صفحة إضافة مستخدم جديد هنا
     console.log('إضافة مستخدم جديد');
@@ -104,7 +133,7 @@ export default function Users() {
         </div>
         <Link
           to="addemp"
-          className="px-4 py-2 bg-green-700 text-white rounded-xl hover:bg-green-800 transition-colors flex items-center gap-2"
+          className="px-4 py-2 bg-dark-green text-white rounded-xl hover:bg-light-green transition-colors flex items-center gap-2"
         >
           <i className="fas fa-plus"></i>
           إضافة مستخدم
@@ -121,6 +150,7 @@ export default function Users() {
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">رقم الجوال</th>
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الوظيفة</th>
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الرصيد المتبقي</th>
+                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600"> الاستثناءات</th>
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الإجراءات</th>
               </tr>
             </thead>
@@ -151,6 +181,28 @@ export default function Users() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
+                      <button
+                        onClick={() => handleToggleNegativeBalance(user.ID, user.NegativeBalance)}
+                        className={`px-3 py-1 rounded-full text-xs font-medium border transition-all ${user.NegativeBalance === 'yes'
+                          ? 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100'
+                          : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'
+                          }`}
+                        title={user.NegativeBalance === 'yes' ? 'مستثنى' : 'غير مستثنى'}
+                      >
+                        {user.NegativeBalance === 'yes' ? (
+                          <>
+                            <i className="fas fa-check-circle ml-1"></i>
+                            مستثنى
+                          </>
+                        ) : (
+                          <>
+                            <i className="fas fa-times-circle ml-1"></i>
+                            غير مستثنى
+                          </>
+                        )}
+                      </button>
+                    </td>
+                    <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <button
                           className="w-8 h-8 rounded-lg flex items-center justify-center text-green-600 hover:bg-green-50 transition-colors"
@@ -179,7 +231,7 @@ export default function Users() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="5" className="px-6 py-12 text-center text-gray-500">
+                  <td colSpan="6" className="px-6 py-12 text-center text-gray-500">
                     <div className="flex flex-col items-center gap-3">
                       <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center text-gray-300">
                         <i className="fas fa-users text-2xl"></i>

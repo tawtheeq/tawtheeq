@@ -68,7 +68,7 @@ export default function UserReport() {
                 </div>
                 <button
                     onClick={() => window.print()}
-                    className="px-4 py-2 bg-green-700 text-white rounded-xl hover:bg-green-800 transition-colors flex items-center gap-2"
+                    className="px-4 py-2 bg-dark-green text-white rounded-xl hover:bg-light-green transition-colors flex items-center gap-2"
                 >
                     <i className="fas fa-print"></i>
                     طباعة
@@ -82,7 +82,7 @@ export default function UserReport() {
                     معلومات الموظف
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="space-y-2">
+                    <div className="space-y-2 ">
                         <p className="text-sm text-gray-500">الاسم</p>
                         <p className="text-lg font-semibold text-gray-800">{user.Name}</p>
                     </div>
@@ -100,12 +100,12 @@ export default function UserReport() {
                             {user.Job === 'photo' ? 'مصور فوتوغرافي' : user.Job === 'video' ? 'مصور فيديو' : user.Job}
                         </p>
                     </div>
-                    <div className="space-y-2">
+                    {/* <div className="space-y-2">
                         <p className="text-sm text-gray-500">الصلاحية</p>
                         <p className="text-lg font-semibold text-gray-800">
                             {user.Role === 'admin' ? 'مدير' : 'مستخدم'}
                         </p>
-                    </div>
+                    </div> */}
                     <div className="space-y-2">
                         <p className="text-sm text-gray-500">الرصيد المتبقي</p>
                         <p className={`text-2xl font-bold ${user.Balance > 20 ? 'text-green-600' : user.Balance > 10 ? 'text-yellow-600' : 'text-red-600'}`}>
@@ -147,7 +147,7 @@ export default function UserReport() {
                                                 {mission.DurationDays} يوم
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 text-gray-600">{mission.Role || 'مشارك'}</td>
+                                        <td className="px-6 py-4 text-gray-600">{mission.Type || 'مصور'}</td>
                                     </tr>
                                 ))}
                             </tbody>

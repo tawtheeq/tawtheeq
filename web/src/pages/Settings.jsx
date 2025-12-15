@@ -1,7 +1,9 @@
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Settings() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     department: '',
     category: '',
@@ -9,28 +11,6 @@ export default function Settings() {
     priority: ''
   });
 
-  const statsData = [
-    {
-      title: 'إجمالي عدد المهام',
-      value: '12',
-      type: 'department'
-    },
-    {
-      title: 'إجمالي عدد المصورين',
-      value: '24',
-      type: 'category'
-    },
-    {
-      title: 'متوسط مدة المهمة',
-      value: '8',
-      type: 'status'
-    },
-    {
-      title: 'الأولويات',
-      value: '5',
-      type: 'priority'
-    }
-  ];
 
   // بيانات القوائم المنسدلة
   const selectOptions = {
@@ -65,72 +45,112 @@ export default function Settings() {
         <p className="text-sm text-gray-500 mt-1">إدارة إعدادات النظام والإحصائيات</p>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {statsData.map((stat, index) => (
-          <div key={index} className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 p-6">
-            <div className="mb-4">
-              <div className="text-sm font-medium text-gray-500 mb-2">{stat.title}</div>
-              <div className="text-3xl font-bold text-gray-800">{stat.value}</div>
+      {/* Quick Actions */}
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <button
+          onClick={() => navigate('/dashboard/categories/')}
+          className="p-6 bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-2xl hover:shadow-lg transition-all text-right group"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <i className="fas fa-tags text-3xl text-green-700 group-hover:scale-110 transition-transform"></i>
+            <i className="fas fa-arrow-left text-green-700"></i>
+          </div>
+          <h3 className="font-bold text-gray-800 mb-1">التصنيفات</h3>
+          <p className="text-sm text-gray-600">إضافة وعرض التصنيفات</p>
+        </button>
+
+        <button
+          onClick={() => navigate('/dashboard/users/')}
+          className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-2xl hover:shadow-lg transition-all text-right group"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <i className="fas fa-users text-3xl text-blue-700 group-hover:scale-110 transition-transform"></i>
+            <i className="fas fa-arrow-left text-blue-700"></i>
+          </div>
+          <h3 className="font-bold text-gray-800 mb-1"> الموظفين</h3>
+          <p className="text-sm text-gray-600">إضافة وعرض موظفين</p>
+        </button>
+
+        <button
+          onClick={() => navigate('/dashboard/reports')}
+          className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-2xl hover:shadow-lg transition-all text-right group"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <i className="fas fa-chart-bar text-3xl text-purple-700 group-hover:scale-110 transition-transform"></i>
+            <i className="fas fa-arrow-left text-purple-700"></i>
+          </div>
+          <h3 className="font-bold text-gray-800 mb-1">عرض التقارير</h3>
+          <p className="text-sm text-gray-600">إحصائيات وتقارير مفصلة</p>
+        </button>
+      </div>
+
+      {/* Danger Zone */}
+      <div className="mt-8">
+        <div className="border-2 border-red-200 rounded-2xl overflow-hidden bg-red-50/30">
+          <div className="bg-red-100 px-6 py-4 border-b-2 border-red-200">
+            <div className="flex items-center gap-3">
+              <i className="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+              <h2 className="text-xl font-bold text-red-800">منطقة الخطر</h2>
             </div>
-            <button
-              className="w-full px-4 py-2 bg-green-700 text-white text-sm rounded-xl hover:bg-green-800 transition-colors"
-              onClick={() => handleEdit(stat.type)}
-            >
-              تعديل
-            </button>
+            <p className="text-sm text-red-600 mt-1">إجراءات حساسة تتطلب الحذر</p>
           </div>
-        ))}
-      </div>
 
-      {/* Settings Form */}
-      <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 p-8">
-        <form className="space-y-6" onSubmit={handleSubmit}>
-          <h2 className="text-xl font-bold text-gray-800 mb-6">إعدادات النظام</h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {Object.entries(selectOptions).map(([key, options]) => (
-              <div key={key} className="space-y-2">
-                <label htmlFor={key} className="text-sm font-medium text-gray-700">
-                  {key === 'department' && 'القسم'}
-                  {key === 'category' && 'التصنيف'}
-                  {key === 'status' && 'الحالة'}
-                  {key === 'priority' && 'الأولوية'}
-                </label>
-                <select
-                  id={key}
-                  name={key}
-                  value={formData[key]}
-                  onChange={handleChange}
-                  className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                >
-                  <option value="">اختر...</option>
-                  {options.map((option, index) => (
-                    <option key={index} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
+          <div className="p-6 space-y-4">
+            {/* System Reset */}
+            <div className="flex items-center justify-between p-4 bg-white rounded-xl border border-red-200 hover:border-red-300 transition-colors">
+              <div className="flex-1">
+                <h3 className="font-bold text-gray-800 mb-1">إعادة تعيين النظام</h3>
+                <p className="text-sm text-gray-600">حذف جميع البيانات وإعادة النظام إلى حالته الأولية</p>
               </div>
-            ))}
-          </div>
+              <button
+                onClick={() => {
+                  if (window.confirm('هل أنت متأكد من إعادة تعيين النظام؟ سيتم حذف جميع البيانات!')) {
+                    console.log('System reset requested');
+                  }
+                }}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+              >
+                إعادة تعيين
+              </button>
+            </div>
 
-          <div className="flex gap-3 pt-6 border-t border-gray-100 flex justify-end">
-            <button
-              type="button"
-              className="px-6 py-3 bg-white text-gray-700 border border-gray-200 rounded-xl hover:bg-gray-50 transition-all shadow-sm hover:shadow-md font-semibold"
-            >
-              إلغاء
-            </button>
-            <button
-              type="submit"
-              className="px-6 py-3 bg-green-800 text-white font-semibold rounded-xl hover:bg-green-900 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-            >
-              حفظ التغييرات
-            </button>
+            {/* Clear All Missions */}
+            <div className="flex items-center justify-between p-4 bg-white rounded-xl border border-red-200 hover:border-red-300 transition-colors">
+              <div className="flex-1">
+                <h3 className="font-bold text-gray-800 mb-1">حذف جميع المهام</h3>
+                <p className="text-sm text-gray-600">حذف جميع المهام من قاعدة البيانات</p>
+              </div>
+              <button
+                onClick={() => {
+                  if (window.confirm('هل أنت متأكد من حذف جميع المهام؟')) {
+                    console.log('Clear all missions requested');
+                  }
+                }}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+              >
+                حذف الكل
+              </button>
+            </div>
+
+            {/* Export Database */}
+            {/* <div className="flex items-center justify-between p-4 bg-white rounded-xl border border-orange-200 hover:border-orange-300 transition-colors">
+              <div className="flex-1">
+                <h3 className="font-bold text-gray-800 mb-1">تصدير قاعدة البيانات</h3>
+                <p className="text-sm text-gray-600">تحميل نسخة احتياطية من قاعدة البيانات</p>
+              </div>
+              <button
+                onClick={() => {
+                  console.log('Export database requested');
+                }}
+                className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors font-medium"
+              >
+                تصدير
+              </button>
+            </div> */}
           </div>
-        </form>
+        </div>
       </div>
+
     </div>
   );
 }

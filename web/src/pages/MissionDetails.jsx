@@ -73,7 +73,7 @@ export default function MissionDetails() {
       .join('\n');
   };
 
-  const handleShareWhatsApp = () => {
+  const handleShareSignal = async () => {
     const shareText = [
       '*أمر إسناد مهمة عمل*',
       `اسم المهمة: ${mission.MissionName}`,
@@ -85,10 +85,21 @@ export default function MissionDetails() {
       formatParticipantsForShare()
     ].join('\n');
 
-    // WhatsApp API works best with this approach
-    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
-    window.open(whatsappUrl, '_blank');
+    try {
+      await axios.post("/api/signal/send", {
+        // to: mission.CoordinatorNum,   // أو أي رقم تبغاه
+        To: "+966551949199",
+        Text: shareText,
+        Image: "/Users/mohanad/app/images/mission.jpg"
+      });
+
+      alert("تم إرسال الرسالة عبر سيجنال بنجاح!");
+    } catch (err) {
+      console.error(err);
+      alert("حدث خطأ أثناء الإرسال عبر سيجنال");
+    }
   };
+
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -176,7 +187,7 @@ export default function MissionDetails() {
                   </thead>
                   <tbody className="divide-y divide-gray-100">
                     {participants.map(participant => (
-                      <tr key={participant.id} className="hover:bg-gray-50/50 transition-colors">
+                      <tr key={participant.ID} className="hover:bg-gray-50/50 transition-colors">
                         <td className="px-6 py-4 font-medium text-gray-800">{participant.Name}</td>
                         <td className="px-6 py-4 text-gray-600">{participant.Job || 'مشارك'}</td>
                         <td className="px-6 py-4">
@@ -237,10 +248,10 @@ export default function MissionDetails() {
 
             <button
               className="w-full py-3 bg-white text-green-900 rounded-xl font-bold hover:bg-green-50 transition-all shadow-lg flex items-center justify-center gap-2"
-              onClick={handleShareWhatsApp}
+              onClick={handleShareSignal}
             >
-              <i className="fab fa-whatsapp text-lg"></i>
-              <span>مشاركة عبر واتساب</span>
+              <i className="fas fa-paper-plane text-lg"></i>
+              <span>إرسال عبر سيجنال</span>
             </button>
           </div>
         </div>

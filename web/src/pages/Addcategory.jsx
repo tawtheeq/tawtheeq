@@ -111,7 +111,7 @@ export default function Addcategory() {
                         </button>
                         <button
                             type="submit"
-                            className="px-6 py-2 bg-green-700 text-white rounded-xl hover:bg-green-800 transition-colors flex items-center gap-2"
+                            className="px-6 py-2 bg-dark-green text-white rounded-xl hover:bg-light-green transition-colors flex items-center gap-2"
                         >
                             <i className="fas fa-plus"></i>
                             إضافة

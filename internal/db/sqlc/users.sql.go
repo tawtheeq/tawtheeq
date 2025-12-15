@@ -13,7 +13,7 @@ import (
 const addUser = `-- name: AddUser :one
 INSERT INTO users (name, email, mobile, job, role)
 VALUES ($1, $2, $3, $4, $5)
-RETURNING id, name, email, mobile, job, password, balance, role, created_at
+RETURNING id, name, email, mobile, job, password, balance, negative_balance, role, created_at
 `
 
 type AddUserParams struct {
@@ -41,10 +41,22 @@ func (q *Queries) AddUser(ctx context.Context, arg AddUserParams) (User, error) 
 		&i.Job,
 		&i.Password,
 		&i.Balance,
+		&i.NegativeBalance,
 		&i.Role,
 		&i.CreatedAt,
 	)
 	return i, err
+}
+
+const allowNegativeBalance = `-- name: AllowNegativeBalance :exec
+UPDATE users
+SET negative_balance = 'yes'
+WHERE id = $1
+`
+
+func (q *Queries) AllowNegativeBalance(ctx context.Context, id int32) error {
+	_, err := q.db.ExecContext(ctx, allowNegativeBalance, id)
+	return err
 }
 
 const checkUserByEmail = `-- name: CheckUserByEmail :one
@@ -79,8 +91,19 @@ func (q *Queries) DeleteUser(ctx context.Context, id int32) error {
 	return err
 }
 
+const disallowNegativeBalance = `-- name: DisallowNegativeBalance :exec
+UPDATE users
+SET negative_balance = 'no'
+WHERE id = $1
+`
+
+func (q *Queries) DisallowNegativeBalance(ctx context.Context, id int32) error {
+	_, err := q.db.ExecContext(ctx, disallowNegativeBalance, id)
+	return err
+}
+
 const getAllUsers = `-- name: GetAllUsers :many
-SELECT id, name, email, mobile, job, password, balance, role, created_at
+SELECT id, name, email, mobile, job, password, balance, negative_balance, role, created_at
 FROM users
 ORDER BY id
 `
@@ -102,6 +125,7 @@ func (q *Queries) GetAllUsers(ctx context.Context) ([]User, error) {
 			&i.Job,
 			&i.Password,
 			&i.Balance,
+			&i.NegativeBalance,
 			&i.Role,
 			&i.CreatedAt,
 		); err != nil {
@@ -119,7 +143,7 @@ func (q *Queries) GetAllUsers(ctx context.Context) ([]User, error) {
 }
 
 const getUserByEmail = `-- name: GetUserByEmail :one
-SELECT id, name, email, mobile, job, password, balance, role, created_at
+SELECT id, name, email, mobile, job, password, balance, negative_balance, role, created_at
 FROM users
 WHERE email = $1
 `
@@ -135,6 +159,7 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error
 		&i.Job,
 		&i.Password,
 		&i.Balance,
+		&i.NegativeBalance,
 		&i.Role,
 		&i.CreatedAt,
 	)
@@ -142,7 +167,7 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error
 }
 
 const getUserByID = `-- name: GetUserByID :one
-SELECT id, name, email, mobile, job, password, balance, role, created_at
+SELECT id, name, email, mobile, job, password, balance, negative_balance, role, created_at
 FROM users
 WHERE id = $1
 `
@@ -158,6 +183,7 @@ func (q *Queries) GetUserByID(ctx context.Context, id int32) (User, error) {
 		&i.Job,
 		&i.Password,
 		&i.Balance,
+		&i.NegativeBalance,
 		&i.Role,
 		&i.CreatedAt,
 	)
@@ -165,7 +191,7 @@ func (q *Queries) GetUserByID(ctx context.Context, id int32) (User, error) {
 }
 
 const getUserByMobile = `-- name: GetUserByMobile :one
-SELECT id, name, email, mobile, job, password, balance, role, created_at
+SELECT id, name, email, mobile, job, password, balance, negative_balance, role, created_at
 FROM users
 WHERE mobile = $1
 `
@@ -181,6 +207,7 @@ func (q *Queries) GetUserByMobile(ctx context.Context, mobile string) (User, err
 		&i.Job,
 		&i.Password,
 		&i.Balance,
+		&i.NegativeBalance,
 		&i.Role,
 		&i.CreatedAt,
 	)
@@ -247,7 +274,7 @@ func (q *Queries) GetUserWithLeaves(ctx context.Context, id int32) ([]GetUserWit
 }
 
 const getUserWithSufficientBalance = `-- name: GetUserWithSufficientBalance :many
-SELECT id, name, email, mobile, job, password, balance, role, created_at
+SELECT id, name, email, mobile, job, password, balance, negative_balance, role, created_at
 FROM users
 WHERE balance >= $1
 `
@@ -269,6 +296,7 @@ func (q *Queries) GetUserWithSufficientBalance(ctx context.Context, balance int3
 			&i.Job,
 			&i.Password,
 			&i.Balance,
+			&i.NegativeBalance,
 			&i.Role,
 			&i.CreatedAt,
 		); err != nil {
@@ -289,7 +317,7 @@ const makeUserAdmin = `-- name: MakeUserAdmin :one
 UPDATE users
 SET role = 'admin'
 WHERE id = $1
-RETURNING id, name, email, mobile, job, password, balance, role, created_at
+RETURNING id, name, email, mobile, job, password, balance, negative_balance, role, created_at
 `
 
 func (q *Queries) MakeUserAdmin(ctx context.Context, id int32) (User, error) {
@@ -303,6 +331,7 @@ func (q *Queries) MakeUserAdmin(ctx context.Context, id int32) (User, error) {
 		&i.Job,
 		&i.Password,
 		&i.Balance,
+		&i.NegativeBalance,
 		&i.Role,
 		&i.CreatedAt,
 	)
@@ -313,7 +342,7 @@ const removeUserAdmin = `-- name: RemoveUserAdmin :one
 UPDATE users
 SET role = 'user'
 WHERE id = $1
-RETURNING id, name, email, mobile, job, password, balance, role, created_at
+RETURNING id, name, email, mobile, job, password, balance, negative_balance, role, created_at
 `
 
 func (q *Queries) RemoveUserAdmin(ctx context.Context, id int32) (User, error) {
@@ -327,6 +356,7 @@ func (q *Queries) RemoveUserAdmin(ctx context.Context, id int32) (User, error) {
 		&i.Job,
 		&i.Password,
 		&i.Balance,
+		&i.NegativeBalance,
 		&i.Role,
 		&i.CreatedAt,
 	)
@@ -337,7 +367,7 @@ const updateBalance = `-- name: UpdateBalance :one
 UPDATE users
 SET balance = $1
 WHERE id = $2
-RETURNING id, name, email, mobile, job, password, balance, role, created_at
+RETURNING id, name, email, mobile, job, password, balance, negative_balance, role, created_at
 `
 
 type UpdateBalanceParams struct {
@@ -356,6 +386,7 @@ func (q *Queries) UpdateBalance(ctx context.Context, arg UpdateBalanceParams) (U
 		&i.Job,
 		&i.Password,
 		&i.Balance,
+		&i.NegativeBalance,
 		&i.Role,
 		&i.CreatedAt,
 	)
@@ -394,7 +425,7 @@ const updatePassword = `-- name: UpdatePassword :one
 UPDATE users
 SET password = $1
 WHERE id = $2
-RETURNING id, name, email, mobile, job, password, balance, role, created_at
+RETURNING id, name, email, mobile, job, password, balance, negative_balance, role, created_at
 `
 
 type UpdatePasswordParams struct {
@@ -413,6 +444,7 @@ func (q *Queries) UpdatePassword(ctx context.Context, arg UpdatePasswordParams) 
 		&i.Job,
 		&i.Password,
 		&i.Balance,
+		&i.NegativeBalance,
 		&i.Role,
 		&i.CreatedAt,
 	)
@@ -427,7 +459,7 @@ SET name = $2,
     job = $5,   
     role = $6
 WHERE id = $1
-RETURNING id, name, email, mobile, job, password, balance, role, created_at
+RETURNING id, name, email, mobile, job, password, balance, negative_balance, role, created_at
 `
 
 type UpdateUserParams struct {
@@ -457,6 +489,7 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, e
 		&i.Job,
 		&i.Password,
 		&i.Balance,
+		&i.NegativeBalance,
 		&i.Role,
 		&i.CreatedAt,
 	)

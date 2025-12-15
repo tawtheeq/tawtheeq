@@ -14,16 +14,6 @@ export default function Sidebar() {
       icon: 'fas fa-home',
     },
     {
-      title: 'المستخدمون',
-      path: 'users',
-      icon: 'fas fa-users',
-    },
-    {
-      title: 'التصنيفات',
-      path: 'categories',
-      icon: 'fas fa-folder',
-    },
-    {
       title: 'المهام',
       path: 'missions',
       icon: 'fas fa-tasks',
@@ -56,23 +46,24 @@ export default function Sidebar() {
       <aside className={`relative fixed inset-y-0 right-0 z-50 w-64 bg-white/80 backdrop-blur-md border-l border-gray-200 shadow-xl transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'} md:translate-x-0 md:static md:shadow-none flex flex-col`}>
 
         {/* App Name Header */}
-        <div className="p-6 border-b border-gray-100 bg-blue-700">
+        <div className="p-6 border-b border-gray-100 bg-[#29504d]">
+
           <div className="flex justify-center mb-3">
-            <img src="/assets/logo.png" alt="شعار المنصة" className="w-20 h-20 object-contain" />
+            <img src="/assets/mod-horizontal.svg" alt="شعار المنصة" className="h-16 object-contain" />
           </div>
           <h2 className="text-lg font-bold text-white text-center">إدارة العمليات الإعلامية</h2>
           <p className="text-xs text-green-100 text-center mt-1">نظام إدارة المهام</p>
         </div>
 
         {/* Navigation Menu */}
-        <nav className="flex-1 mt-6 px-4 overflow-y-auto">
+        <nav className="flex-1 mt-6 px-4 p-4 overflow-y-auto">
           <ul className="space-y-2">
             {menuItems.map((item, index) => (
               <li key={index}>
                 <Link
                   to={item.path}
                   className={`flex items-center justify-between p-3 rounded-xl transition-all duration-200 ${location.pathname === '/dashboard/' + item.path || (item.path === '/dashboard' && location.pathname === '/dashboard')
-                    ? 'bg-green-50 text-green-700 font-semibold shadow-sm ring-1 ring-green-200'
+                    ? 'bg-green-50 text-dark-green font-semibold shadow-sm ring-1 ring-green-200'
                     : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                     }`}
                 >

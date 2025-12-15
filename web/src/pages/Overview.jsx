@@ -124,9 +124,9 @@ export default function Overview() {
           <div key={index} className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 p-6">
             <div className="flex items-center justify-between mb-4">
               <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${stat.color === 'blue' ? 'bg-blue-50 text-blue-600' :
-                  stat.color === 'green' ? 'bg-green-50 text-green-600' :
-                    stat.color === 'yellow' ? 'bg-yellow-50 text-yellow-600' :
-                      'bg-red-50 text-red-600'
+                stat.color === 'green' ? 'bg-green-50 text-green-600' :
+                  stat.color === 'yellow' ? 'bg-yellow-50 text-yellow-600' :
+                    'bg-red-50 text-red-600'
                 }`}>
                 <i className={`${stat.icon} text-xl`}></i>
               </div>
@@ -204,8 +204,8 @@ export default function Overview() {
                     <div className="flex items-start justify-between mb-2">
                       <h3 className="font-semibold text-gray-800">{mission.MissionName}</h3>
                       <span className={`px-2 py-1 text-xs rounded-full ${mission.Type === 'external'
-                          ? 'bg-purple-100 text-purple-700'
-                          : 'bg-blue-100 text-blue-700'
+                        ? 'bg-purple-100 text-purple-700'
+                        : 'bg-blue-100 text-blue-700'
                         }`}>
                         {mission.Type === 'external' ? 'خارجية' : 'داخلية'}
                       </span>

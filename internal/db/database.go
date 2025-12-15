@@ -6,7 +6,6 @@ import (
 	"os"
 
 	// "github.com/jmoiron/sqlx"
-
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	// "github.com/joho/godotenv"
@@ -32,7 +31,5 @@ func Database() {
 	} else {
 		fmt.Println("Successfully pinged the database")
 	}
-
 	DB = db
-
 }
