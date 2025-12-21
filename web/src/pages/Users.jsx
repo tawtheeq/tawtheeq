@@ -74,7 +74,7 @@ export default function Users() {
 
   const handleDelete = async (id) => {
     if (!id) return;
-    const confirmDelete = window.confirm("هل أنت متأكد من حذف المستخدم؟");
+    const confirmDelete = window.confirm("هل أنت متأكد من حذف الموظف؟");
     if (!confirmDelete) return;
 
     try {
@@ -93,8 +93,8 @@ export default function Users() {
     try {
       const action = currentStatus === 'yes' ? 'disallow' : 'allow';
       const confirmMessage = currentStatus === 'yes'
-        ? 'هل تريد منع الرصيد السالب لهذا المستخدم؟'
-        : 'هل تريد السماح بالرصيد السالب لهذا المستخدم؟';
+        ? 'هل تريد إزالة الاستثناء من هذا الموظف'
+        : 'هل تريد إضافة الاستثناء لهذا الموظف؟';
 
       if (!window.confirm(confirmMessage)) return;
 

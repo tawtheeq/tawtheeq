@@ -88,7 +88,7 @@ export default function MissionDetails() {
     try {
       await axios.post("/api/signal/send", {
         // to: mission.CoordinatorNum,   // أو أي رقم تبغاه
-        To: "+966551949199",
+        To: "+966558554164",
         Text: shareText,
         Image: "/Users/mohanad/app/images/mission.jpg"
       });
