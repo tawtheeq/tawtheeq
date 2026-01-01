@@ -10,11 +10,12 @@ import (
 func (s *Services) RegisterUser(user sqlc.AddUserParams) error {
 
 	_, err := s.DBQueries.AddUser(context.Background(), sqlc.AddUserParams{
-		Name:   user.Name,
-		Email:  user.Email,
-		Mobile: user.Mobile,
-		Job:    user.Job,
-		Role:   user.Role,
+		Name:    user.Name,
+		Email:   user.Email,
+		Mobile:  user.Mobile,
+		Job:     user.Job,
+		Role:    user.Role,
+		Balance: user.Balance,
 	})
 
 	if err != nil {

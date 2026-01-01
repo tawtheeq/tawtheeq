@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { validateSaudiPhone } from '../utils/phoneValidation';
 
 export default function Addmission() {
 
@@ -91,11 +92,26 @@ export default function Addmission() {
 
 
 
-    const numericFields = ["CoordinatorNum", "MainCategory", "SubCategory", "Year", "Month", "Day", "DurationDays", "CreatedBy"];
+    const numericFields = ["MainCategory", "SubCategory", "Year", "Month", "Day", "DurationDays", "CreatedBy"];
+
+
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
 
+        // Handle phone validation for CoordinatorNum field
+        if (name === "CoordinatorNum") {
+            const validatedPhone = validateSaudiPhone(value);
+
+            // Only update if the phone is valid
+            if (validatedPhone !== null) {
+                setForm({ ...form, CoordinatorNum: validatedPhone });
+            }
+            return; // Exit early to prevent the code below from running
+        }
+
+        // Handle all other fields normally
         setForm((prev) => ({
             ...prev,
             [name]: numericFields.includes(name) ? Number(value) : value,
@@ -325,13 +341,14 @@ export default function Addmission() {
                                 <div className="space-y-2">
                                     {/* <label className="text-sm font-medium text-gray-700">رقم المنسق</label> */}
                                     <input
-                                        type="number"
+                                        type="text"
                                         name="CoordinatorNum"
+                                        dir="ltr"
                                         value={form.CoordinatorNum}
                                         onChange={handleChange}
                                         required
                                         className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                                        placeholder=" رقم جوال المنسق"
+                                        placeholder="+9665XXXXXXXX"
                                     />
                                 </div>
 
@@ -391,6 +408,7 @@ export default function Addmission() {
                                         name="CreatedBy"
                                         value={form.CreatedBy}
                                         onChange={handleChange}
+                                        // disabled
                                         required
                                         className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
                                         placeholder="اسم المستخدم"
@@ -400,7 +418,6 @@ export default function Addmission() {
 
                         </div>
                     </div>
-
 
 
                     <div className="pt-6 border-t border-gray-100 flex justify-end gap-3">

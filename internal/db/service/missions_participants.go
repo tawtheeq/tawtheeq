@@ -29,6 +29,11 @@ func (s *Services) AddParticipantToMission(participant sqlc.AddMissionParticipan
 		return ErrParticipantNotFound
 	}
 
+	if user.Blocked {
+		tx.Rollback()
+		return fmt.Errorf("user is blocked")
+	}
+
 	missionData, err := qtx.GetMissionByID(context.Background(), participant.MissionID)
 	if err != nil {
 		fmt.Println(ErrMissionNotFound)
@@ -66,7 +71,7 @@ func (s *Services) AddParticipantToMission(participant sqlc.AddMissionParticipan
 
 	if missionData.Type == "external" {
 
-		if user.NegativeBalance == "no" && user.Balance < missionData.DurationDays {
+		if !user.NegativeBalance && user.Balance < missionData.DurationDays {
 			tx.Rollback()
 			return fmt.Errorf("insufficient balance: user has %d days, mission requires %d days",
 				user.Balance, missionData.DurationDays)

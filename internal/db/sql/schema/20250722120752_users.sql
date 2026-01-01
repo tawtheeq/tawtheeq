@@ -7,8 +7,9 @@ CREATE TABLE users (
     mobile VARCHAR(15) NOT NULL UNIQUE,
     job VARCHAR(100) NOT NULL,
     password VARCHAR(255) NOT NULL DEFAULT '',
+    blocked BOOLEAN NOT NULL DEFAULT false,
     balance INT NOT NULL DEFAULT 60,
-    negative_balance TEXT NOT NULL DEFAULT 'no',
+    negative_balance BOOLEAN NOT NULL DEFAULT false,
     role VARCHAR(20) NOT NULL DEFAULT 'user',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

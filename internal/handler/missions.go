@@ -58,7 +58,7 @@ func (h *Handler) AddMission(w http.ResponseWriter, r *http.Request) {
 	log.Println("Mission params received:", missionParams)
 
 	if missionParams.MissionName == "" ||
-		missionParams.CoordinatorNum == 0 ||
+		missionParams.CoordinatorNum == "" ||
 		missionParams.DurationDays == 0 ||
 		missionParams.Day == 0 ||
 		missionParams.Month == 0 ||

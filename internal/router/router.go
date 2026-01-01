@@ -12,7 +12,7 @@ func Router(h *handler.Handler) *http.ServeMux {
 	// user routes
 	mux.HandleFunc("POST /api/users", h.AddUser)
 	mux.HandleFunc("GET /api/users", h.GetUsers)
-	mux.HandleFunc("GET /api/usersbalance/{balance}", h.GetUserWithSufficientBalance)
+	// mux.HandleFunc("GET /api/usersbalance/{balance}", h.GetUserWithSufficientBalance)
 	mux.HandleFunc("GET /api/users/{id}/report", h.GetUserReport)
 	mux.HandleFunc("GET /api/users/{id}", h.GetUserByID)
 	mux.HandleFunc("PUT /api/users/{id}", h.UpdteUserBasicInfo)

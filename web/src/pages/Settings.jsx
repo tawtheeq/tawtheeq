@@ -103,6 +103,7 @@ export default function Settings() {
                 <p className="text-sm text-gray-600">حذف جميع البيانات وإعادة النظام إلى حالته الأولية</p>
               </div>
               <button
+                disabled
                 onClick={() => {
                   if (window.confirm('هل أنت متأكد من إعادة تعيين النظام؟ سيتم حذف جميع البيانات!')) {
                     console.log('System reset requested');
@@ -121,6 +122,7 @@ export default function Settings() {
                 <p className="text-sm text-gray-600">حذف جميع المهام من قاعدة البيانات</p>
               </div>
               <button
+                disabled
                 onClick={() => {
                   if (window.confirm('هل أنت متأكد من حذف جميع المهام؟')) {
                     console.log('Clear all missions requested');

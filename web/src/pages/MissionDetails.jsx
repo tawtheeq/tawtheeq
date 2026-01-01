@@ -11,6 +11,7 @@ export default function MissionDetails() {
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -100,6 +101,58 @@ export default function MissionDetails() {
     }
   };
 
+  const handleSendToAllParticipants = async () => {
+    if (!participants.length) {
+      alert('لا يوجد مشاركين لإرسال الرسائل إليهم');
+      return;
+    }
+
+    if (!window.confirm(`هل أنت متأكد من إرسال رسائل لجميع المشاركين (${participants.length} مشارك)؟`)) {
+      return;
+    }
+
+    setIsSending(true); // تعطيل الزر
+    let successCount = 0;
+    let failCount = 0;
+
+    for (const participant of participants) {
+      const personalizedMessage = [
+        `*أمر إسناد مهمة عمل*`,
+        '',
+        `مرحباً ${participant.Name}،`,
+        '',
+        `تم إسنادك للمهمة التالية:`,
+        `� رقم المهمة: ${mission.ID}`,
+        `�📋 اسم المهمة: ${mission.MissionName}`,
+        `📅 التاريخ: ${formatDate(mission.Day, mission.Month, mission.Year)}`,
+        `⏱️ المدة: ${mission.DurationDays} يوم / أيام`,
+        `📞 رقم المنسق: ${mission.CoordinatorNum || 'غير محدد'}`,
+        `👤 دورك: ${participant.Job || 'مشارك'}`,
+        '',
+        `نتمنى لكم التوفيق في أداء المهمة!`
+      ].join('\n');
+
+      try {
+        await axios.post("/api/signal/send", {
+          To: participant.Mobile,
+          Text: personalizedMessage,
+          Image: "/Users/mohanad/app/images/mission.jpg"
+        });
+        successCount++;
+        console.log(`تم إرسال الرسالة إلى ${participant.Name}`);
+      } catch (err) {
+        failCount++;
+        console.error(`فشل إرسال الرسالة إلى ${participant.Name}:`, err);
+      }
+
+      // Add a small delay between messages to avoid overwhelming the server
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+
+    setIsSending(false); // تفعيل الزر مرة أخرى
+    alert(`تم إرسال ${successCount} رسالة بنجاح${failCount > 0 ? `\nفشل إرسال ${failCount} رسالة` : ''}`);
+  };
+
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -108,17 +161,24 @@ export default function MissionDetails() {
           <h1 className="text-3xl font-bold text-gray-800">{mission.MissionName}</h1>
           <div className="flex items-center gap-3 mt-2 text-gray-500">
             <span className="flex items-center gap-1">
+              <i className="far fa-tags"></i>
+              رقم المهمة: {mission.ID}
+            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+
+            <span className="flex items-center gap-1">
               <i className="far fa-calendar-alt"></i>
               {formatDate(mission.Day, mission.Month, mission.Year)}
             </span>
             <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+
             <span className="flex items-center gap-1">
               <i className="far fa-clock"></i>
               مدة المهمة: {mission.DurationDays} يوم
             </span>
             <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
             <span className="flex items-center gap-1">
-              <i className="far fa-category"></i>
+              <i className="far fa-tags"></i>
               نوع المهمة: {mission.Type == 'external' ? 'خارجية' : 'داخلية'}
             </span>
           </div>
@@ -247,11 +307,32 @@ export default function MissionDetails() {
             </div>
 
             <button
-              className="w-full py-3 bg-white text-green-900 rounded-xl font-bold hover:bg-green-50 transition-all shadow-lg flex items-center justify-center gap-2"
+              className="w-full py-3 bg-white text-green-900 rounded-xl font-bold hover:bg-green-50 transition-all shadow-lg flex items-center justify-center gap-2 mb-3"
               onClick={handleShareSignal}
             >
               <i className="fas fa-paper-plane text-lg"></i>
               <span>إرسال عبر سيجنال</span>
+            </button>
+
+            <button
+              className={`w-full py-3 rounded-xl font-bold transition-all shadow-lg flex items-center justify-center gap-2 border-2 border-white/20 ${isSending || participants.length === 0
+                ? 'bg-gray-500 text-gray-300 cursor-not-allowed'
+                : 'bg-green-700 text-white hover:bg-green-600'
+                }`}
+              onClick={handleSendToAllParticipants}
+              disabled={participants.length === 0 || isSending}
+            >
+              {isSending ? (
+                <>
+                  <i className="fas fa-spinner fa-spin text-lg"></i>
+                  <span>جاري الإرسال...</span>
+                </>
+              ) : (
+                <>
+                  <i className="fas fa-users text-lg"></i>
+                  <span>إرسال لجميع المشاركين</span>
+                </>
+              )}
             </button>
           </div>
         </div>

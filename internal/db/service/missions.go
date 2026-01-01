@@ -79,3 +79,11 @@ func (s *Services) DeleteMission(missionId int32) error {
 
 	return nil
 }
+
+func (s *Services) StatusUpdate(missionId sqlc.MissionStatusUpdateParams) error {
+	_, err := s.DBQueries.MissionStatusUpdate(context.Background(), missionId)
+	if err != nil {
+		return err
+	}
+	return nil
+}

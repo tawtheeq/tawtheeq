@@ -88,7 +88,7 @@ export default function Overview() {
       change: `${ongoingMissions.length} جارية`
     },
     {
-      title: 'إجمالي المستخدمين',
+      title: 'إجمالي الموظفين',
       value: totalUsers,
       icon: 'fas fa-users',
       color: 'green',
@@ -239,7 +239,7 @@ export default function Overview() {
             <div className="flex-1">
               <h3 className="font-bold text-red-800 mb-2">تنبيه: رصيد منخفض</h3>
               <p className="text-red-700 text-sm mb-3">
-                يوجد {usersWithLowBalance} مستخدم برصيد أقل من 20 يوم. يرجى مراجعة الأرصدة وتحديثها.
+                يوجد {usersWithLowBalance} موظفين برصيد أقل من 20 يوم. يرجى مراجعة الأرصدة وتحديثها.
               </p>
               <button
                 onClick={() => navigate('/dashboard/users')}
@@ -274,7 +274,7 @@ export default function Overview() {
             <i className="fas fa-user-plus text-3xl text-blue-700 group-hover:scale-110 transition-transform"></i>
             <i className="fas fa-arrow-left text-blue-700"></i>
           </div>
-          <h3 className="font-bold text-gray-800 mb-1">إضافة مستخدم جديد</h3>
+          <h3 className="font-bold text-gray-800 mb-1">إضافة موظف جديد</h3>
           <p className="text-sm text-gray-600">تسجيل موظف جديد في النظام</p>
         </button>
 

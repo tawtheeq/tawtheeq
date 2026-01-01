@@ -29,7 +29,7 @@ type Mission struct {
 	ID              int32
 	MissionName     string
 	CoordinatorName string
-	CoordinatorNum  int32
+	CoordinatorNum  string
 	MainCategory    int32
 	SubCategory     int32
 	Day             int32
@@ -55,8 +55,9 @@ type User struct {
 	Mobile          string
 	Job             string
 	Password        string
+	Blocked         bool
 	Balance         int32
-	NegativeBalance string
+	NegativeBalance bool
 	Role            string
 	CreatedAt       time.Time
 }

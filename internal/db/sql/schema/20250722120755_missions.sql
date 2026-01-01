@@ -4,7 +4,7 @@ CREATE TABLE missions (
     id SERIAL PRIMARY KEY,
     mission_name VARCHAR(255) NOT NULL,
     coordinator_name VARCHAR(255) NOT NULL,
-    coordinator_num INT NOT NULL,
+    coordinator_num VARCHAR(255) NOT NULL,
     main_category INT NOT NULL,
     sub_category INT NOT NULL,
     day INT NOT NULL,

@@ -131,6 +131,7 @@ export default function UserReport() {
                                 <tr className="bg-gray-50/50 border-b border-gray-100">
                                     <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">اسم المهمة</th>
                                     <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">التاريخ</th>
+                                    <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">نوع المهمة</th>
                                     <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">المدة</th>
                                     <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الدور</th>
                                 </tr>
@@ -147,6 +148,7 @@ export default function UserReport() {
                                                 {mission.DurationDays} يوم
                                             </span>
                                         </td>
+                                        <td className="px-6 py-4 text-gray-600">{mission.Type}</td>
                                         <td className="px-6 py-4 text-gray-600">{mission.Type || 'مصور'}</td>
                                     </tr>
                                 ))}

@@ -32,7 +32,7 @@ RETURNING id, mission_name, coordinator_name, coordinator_num, main_category, su
 type CreateMissionParams struct {
 	MissionName     string
 	CoordinatorName string
-	CoordinatorNum  int32
+	CoordinatorNum  string
 	MainCategory    int32
 	SubCategory     int32
 	Day             int32
@@ -111,7 +111,7 @@ type GetAllMissionsRow struct {
 	ID              int32
 	MissionName     string
 	CoordinatorName string
-	CoordinatorNum  int32
+	CoordinatorNum  string
 	MainCategory    int32
 	SubCategory     int32
 	Day             int32
@@ -187,7 +187,7 @@ type GetMissionByIDRow struct {
 	ID              int32
 	MissionName     string
 	CoordinatorName string
-	CoordinatorNum  int32
+	CoordinatorNum  string
 	MainCategory    int32
 	SubCategory     int32
 	Day             int32
@@ -222,6 +222,41 @@ func (q *Queries) GetMissionByID(ctx context.Context, id int32) (GetMissionByIDR
 	return i, err
 }
 
+const missionStatusUpdate = `-- name: MissionStatusUpdate :one
+UPDATE missions
+SET 
+status =$1 
+WHERE id=$2
+RETURNING id, mission_name, coordinator_name, coordinator_num, main_category, sub_category, day, month, year, type, duration_days, created_by, created_at, status
+`
+
+type MissionStatusUpdateParams struct {
+	Status string
+	ID     int32
+}
+
+func (q *Queries) MissionStatusUpdate(ctx context.Context, arg MissionStatusUpdateParams) (Mission, error) {
+	row := q.db.QueryRowContext(ctx, missionStatusUpdate, arg.Status, arg.ID)
+	var i Mission
+	err := row.Scan(
+		&i.ID,
+		&i.MissionName,
+		&i.CoordinatorName,
+		&i.CoordinatorNum,
+		&i.MainCategory,
+		&i.SubCategory,
+		&i.Day,
+		&i.Month,
+		&i.Year,
+		&i.Type,
+		&i.DurationDays,
+		&i.CreatedBy,
+		&i.CreatedAt,
+		&i.Status,
+	)
+	return i, err
+}
+
 const updateMission = `-- name: UpdateMission :one
 UPDATE missions
 SET
@@ -242,7 +277,7 @@ RETURNING id, mission_name, coordinator_name, coordinator_num, main_category, su
 type UpdateMissionParams struct {
 	MissionName     string
 	CoordinatorName string
-	CoordinatorNum  int32
+	CoordinatorNum  string
 	MainCategory    int32
 	SubCategory     int32
 	Day             int32

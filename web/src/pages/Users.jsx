@@ -127,16 +127,38 @@ export default function Users() {
     <div className="p-6 max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">قائمة المستخدمين</h1>
-          <p className="text-sm text-gray-500 mt-1">إدارة المستخدمين وصلاحياتهم ({users.length})</p>
+        {/* <div>
+          <h1 className="text-2xl font-bold text-gray-800">قائمة الموظفين</h1>
+          <p className="text-sm text-gray-500 mt-1">إدارة الموظفين وصلاحياتهم ({users.length})</p>
         </div>
         <Link
           to="addemp"
           className="px-4 py-2 bg-dark-green text-white rounded-xl hover:bg-light-green transition-colors flex items-center gap-2"
         >
           <i className="fas fa-plus"></i>
-          إضافة مستخدم
+          إضافة موظف
+        </Link> */}
+
+
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => navigate(-1)}
+            className="w-10 h-10 rounded-xl flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors"
+          >
+            <i className="fas fa-arrow-right"></i>
+          </button>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">  قائمة الموظفين  </h1>
+            <p className="text-sm text-gray-500 mt-1">إدارة الموظفين وصلاحياتهم ({users.length})</p>
+          </div>
+        </div>
+        <Link
+          to="addemp"
+          className="px-4 py-2 bg-dark-green text-white rounded-xl hover:bg-light-green transition-colors flex items-center gap-2"
+        >
+          <i className="fas fa-plus"></i>
+          إضافة موظف
         </Link>
       </div>
 

@@ -17,7 +17,7 @@ export default function Dashboard() {
 
       <main className="flex-1 mr-64 min-h-screen flex flex-col transition-all duration-300">
 
-        <div className="p-6 overflow-y-auto h-full">
+        <div className="overflow-y-auto h-full">
           <Outlet />
         </div>
       </main>

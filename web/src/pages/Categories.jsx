@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import axios from 'axios';
 
 export default function Categories() {
+  const navigate = useNavigate();
 
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -66,9 +68,32 @@ export default function Categories() {
     <div className="p-6 max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
-        <div>
+        {/* <div>
           <h1 className="text-2xl font-bold text-gray-800">التصنيفات</h1>
           <p className="text-sm text-gray-500 mt-1">إدارة تصنيفات المحتوى ({categories.length})</p>
+        </div>
+        <Link
+          to="addcategory"
+          className="px-4 py-2 bg-dark-green text-white rounded-xl hover:bg-light-green transition-colors flex items-center gap-2"
+        >
+          <i className="fas fa-plus"></i>
+          إضافة تصنيف
+        </Link> */}
+
+
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => navigate(-1)}
+            className="w-10 h-10 rounded-xl flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors"
+          >
+            <i className="fas fa-arrow-right"></i>
+          </button>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">   التصنيفات  </h1>
+            <p className="text-sm text-gray-500 mt-1">إدارة تصنيفات المحتوى ({categories.length})</p>
+          </div>
+
         </div>
         <Link
           to="addcategory"

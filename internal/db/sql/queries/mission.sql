@@ -74,3 +74,11 @@ SET
     duration_days = $10
 WHERE id = $11
 RETURNING *;
+
+
+-- name: MissionStatusUpdate :one
+UPDATE missions
+SET 
+status =$1 
+WHERE id=$2
+RETURNING *;

@@ -71,7 +71,6 @@ export default function Missions() {
   const handleAdd = () => {
     // يمكن إضافة توجيه إلى صفحة إضافة مستخدم جديد هنا
     console.log('إضافة مهمة جديد');
-
   };
 
   return (
@@ -97,6 +96,8 @@ export default function Missions() {
           <table className="w-full">
             <thead>
               <tr className="bg-gray-50/50 border-b border-gray-100">
+                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">رقم المهمة </th>
+
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">اسم المناسبة</th>
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">التاريخ</th>
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">مدة المهمة بالآيام</th>
@@ -108,6 +109,9 @@ export default function Missions() {
               {missions.length > 0 ? (
                 missions.map(mission => (
                   <tr key={mission.ID} className="hover:bg-gray-50/50 transition-colors">
+                    <td className="px-6 py-4">
+                      <span className="font-medium text-gray-800">{mission.ID}</span>
+                    </td>
                     <td className="px-6 py-4">
                       <span className="font-medium text-gray-800">{mission.MissionName}</span>
                     </td>

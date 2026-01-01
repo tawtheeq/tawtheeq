@@ -28,31 +28,31 @@ func (h *Handler) GetUsers(w http.ResponseWriter, r *http.Request) {
 	response.Send(w, http.StatusOK, true, "Data retrieved successfully ...", users)
 }
 
-func (h *Handler) GetUserWithSufficientBalance(w http.ResponseWriter, r *http.Request) {
+// func (h *Handler) GetUserWithSufficientBalance(w http.ResponseWriter, r *http.Request) {
 
-	balance := r.PathValue("balance")
+// 	balance := r.PathValue("balance")
 
-	balanceInt, err := strconv.Atoi(balance)
-	if err != nil {
-		response.Error(w, http.StatusBadRequest, "Invalid user balance")
-		return
-	}
+// 	balanceInt, err := strconv.Atoi(balance)
+// 	if err != nil {
+// 		response.Error(w, http.StatusBadRequest, "Invalid user balance")
+// 		return
+// 	}
 
-	users, err := h.svc.DBQueries.GetUserWithSufficientBalance(context.Background(), int32(balanceInt))
-	if err != nil {
-		http.Error(w, "Failed to get users with sufficient balance", http.StatusInternalServerError)
-		fmt.Println(err)
-		return
-	}
+// 	users, err := h.svc.DBQueries.GetUserWithSufficientBalance(context.Background(), int32(balanceInt))
+// 	if err != nil {
+// 		http.Error(w, "Failed to get users with sufficient balance", http.StatusInternalServerError)
+// 		fmt.Println(err)
+// 		return
+// 	}
 
-	if len(users) == 0 {
-		response.Send(w, http.StatusOK, false, "No users found", users)
-		return
-	}
+// 	if len(users) == 0 {
+// 		response.Send(w, http.StatusOK, false, "No users found", users)
+// 		return
+// 	}
 
-	response.Send(w, http.StatusOK, true, "Data retrieved successfully ...", users)
+// 	response.Send(w, http.StatusOK, true, "Data retrieved successfully ...", users)
 
-}
+// }
 
 func (h *Handler) AddUser(w http.ResponseWriter, r *http.Request) {
 
@@ -123,7 +123,7 @@ func (h *Handler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) UpdteUserBasicInfo(w http.ResponseWriter, r *http.Request) {
 
-	var user sqlc.UpdateBasicInfoParams
+	var user sqlc.UpdateUserParams
 
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
@@ -131,7 +131,7 @@ func (h *Handler) UpdteUserBasicInfo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.svc.DBQueries.UpdateBasicInfo(context.Background(), user)
+	err = h.svc.UpdateUser(user)
 	if err != nil {
 		response.Error(w, http.StatusInternalServerError, "Failed to update user")
 		fmt.Println(err)

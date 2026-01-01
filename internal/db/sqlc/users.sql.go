@@ -11,17 +11,20 @@ import (
 )
 
 const addUser = `-- name: AddUser :one
-INSERT INTO users (name, email, mobile, job, role)
-VALUES ($1, $2, $3, $4, $5)
-RETURNING id, name, email, mobile, job, password, balance, negative_balance, role, created_at
+INSERT INTO users (name, email, mobile, job, role, blocked, balance, negative_balance)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+RETURNING id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
 `
 
 type AddUserParams struct {
-	Name   string
-	Email  string
-	Mobile string
-	Job    string
-	Role   string
+	Name            string
+	Email           string
+	Mobile          string
+	Job             string
+	Role            string
+	Blocked         bool
+	Balance         int32
+	NegativeBalance bool
 }
 
 func (q *Queries) AddUser(ctx context.Context, arg AddUserParams) (User, error) {
@@ -31,6 +34,9 @@ func (q *Queries) AddUser(ctx context.Context, arg AddUserParams) (User, error) 
 		arg.Mobile,
 		arg.Job,
 		arg.Role,
+		arg.Blocked,
+		arg.Balance,
+		arg.NegativeBalance,
 	)
 	var i User
 	err := row.Scan(
@@ -40,6 +46,7 @@ func (q *Queries) AddUser(ctx context.Context, arg AddUserParams) (User, error) 
 		&i.Mobile,
 		&i.Job,
 		&i.Password,
+		&i.Blocked,
 		&i.Balance,
 		&i.NegativeBalance,
 		&i.Role,
@@ -103,7 +110,7 @@ func (q *Queries) DisallowNegativeBalance(ctx context.Context, id int32) error {
 }
 
 const getAllUsers = `-- name: GetAllUsers :many
-SELECT id, name, email, mobile, job, password, balance, negative_balance, role, created_at
+SELECT id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
 FROM users
 ORDER BY id
 `
@@ -124,6 +131,7 @@ func (q *Queries) GetAllUsers(ctx context.Context) ([]User, error) {
 			&i.Mobile,
 			&i.Job,
 			&i.Password,
+			&i.Blocked,
 			&i.Balance,
 			&i.NegativeBalance,
 			&i.Role,
@@ -143,7 +151,7 @@ func (q *Queries) GetAllUsers(ctx context.Context) ([]User, error) {
 }
 
 const getUserByEmail = `-- name: GetUserByEmail :one
-SELECT id, name, email, mobile, job, password, balance, negative_balance, role, created_at
+SELECT id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
 FROM users
 WHERE email = $1
 `
@@ -158,6 +166,7 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error
 		&i.Mobile,
 		&i.Job,
 		&i.Password,
+		&i.Blocked,
 		&i.Balance,
 		&i.NegativeBalance,
 		&i.Role,
@@ -167,7 +176,7 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error
 }
 
 const getUserByID = `-- name: GetUserByID :one
-SELECT id, name, email, mobile, job, password, balance, negative_balance, role, created_at
+SELECT id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
 FROM users
 WHERE id = $1
 `
@@ -182,6 +191,7 @@ func (q *Queries) GetUserByID(ctx context.Context, id int32) (User, error) {
 		&i.Mobile,
 		&i.Job,
 		&i.Password,
+		&i.Blocked,
 		&i.Balance,
 		&i.NegativeBalance,
 		&i.Role,
@@ -191,7 +201,7 @@ func (q *Queries) GetUserByID(ctx context.Context, id int32) (User, error) {
 }
 
 const getUserByMobile = `-- name: GetUserByMobile :one
-SELECT id, name, email, mobile, job, password, balance, negative_balance, role, created_at
+SELECT id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
 FROM users
 WHERE mobile = $1
 `
@@ -206,6 +216,7 @@ func (q *Queries) GetUserByMobile(ctx context.Context, mobile string) (User, err
 		&i.Mobile,
 		&i.Job,
 		&i.Password,
+		&i.Blocked,
 		&i.Balance,
 		&i.NegativeBalance,
 		&i.Role,
@@ -274,7 +285,7 @@ func (q *Queries) GetUserWithLeaves(ctx context.Context, id int32) ([]GetUserWit
 }
 
 const getUserWithSufficientBalance = `-- name: GetUserWithSufficientBalance :many
-SELECT id, name, email, mobile, job, password, balance, negative_balance, role, created_at
+SELECT id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
 FROM users
 WHERE balance >= $1
 `
@@ -295,6 +306,7 @@ func (q *Queries) GetUserWithSufficientBalance(ctx context.Context, balance int3
 			&i.Mobile,
 			&i.Job,
 			&i.Password,
+			&i.Blocked,
 			&i.Balance,
 			&i.NegativeBalance,
 			&i.Role,
@@ -317,7 +329,7 @@ const makeUserAdmin = `-- name: MakeUserAdmin :one
 UPDATE users
 SET role = 'admin'
 WHERE id = $1
-RETURNING id, name, email, mobile, job, password, balance, negative_balance, role, created_at
+RETURNING id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
 `
 
 func (q *Queries) MakeUserAdmin(ctx context.Context, id int32) (User, error) {
@@ -330,6 +342,7 @@ func (q *Queries) MakeUserAdmin(ctx context.Context, id int32) (User, error) {
 		&i.Mobile,
 		&i.Job,
 		&i.Password,
+		&i.Blocked,
 		&i.Balance,
 		&i.NegativeBalance,
 		&i.Role,
@@ -342,7 +355,7 @@ const removeUserAdmin = `-- name: RemoveUserAdmin :one
 UPDATE users
 SET role = 'user'
 WHERE id = $1
-RETURNING id, name, email, mobile, job, password, balance, negative_balance, role, created_at
+RETURNING id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
 `
 
 func (q *Queries) RemoveUserAdmin(ctx context.Context, id int32) (User, error) {
@@ -355,6 +368,7 @@ func (q *Queries) RemoveUserAdmin(ctx context.Context, id int32) (User, error) {
 		&i.Mobile,
 		&i.Job,
 		&i.Password,
+		&i.Blocked,
 		&i.Balance,
 		&i.NegativeBalance,
 		&i.Role,
@@ -367,7 +381,7 @@ const updateBalance = `-- name: UpdateBalance :one
 UPDATE users
 SET balance = $1
 WHERE id = $2
-RETURNING id, name, email, mobile, job, password, balance, negative_balance, role, created_at
+RETURNING id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
 `
 
 type UpdateBalanceParams struct {
@@ -385,6 +399,7 @@ func (q *Queries) UpdateBalance(ctx context.Context, arg UpdateBalanceParams) (U
 		&i.Mobile,
 		&i.Job,
 		&i.Password,
+		&i.Blocked,
 		&i.Balance,
 		&i.NegativeBalance,
 		&i.Role,
@@ -393,39 +408,11 @@ func (q *Queries) UpdateBalance(ctx context.Context, arg UpdateBalanceParams) (U
 	return i, err
 }
 
-const updateBasicInfo = `-- name: UpdateBasicInfo :exec
-UPDATE users
-SET name = $2,
-    email = $3,
-    mobile = $4,
-    job = $5
-WHERE id = $1
-`
-
-type UpdateBasicInfoParams struct {
-	ID     int32
-	Name   string
-	Email  string
-	Mobile string
-	Job    string
-}
-
-func (q *Queries) UpdateBasicInfo(ctx context.Context, arg UpdateBasicInfoParams) error {
-	_, err := q.db.ExecContext(ctx, updateBasicInfo,
-		arg.ID,
-		arg.Name,
-		arg.Email,
-		arg.Mobile,
-		arg.Job,
-	)
-	return err
-}
-
 const updatePassword = `-- name: UpdatePassword :one
 UPDATE users
 SET password = $1
 WHERE id = $2
-RETURNING id, name, email, mobile, job, password, balance, negative_balance, role, created_at
+RETURNING id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
 `
 
 type UpdatePasswordParams struct {
@@ -443,6 +430,7 @@ func (q *Queries) UpdatePassword(ctx context.Context, arg UpdatePasswordParams) 
 		&i.Mobile,
 		&i.Job,
 		&i.Password,
+		&i.Blocked,
 		&i.Balance,
 		&i.NegativeBalance,
 		&i.Role,
@@ -457,18 +445,21 @@ SET name = $2,
     email = $3,
     mobile = $4,
     job = $5,   
-    role = $6
+    role = $6,
+    blocked = $7
+    
 WHERE id = $1
-RETURNING id, name, email, mobile, job, password, balance, negative_balance, role, created_at
+RETURNING id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
 `
 
 type UpdateUserParams struct {
-	ID     int32
-	Name   string
-	Email  string
-	Mobile string
-	Job    string
-	Role   string
+	ID      int32
+	Name    string
+	Email   string
+	Mobile  string
+	Job     string
+	Role    string
+	Blocked bool
 }
 
 func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error) {
@@ -479,6 +470,7 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, e
 		arg.Mobile,
 		arg.Job,
 		arg.Role,
+		arg.Blocked,
 	)
 	var i User
 	err := row.Scan(
@@ -488,6 +480,7 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, e
 		&i.Mobile,
 		&i.Job,
 		&i.Password,
+		&i.Blocked,
 		&i.Balance,
 		&i.NegativeBalance,
 		&i.Role,

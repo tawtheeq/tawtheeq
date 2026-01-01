@@ -140,7 +140,7 @@ type GetMissionsByParticipantRow struct {
 	ID              int32
 	MissionName     string
 	CoordinatorName string
-	CoordinatorNum  int32
+	CoordinatorNum  string
 	MainCategory    int32
 	SubCategory     int32
 	Month           int32

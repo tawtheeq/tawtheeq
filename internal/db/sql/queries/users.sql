@@ -1,6 +1,6 @@
 -- name: AddUser :one
-INSERT INTO users (name, email, mobile, job, role)
-VALUES ($1, $2, $3, $4, $5)
+INSERT INTO users (name, email, mobile, job, role, blocked, balance, negative_balance)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 RETURNING *;
 
 -- name: GetUserByID :one
@@ -29,18 +29,12 @@ SET name = $2,
     email = $3,
     mobile = $4,
     job = $5,   
-    role = $6
+    role = $6,
+    blocked = $7
+    
 WHERE id = $1
 RETURNING *;
 
-
--- name: UpdateBasicInfo :exec
-UPDATE users
-SET name = $2,
-    email = $3,
-    mobile = $4,
-    job = $5
-WHERE id = $1;
 
 
 -- name: DeleteUser :exec
