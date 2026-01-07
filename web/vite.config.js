@@ -2,19 +2,19 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
-    host: true, // أو 0.0.0.0
+    host: '0.0.0.0', // مهم جداً
+    port: 5173,
+    strictPort: true,
     allowedHosts: ['modmc.local'],
     proxy: {
-      "/api": {
-        target: "http://localhost:8080",
+      '/api': {
+        target: 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
       },
-    
     },
   },
 })
