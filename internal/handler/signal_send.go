@@ -17,7 +17,7 @@ type RequestBody struct {
 	Image string `json:"Image"` // optional
 }
 
-const sender = "+966533648253" // رقمك المسجل في Signal
+const sender = "+966508333225" // رقمك المسجل في Signal
 
 func (h *Handler) SendMessage(w http.ResponseWriter, r *http.Request) {
 	var data RequestBody
