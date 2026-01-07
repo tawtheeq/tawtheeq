@@ -89,7 +89,7 @@ export default function MissionDetails() {
     try {
       await axios.post("/api/signal/send", {
         // to: mission.CoordinatorNum,   // أو أي رقم تبغاه
-        To: "+966558554164",
+        To: "+966507795131",
         Text: shareText,
         Image: "/Users/mohanad/app/images/mission.jpg"
       });
@@ -124,6 +124,7 @@ export default function MissionDetails() {
       console.log('رقم الجوال:', participant.Mobile);
 
       const personalizedMessage = [
+
         `*أمر إسناد مهمة عمل*`,
         '',
         `مرحباً ${participant.Name}،`,
@@ -143,11 +144,10 @@ export default function MissionDetails() {
 
       try {
 
-
         const payload = {
           To: participant.Mobile,
           Text: personalizedMessage,
-          // Image: "/Users/mohanad/app/images/mission.jpg"
+          Image: "/Users/mohanad/app/images/mission.jpg"
         };
 
         console.log('البيانات المرسلة:', payload);

@@ -5,19 +5,22 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
+
+	// "os"
 	"os/exec"
 
 	"github.com/maadiab/tawtheeq/tawtheeq/internal/response"
 )
 
 type RequestBody struct {
-	To    string `json:"To"`
-	Text  string `json:"Text"`
-	Image string `json:"Image"` // optional
+	To   string `json:"To"`
+	Text string `json:"Text"`
+	// Image string `json:"Image"` // optional
 }
 
-const sender = "+966558554164" // رقمك المسجل في Signal
+const sender = "+966507795131" // رقمك المسجل في Signal
+
+// const sender = "+966558554164" // رقمك المسجل في Signal
 
 func (h *Handler) SendMessage(w http.ResponseWriter, r *http.Request) {
 	var data RequestBody
@@ -28,7 +31,7 @@ func (h *Handler) SendMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("Received data - To: '%s', Text length: %d, Image: '%s'\n", data.To, len(data.Text), data.Image)
+	log.Printf("Received data - To: '%s', Text length: %d, Image: '%s'\n", data.To, len(data.Text))
 
 	// التحقق من وجود الرقم
 	if data.To == "" {
@@ -45,14 +48,14 @@ func (h *Handler) SendMessage(w http.ResponseWriter, r *http.Request) {
 		args = append(args, "-m", data.Text)
 	}
 
-	// إضافة الصورة فقط إذا كانت موجودة على السيرفر
-	if data.Image != "" {
-		if _, err := os.Stat(data.Image); err == nil {
-			args = append(args, "-a", data.Image)
-		} else {
-			log.Printf("Warning: Image file not found: %s, skipping attachment\n", data.Image)
-		}
-	}
+	// // إضافة الصورة فقط إذا كانت موجودة على السيرفر
+	// if data.Image != "" {
+	// 	if _, err := os.Stat(data.Image); err == nil {
+	// 		args = append(args, "-a", data.Image)
+	// 	} else {
+	// 		log.Printf("Warning: Image file not found: %s, skipping attachment\n", data.Image)
+	// 	}
+	// }
 
 	// الفصل بين الخيارات والمستلمين
 	args = append(args, "--")
