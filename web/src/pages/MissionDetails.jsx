@@ -142,10 +142,12 @@ export default function MissionDetails() {
       console.log('نص الرسالة:', personalizedMessage);
 
       try {
+
+
         const payload = {
           To: participant.Mobile,
           Text: personalizedMessage,
-          Image: "/Users/mohanad/app/images/mission.jpg"
+          // Image: "/Users/mohanad/app/images/mission.jpg"
         };
 
         console.log('البيانات المرسلة:', payload);
