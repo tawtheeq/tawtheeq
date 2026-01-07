@@ -111,19 +111,26 @@ export default function MissionDetails() {
       return;
     }
 
+    console.log('🚀 بدء إرسال الرسائل...');
+    console.log('عدد المشاركين:', participants.length);
+    console.log('بيانات المشاركين:', participants);
+
     setIsSending(true); // تعطيل الزر
     let successCount = 0;
     let failCount = 0;
 
     for (const participant of participants) {
+      console.log(`\n📤 محاولة إرسال رسالة إلى: ${participant.Name}`);
+      console.log('رقم الجوال:', participant.Mobile);
+
       const personalizedMessage = [
         `*أمر إسناد مهمة عمل*`,
         '',
         `مرحباً ${participant.Name}،`,
         '',
         `تم إسنادك للمهمة التالية:`,
-        `� رقم المهمة: ${mission.ID}`,
-        `�📋 اسم المهمة: ${mission.MissionName}`,
+        `🔢 رقم المهمة: ${mission.ID}`,
+        `📋 اسم المهمة: ${mission.MissionName}`,
         `📅 التاريخ: ${formatDate(mission.Day, mission.Month, mission.Year)}`,
         `⏱️ المدة: ${mission.DurationDays} يوم / أيام`,
         `📞 رقم المنسق: ${mission.CoordinatorNum || 'غير محدد'}`,
@@ -132,17 +139,29 @@ export default function MissionDetails() {
         `نتمنى لكم التوفيق في أداء المهمة!`
       ].join('\n');
 
+      console.log('نص الرسالة:', personalizedMessage);
+
       try {
-        await axios.post("/api/signal/send", {
+        const payload = {
           To: participant.Mobile,
           Text: personalizedMessage,
           Image: "/Users/mohanad/app/images/mission.jpg"
-        });
+        };
+
+        console.log('البيانات المرسلة:', payload);
+
+        const response = await axios.post("/api/signal/send", payload);
+
+        console.log('✅ نجح الإرسال:', response.data);
         successCount++;
         console.log(`تم إرسال الرسالة إلى ${participant.Name}`);
       } catch (err) {
         failCount++;
-        console.error(`فشل إرسال الرسالة إلى ${participant.Name}:`, err);
+        console.error(`❌ فشل إرسال الرسالة إلى ${participant.Name}:`);
+        console.error('تفاصيل الخطأ:', err);
+        console.error('رسالة الخطأ:', err.message);
+        console.error('استجابة الخادم:', err.response?.data);
+        console.error('حالة الاستجابة:', err.response?.status);
       }
 
       // Add a small delay between messages to avoid overwhelming the server
@@ -150,6 +169,10 @@ export default function MissionDetails() {
     }
 
     setIsSending(false); // تفعيل الزر مرة أخرى
+    console.log(`\n📊 النتيجة النهائية:`);
+    console.log(`✅ نجح: ${successCount}`);
+    console.log(`❌ فشل: ${failCount}`);
+
     alert(`تم إرسال ${successCount} رسالة بنجاح${failCount > 0 ? `\nفشل إرسال ${failCount} رسالة` : ''}`);
   };
 
