@@ -37,8 +37,10 @@ SELECT
   m.coordinator_num,
   m.main_category,
   m.sub_category,
+  m.day,
   m.month,
   m.year,
+  m.type,
   m.duration_days,
   m.created_by,
   mp.role

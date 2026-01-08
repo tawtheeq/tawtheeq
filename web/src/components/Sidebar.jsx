@@ -49,7 +49,7 @@ export default function Sidebar() {
         <div className="p-6 border-b border-gray-100 bg-[#29504d]">
 
           <div className="flex justify-center mb-3">
-            <img src="/assets/mod-horizontal.svg" alt="شعار المنصة" className="h-16 object-contain" />
+            <img src="/assets/mod_white.svg" alt="شعار المنصة" className="h-32 object-contain" />
           </div>
           <h2 className="text-lg font-bold text-white text-center">إدارة العمليات الإعلامية</h2>
           <p className="text-xs text-green-100 text-center mt-1">نظام إدارة المهام</p>
@@ -84,7 +84,7 @@ export default function Sidebar() {
               م
             </div>
             <div className="flex-1">
-              <div className="text-sm font-bold text-gray-800">محمد أحمد</div>
+              <div className="text-sm font-bold text-gray-800">مهند أحمد</div>
               <div className="text-xs text-gray-500">مدير النظام</div>
             </div>
           </div>

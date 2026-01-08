@@ -74,32 +74,32 @@ export default function MissionDetails() {
       .join('\n');
   };
 
-  const handleShareSignal = async () => {
-    const shareText = [
-      '*أمر إسناد مهمة عمل*',
-      `اسم المهمة: ${mission.MissionName}`,
-      `التاريخ: ${formatDate(mission.Day, mission.Month, mission.Year)}`,
-      `المدة: ${mission.DurationDays} يوم / أيام`,
-      `رقم المنسق: ${mission.CoordinatorNum || 'غير محدد'}`,
-      '',
-      '*فريق المهمة*',
-      formatParticipantsForShare()
-    ].join('\n');
+  // const handleShareSignal = async () => {
+  //   const shareText = [
+  //     '*أمر إسناد مهمة عمل*',
+  //     `اسم المهمة: ${mission.MissionName}`,
+  //     `التاريخ: ${formatDate(mission.Day, mission.Month, mission.Year)}`,
+  //     `المدة: ${mission.DurationDays} يوم / أيام`,
+  //     `رقم المنسق: ${mission.CoordinatorNum || 'غير محدد'}`,
+  //     '',
+  //     '*فريق المهمة*',
+  //     formatParticipantsForShare()
+  //   ].join('\n');
 
-    try {
-      await axios.post("/api/signal/send", {
-        // to: mission.CoordinatorNum,   // أو أي رقم تبغاه
-        To: "+966507795131",
-        Text: shareText,
-        Image: "/Users/mohanad/app/images/mission.jpg"
-      });
+  //   try {
+  //     await axios.post("/api/signal/send", {
+  //       // to: mission.CoordinatorNum,   // أو أي رقم تبغاه
+  //       To: "+966507795131",
+  //       Text: shareText,
+  //       Image: "/Users/mohanad/app/images/mission.jpg"
+  //     });
 
-      alert("تم إرسال الرسالة عبر سيجنال بنجاح!");
-    } catch (err) {
-      console.error(err);
-      alert("حدث خطأ أثناء الإرسال عبر سيجنال");
-    }
-  };
+  //     alert("تم إرسال الرسالة عبر سيجنال بنجاح!");
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert("حدث خطأ أثناء الإرسال عبر سيجنال");
+  //   }
+  // };
 
   const handleSendToAllParticipants = async () => {
     if (!participants.length) {
@@ -111,20 +111,28 @@ export default function MissionDetails() {
       return;
     }
 
-    console.log('🚀 بدء إرسال الرسائل...');
-    console.log('عدد المشاركين:', participants.length);
-    console.log('بيانات المشاركين:', participants);
+    setIsSending(true);
+    // إعداد متغيرات الحالة (يفضل أن تكون لديك حالة useState لرسالة التحميل)
+    // setStatusMessage("بدء عملية الإرسال..."); 
 
-    setIsSending(true); // تعطيل الزر
     let successCount = 0;
-    let failCount = 0;
+    let failedList = [];
 
-    for (const participant of participants) {
-      console.log(`\n📤 محاولة إرسال رسالة إلى: ${participant.Name}`);
-      console.log('رقم الجوال:', participant.Mobile);
+    for (let i = 0; i < participants.length; i++) {
+      const participant = participants[i];
+
+      // تحديث حالة العرض للمستخدم (مثلاً: إرسال 1 من 10)
+      const currentProgress = `إرسال ${i + 1} من ${participants.length}: ${participant.Name}...`;
+      console.log(currentProgress);
+      // if (setStatusMessage) setStatusMessage(currentProgress);
+
+      // 1. تنظيف وتنسيق رقم الجوال
+      let mobile = participant.Mobile.trim();
+      if (!mobile.startsWith('+')) {
+        mobile = `+${mobile}`;
+      }
 
       const personalizedMessage = [
-
         `*أمر إسناد مهمة عمل*`,
         '',
         `مرحباً ${participant.Name}،`,
@@ -140,44 +148,42 @@ export default function MissionDetails() {
         `نتمنى لكم التوفيق في أداء المهمة!`
       ].join('\n');
 
-      console.log('نص الرسالة:', personalizedMessage);
-
       try {
-
         const payload = {
-          To: participant.Mobile,
+          To: mobile,
           Text: personalizedMessage,
+          // Image: "mission.jpg" // نرسل اسم الملف فقط كما اتفقنا في كود Go المحدث
           Image: "/Users/mohanad/app/images/mission.jpg"
         };
 
-        console.log('البيانات المرسلة:', payload);
+        // 2. إرسال الطلب مع زيادة التايم أوت إلى 60 ثانية
+        await axios.post("/api/signal/send", payload, {
+          timeout: 60000 // 60 ثانية لكل طلب لضمان عدم الانقطاع
+        });
 
-        const response = await axios.post("/api/signal/send", payload);
-
-        console.log('✅ نجح الإرسال:', response.data);
         successCount++;
-        console.log(`تم إرسال الرسالة إلى ${participant.Name}`);
+
       } catch (err) {
-        failCount++;
-        console.error(`❌ فشل إرسال الرسالة إلى ${participant.Name}:`);
-        console.error('تفاصيل الخطأ:', err);
-        console.error('رسالة الخطأ:', err.message);
-        console.error('استجابة الخادم:', err.response?.data);
-        console.error('حالة الاستجابة:', err.response?.status);
+        console.error(`❌ فشل مع: ${participant.Name}`, err.response?.data || err.message);
+        failedList.push(`${participant.Name} (${mobile})`);
       }
 
-      // Add a small delay between messages to avoid overwhelming the server
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // 3. تأخير بسيط بين الرسائل (ثانيتين لضمان استقرار السيرفر وتجنب الحظر)
+      if (i < participants.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, 3000));
+      }
     }
 
-    setIsSending(false); // تفعيل الزر مرة أخرى
-    console.log(`\n📊 النتيجة النهائية:`);
-    console.log(`✅ نجح: ${successCount}`);
-    console.log(`❌ فشل: ${failCount}`);
+    setIsSending(false);
+    // if (setStatusMessage) setStatusMessage("");
 
-    alert(`تم إرسال ${successCount} رسالة بنجاح${failCount > 0 ? `\nفشل إرسال ${failCount} رسالة` : ''}`);
+    // رسالة نهائية تفصيلية
+    let finalMsg = `✅ تم إرسال ${successCount} رسالة بنجاح.`;
+    if (failedList.length > 0) {
+      finalMsg += `\n\n❌ فشل الإرسال لـ (${failedList.length}) مشارك:\n` + failedList.join('\n');
+    }
+    alert(finalMsg);
   };
-
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -331,13 +337,13 @@ export default function MissionDetails() {
               </div>
             </div>
 
-            <button
+            {/* <button
               className="w-full py-3 bg-white text-green-900 rounded-xl font-bold hover:bg-green-50 transition-all shadow-lg flex items-center justify-center gap-2 mb-3"
               onClick={handleShareSignal}
             >
               <i className="fas fa-paper-plane text-lg"></i>
               <span>إرسال عبر سيجنال</span>
-            </button>
+            </button> */}
 
             <button
               className={`w-full py-3 rounded-xl font-bold transition-all shadow-lg flex items-center justify-center gap-2 border-2 border-white/20 ${isSending || participants.length === 0

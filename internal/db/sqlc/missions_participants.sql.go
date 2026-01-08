@@ -125,8 +125,10 @@ SELECT
   m.coordinator_num,
   m.main_category,
   m.sub_category,
+  m.day,
   m.month,
   m.year,
+  m.type,
   m.duration_days,
   m.created_by,
   mp.role
@@ -143,8 +145,10 @@ type GetMissionsByParticipantRow struct {
 	CoordinatorNum  string
 	MainCategory    int32
 	SubCategory     int32
+	Day             int32
 	Month           int32
 	Year            int32
+	Type            string
 	DurationDays    int32
 	CreatedBy       int32
 	Role            string
@@ -166,8 +170,10 @@ func (q *Queries) GetMissionsByParticipant(ctx context.Context, userID int32) ([
 			&i.CoordinatorNum,
 			&i.MainCategory,
 			&i.SubCategory,
+			&i.Day,
 			&i.Month,
 			&i.Year,
+			&i.Type,
 			&i.DurationDays,
 			&i.CreatedBy,
 			&i.Role,
