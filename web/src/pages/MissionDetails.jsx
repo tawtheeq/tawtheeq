@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import axios from 'axios';
+import api from '../api/client';
 
 export default function MissionDetails() {
   const { id } = useParams();
@@ -17,11 +17,11 @@ export default function MissionDetails() {
     const fetchData = async () => {
       try {
         // Fetch mission details
-        const missionRes = await axios.get(`/api/missions/${id}`);
+        const missionRes = await api.get(`/api/missions/${id}`);
         setMission(missionRes.data.data);
 
         // Fetch participants
-        const participantsRes = await axios.get(`/api/missions/${id}/participants`);
+        const participantsRes = await api.get(`/api/missions/${id}/participants`);
         setParticipants(participantsRes.data.data || []);
       } catch (err) {
         setError(err.message);
@@ -55,6 +55,7 @@ export default function MissionDetails() {
       alert(`حدث خطأ أثناء إزالة المشارك: ${err.response?.data?.message || err.message}`);
     }
   };
+
 
   const formatDate = (day, month, year) => {
     const months = [
@@ -190,31 +191,50 @@ export default function MissionDetails() {
       <div className="flex justify-between items-start mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-800">{mission.MissionName}</h1>
+          <br></br>
           <div className="flex items-center gap-3 mt-2 text-gray-500">
             <span className="flex items-center gap-1">
-              <i className="far fa-tags"></i>
+              <i className="fas fa-bullseye text-red-500"></i>
               رقم المهمة: {mission.ID}
             </span>
             <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
 
             <span className="flex items-center gap-1">
-              <i className="far fa-calendar-alt"></i>
+              <i className="far fa-calendar-alt text-red-500"></i>
               {formatDate(mission.Day, mission.Month, mission.Year)}
             </span>
             <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
 
             <span className="flex items-center gap-1">
-              <i className="far fa-clock"></i>
+              <i className="far fa-clock text-red-500"></i>
               مدة المهمة: {mission.DurationDays} يوم
             </span>
             <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
             <span className="flex items-center gap-1">
-              <i className="far fa-tags"></i>
+              <i className="fas fa-tags text-red-500"></i>
               نوع المهمة: {mission.Type == 'external' ? 'خارجية' : 'داخلية'}
+            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+            <span className="flex items-center gap-2">
+              <i className="fas fa-crosshairs text-red-500"></i>
+              حالة المهمة:
+              {mission.status === 'completed' && (
+                <span className="px-3 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100">مكتملة</span>
+              )}
+              {mission.status === 'in_progress' && (
+                <span className="px-3 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">قيد التنفيذ</span>
+              )}
+              {mission.status === 'cancelled' && (
+                <span className="px-3 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-100">ملغاة</span>
+              )}
+              {mission.status === 'created' && (
+                <span className="px-3 py-0.5 rounded-full text-xs font-medium bg-gray-50 text-gray-700 border border-gray-100">تم الإنشاء</span>
+              )}
             </span>
           </div>
         </div>
         <div className="flex gap-3">
+
           <button
             className="flex items-center gap-2 px-4 py-2 bg-green-800 text-white rounded-xl hover:bg-green-900 transition-all shadow-md hover:shadow-lg"
             onClick={() => navigate(`/dashboard/missions/${id}/add-participants`)}
@@ -280,7 +300,7 @@ export default function MissionDetails() {
                     {participants.map(participant => (
                       <tr key={participant.ID} className="hover:bg-gray-50/50 transition-colors">
                         <td className="px-6 py-4 font-medium text-gray-800">{participant.Name}</td>
-                        <td className="px-6 py-4 text-gray-600">{participant.Job || 'مشارك'}</td>
+                        <td className="px-6 py-4 text-gray-600">{participant.Job == 'photo' ? 'مصور فوتوغرافي' : participant.Job == 'video' ? 'مصور فيديو' : participant.Job == 'reporter' ? 'مراسل' : 'مشارك'}</td>
                         <td className="px-6 py-4">
                           <button
                             className="w-8 h-8 rounded-lg flex items-center justify-center text-red-600 hover:bg-red-50 transition-colors"

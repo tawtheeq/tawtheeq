@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/client';
 
 export default function Addcategory() {
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ export default function Addcategory() {
         e.preventDefault();
 
         try {
-            const response = await axios.post("/api/categories", {
+            const response = await api.post("/api/categories", {
                 ...form
             });
 

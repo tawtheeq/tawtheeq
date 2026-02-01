@@ -11,6 +11,8 @@ CREATE TABLE users (
     balance INT NOT NULL DEFAULT 60,
     negative_balance BOOLEAN NOT NULL DEFAULT false,
     role VARCHAR(20) NOT NULL DEFAULT 'user',
+    invitation_token VARCHAR(255),
+    is_active BOOLEAN NOT NULL DEFAULT false,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 -- +goose StatementEnd

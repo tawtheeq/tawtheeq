@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import axios from 'axios';
+import api from '../api/client';
 
 export default function AddParticipantsToMission() {
   const { id } = useParams();
@@ -18,22 +18,21 @@ export default function AddParticipantsToMission() {
     const fetchData = async () => {
       try {
         // Fetch mission details
-        const missionRes = await axios.get(`/api/missions/${id}`);
+        const missionRes = await api.get(`/api/missions/${id}`);
         setMission(missionRes.data.data);
 
         console.log(missionRes.data.data);
         const missionDuration = missionRes.data.data.DurationDays;
 
 
-
         console.log(missionDuration);
 
         // Fetch all users
-        const usersRes = await axios.get(`/api/users`);
+        const usersRes = await api.get(`/api/users`);
         setUsers(usersRes.data.data || []);
 
         // Fetch existing participants
-        const participantsRes = await axios.get(`/api/missions/${id}/participants`);
+        const participantsRes = await api.get(`/api/missions/${id}/participants`);
 
         // Handle empty or undefined participants response
         const participantsData = participantsRes.data?.data;
@@ -69,7 +68,7 @@ export default function AddParticipantsToMission() {
     setAddingUsers(prev => new Set(prev).add(user.ID));
 
     try {
-      await axios.post(`/api/missions/${id}/participants`, {
+      await api.post(`/api/missions/${id}/participants`, {
         MissionID: parseInt(id),
         UserID: user.ID,
         Role: user.Role || 'مشارك' // Default role

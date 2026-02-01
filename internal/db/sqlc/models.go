@@ -5,6 +5,7 @@
 package sqlc
 
 import (
+	"database/sql"
 	"time"
 )
 
@@ -59,5 +60,7 @@ type User struct {
 	Balance         int32
 	NegativeBalance bool
 	Role            string
+	InvitationToken sql.NullString
+	IsActive        bool
 	CreatedAt       time.Time
 }

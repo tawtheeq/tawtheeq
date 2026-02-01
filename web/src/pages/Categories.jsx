@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 
-import axios from 'axios';
+import api from '../api/client';
 
 export default function Categories() {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ export default function Categories() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("/api/categories");
+        const response = await api.get("/api/categories");
         // تأكد أن الـ API ترجع data داخل response.data.data
         setCategories(response.data.data || response.data);
       } catch (err) {
@@ -50,7 +50,7 @@ export default function Categories() {
 
     try {
       console.log("Deleting category with id:", id);
-      await axios.delete(`/api/categories/${id}`);
+      await api.delete(`/api/categories/${id}`);
       // إزالة العنصر من الجدول بعد نجاح الحذف
       setCategories(prev => prev.filter(c => c.ID !== id));
       alert("تم الحذف بنجاح!");

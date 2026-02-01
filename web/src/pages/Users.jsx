@@ -1,8 +1,7 @@
-
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import axios from 'axios';
+import api from '../api/client';
 import { useNavigate } from "react-router-dom";
 
 export default function Users() {
@@ -15,7 +14,7 @@ export default function Users() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("/api/users")
+        const response = await api.get("/api/users")
         setUsers(response.data.data || response.data)
 
       } catch (err) {
@@ -79,7 +78,7 @@ export default function Users() {
 
     try {
       console.log("Deleting User with id:", id);
-      await axios.delete(`/api/users/${id}`);
+      await api.delete(`/api/users/${id}`);
       // إزالة العنصر من الجدول بعد نجاح الحذف
       setUsers(prev => prev.filter(c => c.ID !== id));
       alert("تم الحذف بنجاح!");
@@ -99,9 +98,9 @@ export default function Users() {
       if (!window.confirm(confirmMessage)) return;
 
       if (action === 'allow') {
-        await axios.post(`/api/users/${userId}/allow-negative-balance`);
+        await api.post(`/api/users/${userId}/allow-negative-balance`);
       } else {
-        await axios.post(`/api/users/${userId}/disallow-negative-balance`);
+        await api.post(`/api/users/${userId}/disallow-negative-balance`);
       }
 
       // Update local state
@@ -172,6 +171,7 @@ export default function Users() {
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">رقم الجوال</th>
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الوظيفة</th>
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الرصيد المتبقي</th>
+                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الحالة</th>
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600"> الاستثناءات</th>
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الإجراءات</th>
               </tr>
@@ -203,6 +203,17 @@ export default function Users() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
+                      {user.IsActive ? (
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100">
+                          نشط
+                        </span>
+                      ) : (
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700 border border-yellow-100">
+                          بانتظار التفعيل
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
                       <button
                         onClick={() => handleToggleNegativeBalance(user.ID, user.NegativeBalance)}
                         className={`px-3 py-1 rounded-full text-xs font-medium border transition-all ${user.NegativeBalance === 'yes'
@@ -226,6 +237,19 @@ export default function Users() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
+                        {!user.IsActive && user.InvitationToken?.String && (
+                          <button
+                            className="w-8 h-8 rounded-lg flex items-center justify-center text-yellow-600 hover:bg-yellow-50 transition-colors"
+                            onClick={() => {
+                              const link = `${window.location.origin}/activate/${user.InvitationToken.String}`;
+                              navigator.clipboard.writeText(link);
+                              alert("تم نسخ رابط التفعيل!");
+                            }}
+                            title="نسخ رابط التفعيل"
+                          >
+                            <i className="fas fa-link"></i>
+                          </button>
+                        )}
                         <button
                           className="w-8 h-8 rounded-lg flex items-center justify-center text-green-600 hover:bg-green-50 transition-colors"
                           onClick={() => navigate(`${user.ID}/report`)}
@@ -268,7 +292,7 @@ export default function Users() {
           </table>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 

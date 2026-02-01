@@ -10,10 +10,45 @@ import (
 	"database/sql"
 )
 
+const activateUser = `-- name: ActivateUser :one
+UPDATE users
+SET password = $1,
+    is_active = true,
+    invitation_token = NULL
+WHERE id = $2
+RETURNING id, name, email, mobile, job, password, blocked, balance, negative_balance, role, invitation_token, is_active, created_at
+`
+
+type ActivateUserParams struct {
+	Password string
+	ID       int32
+}
+
+func (q *Queries) ActivateUser(ctx context.Context, arg ActivateUserParams) (User, error) {
+	row := q.db.QueryRowContext(ctx, activateUser, arg.Password, arg.ID)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Email,
+		&i.Mobile,
+		&i.Job,
+		&i.Password,
+		&i.Blocked,
+		&i.Balance,
+		&i.NegativeBalance,
+		&i.Role,
+		&i.InvitationToken,
+		&i.IsActive,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
 const addUser = `-- name: AddUser :one
-INSERT INTO users (name, email, mobile, job, role, blocked, balance, negative_balance)
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-RETURNING id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
+INSERT INTO users (name, email, mobile, job, role, blocked, balance, negative_balance, invitation_token)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+RETURNING id, name, email, mobile, job, password, blocked, balance, negative_balance, role, invitation_token, is_active, created_at
 `
 
 type AddUserParams struct {
@@ -25,6 +60,7 @@ type AddUserParams struct {
 	Blocked         bool
 	Balance         int32
 	NegativeBalance bool
+	InvitationToken sql.NullString
 }
 
 func (q *Queries) AddUser(ctx context.Context, arg AddUserParams) (User, error) {
@@ -37,6 +73,7 @@ func (q *Queries) AddUser(ctx context.Context, arg AddUserParams) (User, error) 
 		arg.Blocked,
 		arg.Balance,
 		arg.NegativeBalance,
+		arg.InvitationToken,
 	)
 	var i User
 	err := row.Scan(
@@ -50,6 +87,8 @@ func (q *Queries) AddUser(ctx context.Context, arg AddUserParams) (User, error) 
 		&i.Balance,
 		&i.NegativeBalance,
 		&i.Role,
+		&i.InvitationToken,
+		&i.IsActive,
 		&i.CreatedAt,
 	)
 	return i, err
@@ -88,6 +127,17 @@ func (q *Queries) CheckUserByMobile(ctx context.Context, mobile string) (bool, e
 	return exists, err
 }
 
+const countAdmins = `-- name: CountAdmins :one
+SELECT COUNT(*) FROM users WHERE role = 'admin'
+`
+
+func (q *Queries) CountAdmins(ctx context.Context) (int64, error) {
+	row := q.db.QueryRowContext(ctx, countAdmins)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const deleteUser = `-- name: DeleteUser :exec
 DELETE FROM users
 WHERE id = $1
@@ -110,7 +160,7 @@ func (q *Queries) DisallowNegativeBalance(ctx context.Context, id int32) error {
 }
 
 const getAllUsers = `-- name: GetAllUsers :many
-SELECT id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
+SELECT id, name, email, mobile, job, password, blocked, balance, negative_balance, role, invitation_token, is_active, created_at
 FROM users
 ORDER BY id
 `
@@ -135,6 +185,8 @@ func (q *Queries) GetAllUsers(ctx context.Context) ([]User, error) {
 			&i.Balance,
 			&i.NegativeBalance,
 			&i.Role,
+			&i.InvitationToken,
+			&i.IsActive,
 			&i.CreatedAt,
 		); err != nil {
 			return nil, err
@@ -151,7 +203,7 @@ func (q *Queries) GetAllUsers(ctx context.Context) ([]User, error) {
 }
 
 const getUserByEmail = `-- name: GetUserByEmail :one
-SELECT id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
+SELECT id, name, email, mobile, job, password, blocked, balance, negative_balance, role, invitation_token, is_active, created_at
 FROM users
 WHERE email = $1
 `
@@ -170,13 +222,15 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error
 		&i.Balance,
 		&i.NegativeBalance,
 		&i.Role,
+		&i.InvitationToken,
+		&i.IsActive,
 		&i.CreatedAt,
 	)
 	return i, err
 }
 
 const getUserByID = `-- name: GetUserByID :one
-SELECT id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
+SELECT id, name, email, mobile, job, password, blocked, balance, negative_balance, role, invitation_token, is_active, created_at
 FROM users
 WHERE id = $1
 `
@@ -195,19 +249,21 @@ func (q *Queries) GetUserByID(ctx context.Context, id int32) (User, error) {
 		&i.Balance,
 		&i.NegativeBalance,
 		&i.Role,
+		&i.InvitationToken,
+		&i.IsActive,
 		&i.CreatedAt,
 	)
 	return i, err
 }
 
-const getUserByMobile = `-- name: GetUserByMobile :one
-SELECT id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
+const getUserByInvitationToken = `-- name: GetUserByInvitationToken :one
+SELECT id, name, email, mobile, job, password, blocked, balance, negative_balance, role, invitation_token, is_active, created_at
 FROM users
-WHERE mobile = $1
+WHERE invitation_token = $1
 `
 
-func (q *Queries) GetUserByMobile(ctx context.Context, mobile string) (User, error) {
-	row := q.db.QueryRowContext(ctx, getUserByMobile, mobile)
+func (q *Queries) GetUserByInvitationToken(ctx context.Context, invitationToken sql.NullString) (User, error) {
+	row := q.db.QueryRowContext(ctx, getUserByInvitationToken, invitationToken)
 	var i User
 	err := row.Scan(
 		&i.ID,
@@ -220,6 +276,8 @@ func (q *Queries) GetUserByMobile(ctx context.Context, mobile string) (User, err
 		&i.Balance,
 		&i.NegativeBalance,
 		&i.Role,
+		&i.InvitationToken,
+		&i.IsActive,
 		&i.CreatedAt,
 	)
 	return i, err
@@ -285,7 +343,7 @@ func (q *Queries) GetUserWithLeaves(ctx context.Context, id int32) ([]GetUserWit
 }
 
 const getUserWithSufficientBalance = `-- name: GetUserWithSufficientBalance :many
-SELECT id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
+SELECT id, name, email, mobile, job, password, blocked, balance, negative_balance, role, invitation_token, is_active, created_at
 FROM users
 WHERE balance >= $1
 `
@@ -310,6 +368,8 @@ func (q *Queries) GetUserWithSufficientBalance(ctx context.Context, balance int3
 			&i.Balance,
 			&i.NegativeBalance,
 			&i.Role,
+			&i.InvitationToken,
+			&i.IsActive,
 			&i.CreatedAt,
 		); err != nil {
 			return nil, err
@@ -329,7 +389,7 @@ const makeUserAdmin = `-- name: MakeUserAdmin :one
 UPDATE users
 SET role = 'admin'
 WHERE id = $1
-RETURNING id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
+RETURNING id, name, email, mobile, job, password, blocked, balance, negative_balance, role, invitation_token, is_active, created_at
 `
 
 func (q *Queries) MakeUserAdmin(ctx context.Context, id int32) (User, error) {
@@ -346,6 +406,8 @@ func (q *Queries) MakeUserAdmin(ctx context.Context, id int32) (User, error) {
 		&i.Balance,
 		&i.NegativeBalance,
 		&i.Role,
+		&i.InvitationToken,
+		&i.IsActive,
 		&i.CreatedAt,
 	)
 	return i, err
@@ -355,7 +417,7 @@ const removeUserAdmin = `-- name: RemoveUserAdmin :one
 UPDATE users
 SET role = 'user'
 WHERE id = $1
-RETURNING id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
+RETURNING id, name, email, mobile, job, password, blocked, balance, negative_balance, role, invitation_token, is_active, created_at
 `
 
 func (q *Queries) RemoveUserAdmin(ctx context.Context, id int32) (User, error) {
@@ -372,6 +434,8 @@ func (q *Queries) RemoveUserAdmin(ctx context.Context, id int32) (User, error) {
 		&i.Balance,
 		&i.NegativeBalance,
 		&i.Role,
+		&i.InvitationToken,
+		&i.IsActive,
 		&i.CreatedAt,
 	)
 	return i, err
@@ -381,7 +445,7 @@ const updateBalance = `-- name: UpdateBalance :one
 UPDATE users
 SET balance = $1
 WHERE id = $2
-RETURNING id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
+RETURNING id, name, email, mobile, job, password, blocked, balance, negative_balance, role, invitation_token, is_active, created_at
 `
 
 type UpdateBalanceParams struct {
@@ -403,6 +467,8 @@ func (q *Queries) UpdateBalance(ctx context.Context, arg UpdateBalanceParams) (U
 		&i.Balance,
 		&i.NegativeBalance,
 		&i.Role,
+		&i.InvitationToken,
+		&i.IsActive,
 		&i.CreatedAt,
 	)
 	return i, err
@@ -412,7 +478,7 @@ const updatePassword = `-- name: UpdatePassword :one
 UPDATE users
 SET password = $1
 WHERE id = $2
-RETURNING id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
+RETURNING id, name, email, mobile, job, password, blocked, balance, negative_balance, role, invitation_token, is_active, created_at
 `
 
 type UpdatePasswordParams struct {
@@ -434,6 +500,8 @@ func (q *Queries) UpdatePassword(ctx context.Context, arg UpdatePasswordParams) 
 		&i.Balance,
 		&i.NegativeBalance,
 		&i.Role,
+		&i.InvitationToken,
+		&i.IsActive,
 		&i.CreatedAt,
 	)
 	return i, err
@@ -449,7 +517,7 @@ SET name = $2,
     blocked = $7
     
 WHERE id = $1
-RETURNING id, name, email, mobile, job, password, blocked, balance, negative_balance, role, created_at
+RETURNING id, name, email, mobile, job, password, blocked, balance, negative_balance, role, invitation_token, is_active, created_at
 `
 
 type UpdateUserParams struct {
@@ -484,6 +552,8 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, e
 		&i.Balance,
 		&i.NegativeBalance,
 		&i.Role,
+		&i.InvitationToken,
+		&i.IsActive,
 		&i.CreatedAt,
 	)
 	return i, err

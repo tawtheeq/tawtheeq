@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/client';
 import { validateSaudiPhone } from '../utils/phoneValidation';
 
 export default function AddEmp() {
@@ -15,6 +15,9 @@ export default function AddEmp() {
     Balance: 60,
   });
 
+
+  const [invitationLink, setInvitationLink] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -79,10 +82,12 @@ export default function AddEmp() {
     e.preventDefault();
 
     try {
-      const response = await axios.post("/api/users", form);
-      console.log("Server response:", response.data);
-      alert("تم إضافة الموظف بنجاح!");
-      console.log("Data submitted successfully!", form);
+      const response = await api.post("/api/users", form);
+      const token = response.data.data.invitation_token;
+
+      const link = `${window.location.origin}/activate/${token}`;
+      setInvitationLink(link);
+      setShowModal(true);
 
       // Reset form
       setForm({
@@ -94,13 +99,15 @@ export default function AddEmp() {
         Blocked: false,
         Balance: 60,
       });
-
-      // Navigate back to users page
-      navigate('/dashboard/users');
     } catch (error) {
       console.error("Error submitting data:", error);
       alert("حدث خطأ أثناء إضافة الموظف: " + (error.response?.data?.message || error.message));
     }
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(invitationLink);
+    alert("تم نسخ الرابط!");
   };
 
 
@@ -249,6 +256,44 @@ export default function AddEmp() {
           </div>
         </form>
       </div>
+
+      {/* Invitation Success Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 text-center animate-in fade-in zoom-in duration-300">
+            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <i className="fas fa-check text-3xl text-green-600"></i>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">تم إضافة الموظف!</h2>
+            <p className="text-gray-600 mb-8">
+              تم إنشاء الحساب بنجاح. يرجى إرسال رابط التفعيل التالي للموظف ليتمكن من تعيين كلمة المرور الخاصة به.
+            </p>
+
+            <div className="bg-gray-50 rounded-2xl p-4 mb-8 flex items-center gap-3 border border-gray-100">
+              <input
+                type="text"
+                readOnly
+                value={invitationLink}
+                className="bg-transparent border-none outline-none text-sm text-gray-600 flex-1 font-mono"
+              />
+              <button
+                onClick={copyToClipboard}
+                className="w-10 h-10 rounded-xl bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:text-green-600 hover:border-green-200 transition-all shadow-sm"
+                title="نسخ الرابط"
+              >
+                <i className="fas fa-copy"></i>
+              </button>
+            </div>
+
+            <button
+              onClick={() => navigate('/dashboard/users')}
+              className="w-full py-4 bg-dark-green text-white rounded-2xl font-bold hover:bg-light-green transition-all shadow-lg hover:shadow-xl"
+            >
+              تم
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

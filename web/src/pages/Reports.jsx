@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/client';
 
 export default function Reports() {
     const navigate = useNavigate();
@@ -18,8 +18,8 @@ export default function Reports() {
         const fetchData = async () => {
             try {
                 const [missionsRes, usersRes] = await Promise.all([
-                    axios.get('/api/missions'),
-                    axios.get('/api/users')
+                    api.get('/api/missions'),
+                    api.get('/api/users')
                 ]);
                 setMissions(missionsRes.data.data || []);
                 setUsers(usersRes.data.data || []);

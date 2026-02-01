@@ -1,6 +1,6 @@
 -- name: AddUser :one
-INSERT INTO users (name, email, mobile, job, role, blocked, balance, negative_balance)
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+INSERT INTO users (name, email, mobile, job, role, blocked, balance, negative_balance, invitation_token)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 RETURNING *;
 
 -- name: GetUserByID :one
@@ -13,10 +13,10 @@ SELECT *
 FROM users
 WHERE email = $1;
 
--- name: GetUserByMobile :one
+-- name: GetUserByInvitationToken :one
 SELECT *
 FROM users
-WHERE mobile = $1;
+WHERE invitation_token = $1;
 
 -- name: GetAllUsers :many
 SELECT *
@@ -70,6 +70,14 @@ SET password = $1
 WHERE id = $2
 RETURNING *;
 
+-- name: ActivateUser :one
+UPDATE users
+SET password = $1,
+    is_active = true,
+    invitation_token = NULL
+WHERE id = $2
+RETURNING *;
+
 -- name: UpdateBalance :one
 UPDATE users
 SET balance = $1
@@ -103,3 +111,6 @@ ORDER BY l.start_date DESC;
 SELECT *
 FROM users
 WHERE balance >= $1;
+
+-- name: CountAdmins :one
+SELECT COUNT(*) FROM users WHERE role = 'admin';

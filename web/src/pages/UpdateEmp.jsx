@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams } from "react-router-dom";
 import { useEffect } from 'react';
 
-import axios from 'axios';
+import api from '../api/client';
 import { useNavigate } from 'react-router-dom';
 import { validateSaudiPhone } from '../utils/phoneValidation';
 
@@ -24,7 +24,7 @@ export default function UpdateEmp() {
       try {
 
         // alert("Fetching data for user ID: " + id);
-        const user = await axios.get(`/api/users/${id}`);
+        const user = await api.get(`/api/users/${id}`);
 
         const userData = user.data.data;
         console.log("Fetched users data:", userData);
@@ -81,7 +81,7 @@ export default function UpdateEmp() {
     console.log("Payload to send:", form);
 
     try {
-      const response = await axios.put(`/api/users/${id}`, form, {
+      const response = await api.put(`/api/users/${id}`, form, {
         headers: { "Content-Type": "application/json" }
       });
       console.log("Server response:", response.data);

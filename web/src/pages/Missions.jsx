@@ -1,14 +1,11 @@
-
 import { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 
-import axios from 'axios';
+import api from '../api/client';
 import { useNavigate } from "react-router-dom";
 
 export default function Missions() {
   const navigate = useNavigate();
-
-
 
   const [missions, setMissions] = useState([]);  // state to hold API data
   const [loading, setLoading] = useState(true);  // loading indicator
@@ -17,8 +14,7 @@ export default function Missions() {
   useEffect(() => {
     const fetchMissions = async () => {
       try {
-        // 👇 Replace this with your real API URL
-        const response = await axios.get("/api/missions");
+        const response = await api.get("/api/missions");
 
         // 👇 Fill the state with the 'data' array from your JSON
         setMissions(response.data.data || response.data);
@@ -102,6 +98,7 @@ export default function Missions() {
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">التاريخ</th>
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">مدة المهمة بالآيام</th>
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">نوع المهمة</th>
+                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الحالة</th>
                 <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">إجراءات</th>
               </tr>
             </thead>
@@ -124,6 +121,23 @@ export default function Missions() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-gray-600 text-sm">{mission.Type == 'internal' ? 'داخلية' : 'خارجية'}</td>
+                    <td className="px-6 py-4">
+                      {mission.Status === 'completed' && (
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100">مكتملة</span>
+                      )}
+                      {mission.Status === 'in_progress' && (
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">قيد التنفيذ</span>
+                      )}
+                      {mission.Status === 'cancelled' && (
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-100">ملغاة</span>
+                      )}
+                      {mission.Status === 'created' && (
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-gray-50 text-gray-700 border border-gray-100">تم الإنشاء</span>
+                      )}
+                      {!['completed', 'in_progress', 'cancelled', 'created'].includes(mission.Status) && (
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-gray-50 text-gray-700 border border-gray-100">{mission.Status}</span>
+                      )}
+                    </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <button

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 
-import axios from 'axios';
+import api from '../api/client';
 import { useNavigate } from 'react-router-dom';
 
 export default function UpdateMission() {
@@ -38,9 +38,9 @@ export default function UpdateMission() {
         const fetchData = async () => {
             try {
                 const [mainRes, subRes, missionRes] = await Promise.all([
-                    axios.get("/api/maincategories"),
-                    axios.get("/api/subcategories"),
-                    axios.get(`/api/missions/${id}`)
+                    api.get("/api/maincategories"),
+                    api.get("/api/subcategories"),
+                    api.get(`/api/missions/${id}`)
                 ]);
 
                 console.log("Fetched mission data:", missionRes.data.data);
@@ -81,7 +81,7 @@ export default function UpdateMission() {
         console.log("Payload to send:", form);
 
         try {
-            const response = await axios.put(`/api/missions/${form.ID}`, form, {
+            const response = await api.put(`/api/missions/${form.ID}`, form, {
                 headers: { "Content-Type": "application/json" }
             });
             console.log("Server response:", response.data);

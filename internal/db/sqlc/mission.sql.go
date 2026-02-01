@@ -101,7 +101,8 @@ SELECT
   m.duration_days,
   m.created_by,
   u.name AS created_by_name,
-  m.created_at
+  m.created_at,
+  m.status
 FROM missions m
 JOIN users u ON m.created_by = u.id
 ORDER BY m.id DESC
@@ -122,6 +123,7 @@ type GetAllMissionsRow struct {
 	CreatedBy       int32
 	CreatedByName   string
 	CreatedAt       time.Time
+	Status          string
 }
 
 func (q *Queries) GetAllMissions(ctx context.Context) ([]GetAllMissionsRow, error) {
@@ -148,6 +150,7 @@ func (q *Queries) GetAllMissions(ctx context.Context) ([]GetAllMissionsRow, erro
 			&i.CreatedBy,
 			&i.CreatedByName,
 			&i.CreatedAt,
+			&i.Status,
 		); err != nil {
 			return nil, err
 		}
@@ -177,7 +180,8 @@ SELECT
   m.duration_days,
   m.created_by,
   u.name AS created_by_name,
-  m.created_at
+  m.created_at,
+  m.status
 FROM missions m
 JOIN users u ON m.created_by = u.id
 WHERE m.id = $1
@@ -198,6 +202,7 @@ type GetMissionByIDRow struct {
 	CreatedBy       int32
 	CreatedByName   string
 	CreatedAt       time.Time
+	Status          string
 }
 
 func (q *Queries) GetMissionByID(ctx context.Context, id int32) (GetMissionByIDRow, error) {
@@ -218,6 +223,7 @@ func (q *Queries) GetMissionByID(ctx context.Context, id int32) (GetMissionByIDR
 		&i.CreatedBy,
 		&i.CreatedByName,
 		&i.CreatedAt,
+		&i.Status,
 	)
 	return i, err
 }

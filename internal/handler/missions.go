@@ -143,3 +143,40 @@ func (h *Handler) DeleteMission(w http.ResponseWriter, r *http.Request) {
 
 	response.Success(w, "Mission deleted successfully", nil)
 }
+
+func (h *Handler) StatusUpdate(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+
+	mission_id, err := strconv.Atoi(id)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "Invalid mission ID")
+		return
+	}
+
+	var statusReq struct {
+		Status string `json:"status"`
+	}
+
+	err = json.NewDecoder(r.Body).Decode(&statusReq)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "Invalid request body")
+		return
+	}
+
+	if statusReq.Status == "" {
+		response.Error(w, http.StatusBadRequest, "Status is required")
+		return
+	}
+
+	err = h.svc.StatusUpdate(sqlc.MissionStatusUpdateParams{
+		ID:     int32(mission_id),
+		Status: statusReq.Status,
+	})
+
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "Failed to update status")
+		return
+	}
+
+	response.Success(w, "Status updated successfully", nil)
+}

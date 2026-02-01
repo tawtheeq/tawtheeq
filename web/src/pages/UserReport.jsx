@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/client';
 
 export default function UserReport() {
     const { id } = useParams();
@@ -12,7 +12,7 @@ export default function UserReport() {
     useEffect(() => {
         const fetchReport = async () => {
             try {
-                const response = await axios.get(`/api/users/${id}/report`);
+                const response = await api.get(`/api/users/${id}/report`);
                 setReportData(response.data.data);
             } catch (err) {
                 setError(err.message);

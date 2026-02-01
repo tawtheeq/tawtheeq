@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import axios from 'axios';
+import api from '../api/client';
 import { useNavigate } from 'react-router-dom';
 import { validateSaudiPhone } from '../utils/phoneValidation';
 
@@ -57,8 +57,8 @@ export default function Addmission() {
         const fetchCategories = async () => {
             try {
                 const [mainRes, subRes] = await Promise.all([
-                    axios.get("/api/maincategories"),
-                    axios.get("/api/subcategories"),
+                    api.get("/api/maincategories"),
+                    api.get("/api/subcategories"),
                 ]);
 
                 setMainCategories(mainRes.data.data || []);
@@ -134,7 +134,7 @@ export default function Addmission() {
         try {
 
             console.log("Form data:", form);
-            const response = await axios.post("/api/missions", {
+            const response = await api.post("/api/missions", {
                 ...form
             });
 

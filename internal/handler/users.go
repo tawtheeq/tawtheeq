@@ -2,6 +2,9 @@ package handler
 
 import (
 	"context"
+	"crypto/rand"
+	"database/sql"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -55,7 +58,6 @@ func (h *Handler) GetUsers(w http.ResponseWriter, r *http.Request) {
 // }
 
 func (h *Handler) AddUser(w http.ResponseWriter, r *http.Request) {
-
 	var user sqlc.AddUserParams
 
 	err := json.NewDecoder(r.Body).Decode(&user)
@@ -69,16 +71,26 @@ func (h *Handler) AddUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Generate invitation token
+	b := make([]byte, 16)
+	if _, err := rand.Read(b); err != nil {
+		response.Error(w, http.StatusInternalServerError, "Failed to generate token")
+		return
+	}
+	token := hex.EncodeToString(b)
+	user.InvitationToken = sql.NullString{String: token, Valid: true}
+
 	err = h.svc.RegisterUser(user)
 
 	if err != nil {
-		response.Error(w, http.StatusInternalServerError, "Failed to register user")
-		fmt.Println(err)
+		fmt.Printf("DATABASE ERROR: %v\n", err)
+		response.Error(w, http.StatusInternalServerError, fmt.Sprintf("Failed to register user: %v", err))
 		return
 	}
 
-	response.Created(w, "User registered successfully", nil)
-
+	response.Created(w, "User registered successfully", map[string]string{
+		"invitation_token": token,
+	})
 }
 
 func (h *Handler) GetUserByID(w http.ResponseWriter, r *http.Request) {

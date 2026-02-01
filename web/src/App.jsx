@@ -1,8 +1,12 @@
-// import './styles/main.scss';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 import Home from "./pages/Home";
 import LoginPage from "./pages/Signin";
 import Dashboard from './pages/Dashboard';
+import Setup from "./pages/Setup";
+import { useAuth } from "./context/AuthContext";
 import Overview from './pages/Overview';
 import Users from './pages/Users';
 import Settings from './pages/Settings';
@@ -18,38 +22,59 @@ import AddParticipantsToMission from "./pages/AddParticipantsToMission";
 import Reports from "./pages/Reports";
 import About from "./pages/About";
 import UserReport from "./pages/UserReport";
+import Activate from "./pages/Activate";
 
-function App() {
+function AppContent() {
+  const { isSetupRequired, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg text-gray-600">جاري التحميل...</div>
+      </div>
+    );
+  }
+
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* <Route path="/" element={<Home />} /> */}
-        <Route path="/" element={<LoginPage />} />
+    <Routes>
+      <Route path="/setup" element={<Setup />} />
+      <Route path="/" element={isSetupRequired ? <Setup /> : <LoginPage />} />
+      <Route path="/activate/:token" element={<Activate />} />
+
+      <Route element={<ProtectedRoute />}>
+        {/* ... dashboard routes ... */}
         <Route path="/dashboard" element={<Dashboard />}>
           <Route index element={<Overview />} />
           <Route path="categories" element={<Categories />} />
           <Route path="categories/addcategory" element={<Addcategory />} />
           <Route path="users" element={<Users />} />
-          <Route path="/dashboard/users/update/:id" element={<UpdateEmp />} />
-          <Route path="/dashboard/users/:id/report" element={<UserReport />} />
+          <Route path="users/update/:id" element={<UpdateEmp />} />
+          <Route path="users/:id/report" element={<UserReport />} />
           <Route path="settings" element={<Settings />} />
           <Route path="missions" element={<Missions />} />
           <Route path="missions/addmission" element={<AddMission />} />
           <Route path="about" element={<About />} />
-          <Route path="/dashboard/missions/update/:id" element={<UpdateMission />} />
-          <Route path="/dashboard/missions/:id" element={<MissionDetails />} />
-          <Route path="/dashboard/missions/:id/add-participants" element={<AddParticipantsToMission />} />
+          <Route path="missions/update/:id" element={<UpdateMission />} />
+          <Route path="missions/:id" element={<MissionDetails />} />
+          <Route path="missions/:id/add-participants" element={<AddParticipantsToMission />} />
           <Route path="users/addemp" element={<AddEmp />} />
           <Route path="reports" element={<Reports />} />
-          <Route path="*" element={<h1>404 Not Found</h1>} />
-
         </Route>
+      </Route>
 
-
-      </Routes>
-    </BrowserRouter>
+      <Route path="*" element={<h1>404 Not Found</h1>} />
+    </Routes>
   );
-
 }
 
-export default App
+function App() {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
+    </AuthProvider>
+  );
+}
+
+export default App;

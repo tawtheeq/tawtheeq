@@ -31,7 +31,8 @@ SELECT
   m.duration_days,
   m.created_by,
   u.name AS created_by_name,
-  m.created_at
+  m.created_at,
+  m.status
 FROM missions m
 JOIN users u ON m.created_by = u.id
 ORDER BY m.id DESC;
@@ -51,7 +52,8 @@ SELECT
   m.duration_days,
   m.created_by,
   u.name AS created_by_name,
-  m.created_at
+  m.created_at,
+  m.status
 FROM missions m
 JOIN users u ON m.created_by = u.id
 WHERE m.id = $1;
