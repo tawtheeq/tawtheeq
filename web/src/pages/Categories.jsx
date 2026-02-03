@@ -65,109 +65,112 @@ export default function Categories() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="space-y-10 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
-        {/* <div>
-          <h1 className="text-2xl font-bold text-gray-800">التصنيفات</h1>
-          <p className="text-sm text-gray-500 mt-1">إدارة تصنيفات المحتوى ({categories.length})</p>
-        </div>
-        <Link
-          to="addcategory"
-          className="px-4 py-2 bg-dark-green text-white rounded-xl hover:bg-light-green transition-colors flex items-center gap-2"
-        >
-          <i className="fas fa-plus"></i>
-          إضافة تصنيف
-        </Link> */}
-
-
-
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="flex items-center gap-6">
           <button
             onClick={() => navigate(-1)}
-            className="w-10 h-10 rounded-xl flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors"
+            className="w-14 h-14 glass-card flex items-center justify-center text-gray-600 hover:bg-dark-green hover:text-white transition-all duration-300 group"
           >
-            <i className="fas fa-arrow-right"></i>
+            <i className="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">   التصنيفات  </h1>
-            <p className="text-sm text-gray-500 mt-1">إدارة تصنيفات المحتوى ({categories.length})</p>
+            <div className="flex items-center gap-3 mb-1 text-dark-green">
+              <div className="w-1.5 h-6 bg-current rounded-full"></div>
+              <h1 className="text-3xl font-black tracking-tight text-gray-800">تصنيفات المحتوى</h1>
+            </div>
+            <p className="text-gray-500 font-bold pr-4">تنظيم وهيكلة أنواع المهام والمحتوى الفوتوغرافي</p>
           </div>
-
         </div>
+
         <Link
           to="addcategory"
-          className="px-4 py-2 bg-dark-green text-white rounded-xl hover:bg-light-green transition-colors flex items-center gap-2"
+          className="px-8 py-4 premium-gradient text-white font-black rounded-2xl hover:shadow-2xl hover:shadow-green-900/40 transition-all duration-300 flex items-center gap-3 active:scale-[0.98]"
         >
           <i className="fas fa-plus"></i>
-          إضافة تصنيف
+          <span>إضافة تصنيف جديد</span>
         </Link>
       </div>
 
-      {/* Categories Table */}
-      <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-gray-50/50 border-b border-gray-100">
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">اسم التصنيف</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">النوع</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">مختصر الوصف</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">إجراءات</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {categories.length > 0 ? (
-                categories.map(category => (
-                  <tr key={category.ID} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="px-6 py-4">
-                      <span className="font-medium text-gray-800">{category.CategoryName}</span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium border ${category.CategoryType === 'main'
-                        ? 'bg-purple-50 text-purple-700 border-purple-100'
-                        : 'bg-gray-50 text-gray-700 border-gray-100'
-                        }`}>
-                        {category.CategoryType}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-gray-600 text-sm">{category.Description}</td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <button
-                          className="w-8 h-8 rounded-lg flex items-center justify-center text-blue-600 hover:bg-blue-50 transition-colors"
-                          title="تعديل"
-                        >
-                          <i className="fas fa-edit"></i>
-                        </button>
-                        <button
-                          className="w-8 h-8 rounded-lg flex items-center justify-center text-red-600 hover:bg-red-50 transition-colors"
-                          onClick={() => handleDelete(category.ID)}
-                          title="حذف"
-                        >
-                          <i className="fas fa-trash"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="4" className="px-6 py-12 text-center text-gray-500">
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center text-gray-300">
-                        <i className="fas fa-tags text-2xl"></i>
-                      </div>
-                      <p className="text-lg font-medium">لا يوجد تصنيفات حالياً</p>
-                      <p className="text-sm">قم بإضافة تصنيف جديد للبدء</p>
+      {/* Categories List Container */}
+      <div className="space-y-4">
+        {/* Header for Desktop */}
+        <div className="hidden lg:grid grid-cols-12 gap-4 px-10 py-4 text-xs font-black text-gray-400 uppercase tracking-widest">
+          <div className="col-span-4">التصنيف</div>
+          <div className="col-span-2">النوع</div>
+          <div className="col-span-4">الوصف</div>
+          <div className="col-span-2 text-left">الإجراءات</div>
+        </div>
+
+        {/* Categories List */}
+        <div className="space-y-4">
+          {categories.length > 0 ? (
+            categories.map(category => (
+              <div key={category.ID} className="glass-card p-6 lg:p-4 group hover:bg-white transition-all duration-500 hover:shadow-2xl hover:shadow-slate-200/50 border-white/50 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-1 h-full bg-dark-green opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-4 items-center px-4">
+                  <div className="col-span-4 flex items-center gap-5">
+                    <div className="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center text-dark-green text-xl shadow-inner border border-white group-hover:scale-110 transition-transform duration-500">
+                      <i className="fas fa-tag"></i>
                     </div>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                    <div className="overflow-hidden">
+                      <h3 className="font-black text-gray-800 text-lg group-hover:text-dark-green transition-colors truncate">{category.CategoryName}</h3>
+                      <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest">ID: #{category.ID}</p>
+                    </div>
+                  </div>
+
+                  <div className="col-span-2">
+                    <span className={`inline-flex px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border transition-colors ${category.CategoryType === 'main'
+                      ? 'bg-purple-50 text-purple-700 border-purple-100 group-hover:bg-purple-100'
+                      : 'bg-slate-50 text-slate-500 border-slate-100 group-hover:bg-slate-100'
+                      }`}>
+                      {category.CategoryType === 'main' ? 'تصنيف رئيسي' : 'تصنيف فرعي'}
+                    </span>
+                  </div>
+
+                  <div className="col-span-4">
+                    <p className="text-sm font-bold text-gray-400 line-clamp-1 h-5">{category.Description || 'لا يوجد وصف حالياً لهذا التصنيف'}</p>
+                  </div>
+
+                  <div className="col-span-2 flex justify-end gap-2">
+                    <button
+                      onClick={() => navigate(`update/${category.ID}`)}
+                      className="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 hover:bg-blue-500 hover:text-white transition-all duration-300 shadow-sm flex items-center justify-center"
+                      title="تعديل"
+                    >
+                      <i className="fas fa-edit text-sm"></i>
+                    </button>
+                    <button
+                      onClick={() => handleDelete(category.ID)}
+                      className="w-11 h-11 rounded-2xl bg-red-50 text-red-600 hover:bg-red-500 hover:text-white transition-all duration-300 shadow-sm flex items-center justify-center"
+                      title="حذف"
+                    >
+                      <i className="fas fa-trash-alt text-sm"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="glass-card p-20 flex flex-col items-center justify-center text-center space-y-6">
+              <div className="w-24 h-24 bg-slate-50 rounded-[2rem] flex items-center justify-center text-slate-200 text-5xl">
+                <i className="fas fa-tags"></i>
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-2xl font-black text-gray-800">قائمة فارغة</h3>
+                <p className="text-gray-400 font-bold max-w-xs mx-auto">لم يتم تسجيل أي تصنيف حتى الآن، ابدأ بإضافة التصنيفات لتنظيم المهام</p>
+              </div>
+              <Link to="addcategory" className="px-8 py-3 bg-dark-green text-white font-black rounded-2xl shadow-lg shadow-green-900/10 hover:shadow-2xl transition-all">إضافة أول تصنيف</Link>
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 }
+
+
+
+

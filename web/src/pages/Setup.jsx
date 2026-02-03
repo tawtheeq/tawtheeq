@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/client';
 
 export default function Setup() {
     const navigate = useNavigate();
@@ -29,14 +29,14 @@ export default function Setup() {
 
         setLoading(true);
         try {
-            await axios.post('/api/setup/register', {
+            await api.post('/api/setup/register', {
                 name: form.name,
                 email: form.email,
                 mobile: form.mobile,
                 password: form.password
             });
             alert('تم إعداد النظام بنجاح! يمكنك الآن تسجيل الدخول.');
-            navigate('/login');
+            navigate('/');
         } catch (err) {
             setError(err.response?.data?.message || 'فشل إعداد النظام');
         } finally {
@@ -45,7 +45,7 @@ export default function Setup() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-dark-green via-medium-green to-light-green flex items-center justify-center p-6 relative overflow-hidden">
+        <div className="min-h-screen bg-gradient-to-br from-dark-green via-medium-green to-light-green flex items-center justify-center p-6 relative overflow-hidden" dir="rtl">
             {/* Animated Background Elements */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                 <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-white/10 rounded-full blur-3xl animate-pulse"></div>

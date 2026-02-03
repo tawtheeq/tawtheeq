@@ -51,180 +51,241 @@ export default function UserReport() {
     const { user, missions } = reportData;
 
     return (
-        <div className="p-6 max-w-7xl mx-auto">
+        <div className="space-y-10 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Header */}
-            <div className="flex justify-between items-center mb-8">
-                <div className="flex items-center gap-3">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 no-print">
+                <div className="flex items-center gap-6">
                     <button
                         onClick={() => navigate('/dashboard/users')}
-                        className="w-10 h-10 rounded-xl flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors"
+                        className="w-14 h-14 glass-card flex items-center justify-center text-gray-600 hover:bg-dark-green hover:text-white transition-all duration-300 group"
                     >
-                        <i className="fas fa-arrow-right"></i>
+                        <i className="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                     </button>
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-800">تقرير الموظف</h1>
-                        <p className="text-sm text-gray-500 mt-1">{user.Name}</p>
+                        <div className="flex items-center gap-3 mb-1 text-dark-green">
+                            <div className="w-1.5 h-6 bg-current rounded-full"></div>
+                            <h1 className="text-3xl font-black tracking-tight text-gray-800">سجل إنجازات الموظف</h1>
+                        </div>
+                        <p className="text-gray-500 font-bold pr-4">استعراض المهام المنجزة وتحليل الأداء الفني لـ {user.Name}</p>
                     </div>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-4">
                     <button
                         onClick={() => window.print()}
-                        className="px-4 py-2 bg-dark-green text-white rounded-xl hover:bg-light-green transition-colors flex items-center gap-2"
+                        className="px-8 py-4 premium-gradient text-white font-black rounded-2xl hover:shadow-2xl hover:shadow-green-900/40 transition-all duration-300 flex items-center gap-3 active:scale-[0.98]"
                     >
                         <i className="fas fa-print"></i>
-                        طباعة
+                        <span>طباعة التقرير</span>
                     </button>
                 </div>
             </div>
 
-            <div className="report-content">
+            <div className="report-content space-y-10">
                 {/* PDF-only Header (hidden in web view) */}
-                <div className="hidden pdf-only mb-10 border-b-2 border-green-800 pb-6">
-                    <div className="flex justify-between items-center">
+                <div className="hidden pdf-only mb-10 border-b-4 border-dark-green pb-8">
+                    <div className="flex justify-between items-center bg-dark-green p-8 rounded-[2rem] text-white">
                         <div className="text-right">
-                            <h1 className="text-3xl font-bold text-green-900 mb-2">منصة توثيق</h1>
-                            <p className="text-lg text-gray-600">تقرير أداء الموظف السنوي</p>
+                            <h1 className="text-4xl font-black mb-2">منصة توثيق</h1>
+                            <p className="text-xl font-bold opacity-80 uppercase tracking-widest text-white">تقرير الأداء السنوي للموظف</p>
                         </div>
-                        <div className="text-left text-sm text-gray-500">
-                            <p>تاريخ التقرير: {new Date().toLocaleDateString('ar-SA')}</p>
-                        </div>
-                    </div>
-                </div>
-
-                {/* User Info Card */}
-                <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 p-8 mb-6">
-                    <h2 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
-                        <i className="fas fa-user text-green-700"></i>
-                        معلومات الموظف
-                    </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="space-y-2 ">
-                            <p className="text-sm text-gray-500">الاسم</p>
-                            <p className="text-lg font-semibold text-gray-800">{user.Name}</p>
-                        </div>
-                        <div className="space-y-2">
-                            <p className="text-sm text-gray-500">البريد الإلكتروني</p>
-                            <p className="text-lg font-semibold text-gray-800">{user.Email}</p>
-                        </div>
-                        <div className="space-y-2">
-                            <p className="text-sm text-gray-500">رقم الجوال</p>
-                            <p className="text-lg font-semibold text-gray-800 font-mono">{user.Mobile}</p>
-                        </div>
-                        <div className="space-y-2">
-                            <p className="text-sm text-gray-500">الوظيفة</p>
-                            <p className="text-lg font-semibold text-gray-800">
-                                {user.Job === 'photo' ? 'مصور فوتوغرافي' : user.Job === 'video' ? 'مصور فيديو' : user.Job}
-                            </p>
-                        </div>
-                        {/* <div className="space-y-2">
-                        <p className="text-sm text-gray-500">الصلاحية</p>
-                        <p className="text-lg font-semibold text-gray-800">
-                            {user.Role === 'admin' ? 'مدير' : 'مستخدم'}
-                        </p>
-                    </div> */}
-                        <div className="space-y-2">
-                            <p className="text-sm text-gray-500">الرصيد المتبقي</p>
-                            <p className={`text-2xl font-bold ${user.Balance > 20 ? 'text-green-600' : user.Balance > 10 ? 'text-yellow-600' : 'text-red-600'}`}>
-                                {user.Balance} يوم
-                            </p>
+                        <div className="text-left font-black">
+                            <div className="bg-white/10 px-4 py-2 rounded-xl mb-2 text-white">تاريخ التقرير: {new Date().toLocaleDateString('ar-SA')}</div>
                         </div>
                     </div>
                 </div>
 
-                {/* Missions Table */}
-                <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-                    <div className="p-6 border-b border-gray-100">
-                        <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-                            <i className="fas fa-tasks text-green-700"></i>
-                            المهام المشارك فيها ({missions?.length || 0})
-                        </h2>
+                {/* User Identity & Stats */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    {/* ID Card */}
+                    <div className="lg:col-span-8">
+                        <div className="glass-card p-10 relative overflow-hidden h-full">
+                            <div className="absolute top-0 left-0 w-2 h-full bg-dark-green opacity-20"></div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                <div className="space-y-8">
+                                    <div className="flex items-center gap-5">
+                                        <div className="w-20 h-20 rounded-[2rem] bg-slate-50 flex items-center justify-center text-dark-green font-black text-3xl border-2 border-white shadow-inner">
+                                            {user.Name.charAt(0)}
+                                        </div>
+                                        <div>
+                                            <h2 className="text-2xl font-black text-gray-800">{user.Name}</h2>
+                                            <span className="inline-flex px-3 py-1 rounded-lg text-[10px] font-black bg-dark-green/5 text-dark-green border border-dark-green/10 uppercase tracking-widest mt-1">
+                                                {user.Job === 'photo' ? 'مصور فوتوغرافي' : user.Job === 'video' ? 'مصور فيديو' : user.Job}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-6">
+                                        <div className="space-y-1">
+                                            <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest">البريد الإلكتروني</span>
+                                            <p className="text-sm font-bold text-gray-600 truncate">{user.Email}</p>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest">رقم الجوال</span>
+                                            <p className="text-sm font-bold text-gray-600 font-mono tracking-tighter">{user.Mobile}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col justify-between p-8 bg-slate-50 rounded-3xl border border-white/50 relative overflow-hidden group">
+                                    <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-dark-green/5 rounded-full blur-2xl group-hover:bg-dark-green/10 transition-all duration-700"></div>
+                                    <div className="relative z-10">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <span className="text-xs font-black text-gray-400 uppercase tracking-[0.2em]">رصيد المهام المتبقي</span>
+                                            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-dark-green text-xs shadow-sm">
+                                                <i className="fas fa-shield-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-baseline gap-2">
+                                            <span className={`text-6xl font-black ${user.Balance > 20 ? 'text-dark-green' : 'text-rose-600'} tracking-tighter`}>{user.Balance}</span>
+                                            <span className="text-lg font-black text-gray-400">يوم</span>
+                                        </div>
+                                        <div className="mt-4 flex items-center gap-2">
+                                            <div className="flex-1 h-1.5 bg-white rounded-full overflow-hidden p-0.5">
+                                                <div
+                                                    className={`h-full rounded-full ${user.Balance > 20 ? 'bg-dark-green' : 'bg-rose-500'}`}
+                                                    style={{ width: `${Math.min(100, (user.Balance / 60) * 100)}%` }}
+                                                ></div>
+                                            </div>
+                                            <span className="text-[10px] font-black text-gray-400 uppercase">{user.Balance >= 60 ? 'مكتمل' : 'قيد الاستهلاك'}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    {missions && missions.length > 0 ? (
-
-                        <div className="overflow-x-auto">
-                            <table className="w-full">
-                                <thead>
-                                    <tr className="bg-gray-50/50 border-b border-gray-100">
-                                        <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">اسم المهمة</th>
-                                        <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">التاريخ</th>
-                                        <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">المدة</th>
-                                        <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">نوع المهمة</th>
-                                        {/* <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الدور</th> */}
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-100">
-                                    {missions.map((mission) => (
-                                        <tr key={mission.ID} className="hover:bg-gray-50/50 transition-colors">
-                                            <td className="px-6 py-4 font-medium text-gray-800">{mission.MissionName}</td>
-                                            <td className="px-6 py-4 text-gray-600">
-                                                {formatDate(mission.Day, mission.Month, mission.Year)}
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
-                                                    {mission.DurationDays} يوم
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4 text-gray-600">{mission.Type == 'external' ? 'خارجية' : 'داخلية'}</td>
-                                            {/* <td className="px-6 py-4 text-gray-600">{user.Job || 'مصور'}</td> */}
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                    {/* Quick Stats Sidebar */}
+                    <div className="lg:col-span-4 grid grid-cols-1 gap-6">
+                        <div className="glass-card p-8 bg-slate-900 text-white relative overflow-hidden group border-none">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-dark-green/20 rounded-full blur-[60px]"></div>
+                            <div className="relative z-10 flex items-center gap-6">
+                                <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-2xl text-dark-green">
+                                    <i className="fas fa-chess-knight"></i>
+                                </div>
+                                <div>
+                                    <div className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">إجمالي المهام</div>
+                                    <div className="text-4xl font-black tracking-tighter">{missions?.length || 0}</div>
+                                </div>
+                            </div>
                         </div>
-                    ) : (
-                        <div className="p-12 text-center">
-                            <i className="fas fa-inbox text-6xl text-gray-300 mb-4"></i>
-                            <p className="text-gray-500">لا توجد مهام مسجلة لهذا الموظف</p>
+                        <div className="glass-card p-8 relative overflow-hidden group">
+                            <div className="flex items-center gap-6">
+                                <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl">
+                                    <i className="fas fa-stopwatch"></i>
+                                </div>
+                                <div>
+                                    <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">سعر الإنجاز</div>
+                                    <div className="text-4xl font-black text-gray-800 tracking-tighter">{missions?.reduce((acc, m) => acc + m.DurationDays, 0) || 0} <span className="text-lg text-gray-300">يوم</span></div>
+                                </div>
+                            </div>
                         </div>
-                    )}
+                    </div>
                 </div>
 
-                {/* Close reportRef */}
+                {/* Missions List */}
+                <div className="space-y-6">
+                    <div className="flex items-center justify-between px-6">
+                        <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-dark-green/10 text-dark-green rounded-lg flex items-center justify-center text-sm">
+                                <i className="fas fa-list-ul"></i>
+                            </div>
+                            <h2 className="text-xl font-black text-gray-800">سجل المهام التفصيلي</h2>
+                        </div>
+                    </div>
+
+                    <div className="space-y-3">
+                        {missions && missions.length > 0 ? (
+                            missions.map((mission) => (
+                                <div key={mission.ID} className="glass-card p-6 group hover:translate-x-[-8px] transition-all duration-500 hover:shadow-2xl hover:shadow-slate-200/50">
+                                    <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                                        <div className="md:col-span-6 flex items-center gap-5">
+                                            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-xl shadow-sm ${mission.Type === 'external' ? 'bg-purple-100 text-purple-600' : 'bg-emerald-100 text-emerald-600'}`}>
+                                                <i className={`fas ${mission.Type === 'external' ? 'fa-globe-americas' : 'fa-building'}`}></i>
+                                            </div>
+                                            <div className="overflow-hidden">
+                                                <h3 className="font-black text-gray-800 text-lg group-hover:text-dark-green transition-colors truncate">{mission.MissionName}</h3>
+                                                <div className="flex items-center gap-2 text-xs font-bold text-gray-400 mt-0.5">
+                                                    <i className="far fa-map"></i>
+                                                    <span>{mission.Type === 'external' ? 'مهمة خارجية' : 'مهمة داخلية'}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="md:col-span-3">
+                                            <div className="flex items-center gap-2 text-gray-600">
+                                                <i className="far fa-calendar-alt text-dark-green opacity-40"></i>
+                                                <span className="text-sm font-black font-mono tracking-tighter">{formatDate(mission.Day, mission.Month, mission.Year)}</span>
+                                            </div>
+                                        </div>
+                                        <div className="md:col-span-3 text-left">
+                                            <div className="flex flex-col items-start md:items-end">
+                                                <span className="text-[10px] font-black text-gray-300 uppercase mb-1">المدة الزمنية</span>
+                                                <span className="px-5 py-2 rounded-2xl bg-slate-100 text-slate-800 text-sm font-black border-2 border-white shadow-sm">{mission.DurationDays} يوم</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="glass-card p-20 flex flex-col items-center justify-center text-center space-y-6">
+                                <div className="w-24 h-24 bg-slate-50 rounded-[2rem] flex items-center justify-center text-slate-200 text-5xl">
+                                    <i className="fas fa-folder-open"></i>
+                                </div>
+                                <div className="space-y-2">
+                                    <h3 className="text-2xl font-black text-gray-800">لا توجد مهام</h3>
+                                    <p className="text-gray-400 font-bold max-w-xs mx-auto">لم يتم تسجيل أي مهام لهذا الموظف في النظام حتى الآن</p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
 
-
-            {/* Print & PDF Styles */}
+            {/* Print Optimization Styles */}
             <style>{`
         @media print {
-          body { background: white !important; }
-          .p-6 { padding: 0 !important; }
-          .max-w-7xl { max-width: 100% !important; }
-          .shadow-xl, .shadow-lg, .shadow-md, .shadow-sm { box-shadow: none !important; border: 1px solid #eee !important; }
-          .backdrop-blur-md { backdrop-filter: none !important; background: white !important; }
-          
-          .pdf-only { display: block !important; }
-          
-          /* Prevent breaking inside cards or table rows */
-          .bg-white, tr {
-            page-break-inside: avoid;
-            break-inside: avoid;
-          }
-          
-          /* Custom layout for print to make it feel premium */
-          .grid { gap: 2rem !important; }
-          h2 { color: #064e3b !important; } /* dark-green */
-        }
-
-        @media print {
-          body * {
-            visibility: hidden;
-          }
-          .report-content, .report-content * {
-            visibility: visible;
-          }
-          .report-content {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-          }
-          button, i.fas.fa-arrow-right {
-            display: none !important;
-          }
+            @page { size: A4; margin: 1.5cm; }
+            body { background: white !important; font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+            .no-print { display: none !important; }
+            .pdf-only { display: block !important; }
+            .report-content { width: 100% !important; margin: 0 !important; }
+            .glass-card { 
+                background: white !important; 
+                border: 1px solid #f0f0f0 !important; 
+                box-shadow: none !important;
+                border-radius: 1.5rem !important;
+                page-break-inside: avoid;
+            }
+            .bg-slate-50, .bg-slate-100, .bg-blue-50, .bg-emerald-100, .bg-purple-100 { 
+                background-color: #f8fafc !important; 
+                -webkit-print-color-adjust: exact;
+            }
+            h1, h2, h3, h4 { color: #1a4d4a !important; }
+            
+            /* Text colors for print */
+            .text-dark-green { color: #1a4d4a !important; }
+            .text-gray-800 { color: #1e293b !important; }
+            .text-gray-600 { color: #475569 !important; }
+            .text-gray-400, .text-gray-300 { color: #94a3b8 !important; }
+            
+            /* Backgrounds for print */
+            .bg-dark-green { background-color: #1a4d4a !important; -webkit-print-color-adjust: exact; }
+            .bg-slate-900 { background-color: #0f172a !important; -webkit-print-color-adjust: exact; }
+            .premium-gradient { background: #1a4d4a !important; -webkit-print-color-adjust: exact; }
+            
+            /* Grid layout for print */
+            .grid { display: flex !important; flex-wrap: wrap !important; gap: 1rem !important; }
+            .grid-cols-12 > * { float: right !important; }
+            .lg\\:col-span-8 { width: 65% !important; }
+            .lg\\:col-span-4 { width: 33% !important; }
+            .md\\:col-span-6 { width: 48% !important; }
+            .md\\:col-span-3 { width: 24% !important; }
+            
+            /* RTL specific */
+            * { direction: rtl !important; text-align: right !important; }
+            .text-left { text-align: left !important; }
         }
       `}</style>
-
         </div>
     );
 }
+

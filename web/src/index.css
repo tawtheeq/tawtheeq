@@ -1,15 +1,47 @@
 @import "tailwindcss";
 
 @theme {
-
     --color-dark-green: #29504d;
+    --color-medium-green: #1a6b51;
     --color-light-green: #00a159;
-    --color-gray: #b2bec4;
+    --color-premium-gray: #f8fafc;
 
+    --shadow-premium: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+
+    @keyframes shake {
+
+        0%,
+        100% {
+            transform: translateX(0);
+        }
+
+        25% {
+            transform: translateX(-5px);
+        }
+
+        75% {
+            transform: translateX(5px);
+        }
+    }
+
+    --animate-shake: shake 0.5s ease-in-out;
 }
 
-html,
-body,
-* {
-    font-family: 'Noto Sans Arabic', sans-serif;
+@layer base {
+
+    html,
+    body,
+    * {
+        font-family: 'Noto Sans Arabic', sans-serif;
+        @apply antialiased;
+    }
+}
+
+.glass-card {
+    @apply bg-white/90 backdrop-blur-xl border border-white/20 shadow-premium rounded-[2rem];
+}
+
+.premium-gradient {
+    @apply bg-gradient-to-br from-dark-green via-medium-green to-light-green;
 }

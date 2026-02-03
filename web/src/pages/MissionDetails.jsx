@@ -40,22 +40,18 @@ export default function MissionDetails() {
     }
 
     try {
-      // Note: The route uses {mid} and {pid}, but we'll use the standard format
-      // If this doesn't work, the backend route may need to be fixed
-      await axios.delete(`/api/missions/${id}/participants/${participantId}`);
+      await api.delete(`/api/missions/${id}/participants/${participantId}`);
 
       // Reload participants list from server
-      const participantsRes = await axios.get(`/api/missions/${id}/participants`);
+      const participantsRes = await api.get(`/api/missions/${id}/participants`);
       setParticipants(participantsRes.data.data || []);
 
       alert('تم إزالة المشارك بنجاح!');
     } catch (err) {
       console.error('Error removing participant:', err);
-      console.error("SERVER ERROR:", err.response?.data);
       alert(`حدث خطأ أثناء إزالة المشارك: ${err.response?.data?.message || err.message}`);
     }
   };
-
 
   const formatDate = (day, month, year) => {
     const months = [
@@ -65,42 +61,12 @@ export default function MissionDetails() {
     return `${day} ${months[month - 1]} ${year}`;
   };
 
-  if (loading) return <p>Loading mission details...</p>;
-  if (error || !mission) return <p>Error: {error || 'Mission not found'}</p>;
-
   const formatParticipantsForShare = () => {
     if (!participants.length) return 'لا يوجد مشاركون حتى الآن.';
     return participants
       .map((participant, index) => `${index + 1}. ${participant.Name} - ${participant.Mobile} - ${participant.Job || 'مشارك'}`)
       .join('\n');
   };
-
-  // const handleShareSignal = async () => {
-  //   const shareText = [
-  //     '*أمر إسناد مهمة عمل*',
-  //     `اسم المهمة: ${mission.MissionName}`,
-  //     `التاريخ: ${formatDate(mission.Day, mission.Month, mission.Year)}`,
-  //     `المدة: ${mission.DurationDays} يوم / أيام`,
-  //     `رقم المنسق: ${mission.CoordinatorNum || 'غير محدد'}`,
-  //     '',
-  //     '*فريق المهمة*',
-  //     formatParticipantsForShare()
-  //   ].join('\n');
-
-  //   try {
-  //     await axios.post("/api/signal/send", {
-  //       // to: mission.CoordinatorNum,   // أو أي رقم تبغاه
-  //       To: "+966507795131",
-  //       Text: shareText,
-  //       Image: "/Users/mohanad/app/images/mission.jpg"
-  //     });
-
-  //     alert("تم إرسال الرسالة عبر سيجنال بنجاح!");
-  //   } catch (err) {
-  //     console.error(err);
-  //     alert("حدث خطأ أثناء الإرسال عبر سيجنال");
-  //   }
-  // };
 
   const handleSendToAllParticipants = async () => {
     if (!participants.length) {
@@ -113,21 +79,12 @@ export default function MissionDetails() {
     }
 
     setIsSending(true);
-    // إعداد متغيرات الحالة (يفضل أن تكون لديك حالة useState لرسالة التحميل)
-    // setStatusMessage("بدء عملية الإرسال..."); 
 
     let successCount = 0;
     let failedList = [];
 
     for (let i = 0; i < participants.length; i++) {
       const participant = participants[i];
-
-      // تحديث حالة العرض للمستخدم (مثلاً: إرسال 1 من 10)
-      const currentProgress = `إرسال ${i + 1} من ${participants.length}: ${participant.Name}...`;
-      console.log(currentProgress);
-      // if (setStatusMessage) setStatusMessage(currentProgress);
-
-      // 1. تنظيف وتنسيق رقم الجوال
       let mobile = participant.Mobile.trim();
       if (!mobile.startsWith('+')) {
         mobile = `+${mobile}`;
@@ -153,32 +110,26 @@ export default function MissionDetails() {
         const payload = {
           To: mobile,
           Text: personalizedMessage,
-          // Image: "mission.jpg" // نرسل اسم الملف فقط كما اتفقنا في كود Go المحدث
           Image: "/Users/mohanad/app/images/mission.jpg"
         };
 
-        // 2. إرسال الطلب مع زيادة التايم أوت إلى 60 ثانية
-        await axios.post("/api/signal/send", payload, {
-          timeout: 60000 // 60 ثانية لكل طلب لضمان عدم الانقطاع
+        await api.post("/api/signal/send", payload, {
+          timeout: 60000
         });
 
         successCount++;
-
       } catch (err) {
         console.error(`❌ فشل مع: ${participant.Name}`, err.response?.data || err.message);
         failedList.push(`${participant.Name} (${mobile})`);
       }
 
-      // 3. تأخير بسيط بين الرسائل (ثانيتين لضمان استقرار السيرفر وتجنب الحظر)
       if (i < participants.length - 1) {
         await new Promise(resolve => setTimeout(resolve, 3000));
       }
     }
 
     setIsSending(false);
-    // if (setStatusMessage) setStatusMessage("");
 
-    // رسالة نهائية تفصيلية
     let finalMsg = `✅ تم إرسال ${successCount} رسالة بنجاح.`;
     if (failedList.length > 0) {
       finalMsg += `\n\n❌ فشل الإرسال لـ (${failedList.length}) مشارك:\n` + failedList.join('\n');
@@ -186,209 +137,270 @@ export default function MissionDetails() {
     alert(finalMsg);
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="w-12 h-12 border-4 border-dark-green border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (error || !mission) {
+    return (
+      <div className="glass-card p-12 text-center space-y-6 max-w-2xl mx-auto mt-20">
+        <div className="w-20 h-20 bg-rose-50 text-rose-500 rounded-[2rem] flex items-center justify-center text-3xl mx-auto">
+          <i className="fas fa-exclamation-triangle"></i>
+        </div>
+        <h2 className="text-2xl font-black text-gray-800">حدث خطأ أثناء تحميل البيانات</h2>
+        <p className="text-gray-400 font-bold">{error || 'لم يتم العثور على المهمة المطلوبة'}</p>
+        <button onClick={() => navigate('/dashboard/missions')} className="px-8 py-3 bg-dark-green text-white rounded-2xl font-black">العودة للمهام</button>
+      </div>
+    );
+  }
+
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="flex justify-between items-start mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800">{mission.MissionName}</h1>
-          <br></br>
-          <div className="flex items-center gap-3 mt-2 text-gray-500">
-            <span className="flex items-center gap-1">
-              <i className="fas fa-bullseye text-red-500"></i>
-              رقم المهمة: {mission.ID}
-            </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
-
-            <span className="flex items-center gap-1">
-              <i className="far fa-calendar-alt text-red-500"></i>
-              {formatDate(mission.Day, mission.Month, mission.Year)}
-            </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
-
-            <span className="flex items-center gap-1">
-              <i className="far fa-clock text-red-500"></i>
-              مدة المهمة: {mission.DurationDays} يوم
-            </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
-            <span className="flex items-center gap-1">
-              <i className="fas fa-tags text-red-500"></i>
-              نوع المهمة: {mission.Type == 'external' ? 'خارجية' : 'داخلية'}
-            </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
-            <span className="flex items-center gap-2">
-              <i className="fas fa-crosshairs text-red-500"></i>
-              حالة المهمة:
-              {mission.status === 'completed' && (
-                <span className="px-3 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100">مكتملة</span>
-              )}
-              {mission.status === 'in_progress' && (
-                <span className="px-3 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">قيد التنفيذ</span>
-              )}
-              {mission.status === 'cancelled' && (
-                <span className="px-3 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-100">ملغاة</span>
-              )}
-              {mission.status === 'created' && (
-                <span className="px-3 py-0.5 rounded-full text-xs font-medium bg-gray-50 text-gray-700 border border-gray-100">تم الإنشاء</span>
-              )}
-            </span>
+    <div className="space-y-10 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+        <div className="flex items-start gap-6">
+          <button
+            onClick={() => navigate('/dashboard/missions')}
+            className="w-14 h-14 glass-card flex items-center justify-center text-gray-600 hover:bg-dark-green hover:text-white transition-all duration-300 group shrink-0 mt-1"
+          >
+            <i className="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+          </button>
+          <div className="space-y-2">
+            <div className="flex items-center gap-3 text-dark-green">
+              <span className="px-3 py-1 rounded-lg bg-dark-green/10 text-[10px] font-black uppercase tracking-widest">مهمة رقم #{mission.ID}</span>
+              <div className="w-1.5 h-6 bg-current rounded-full"></div>
+            </div>
+            <h1 className="text-4xl font-black tracking-tight text-gray-800 leading-tight">{mission.MissionName}</h1>
+            <div className="flex flex-wrap items-center gap-4 text-gray-400">
+              <div className="flex items-center gap-2">
+                <i className="far fa-calendar-alt text-dark-green/60"></i>
+                <span className="text-sm font-black text-gray-600 font-mono">{formatDate(mission.Day, mission.Month, mission.Year)}</span>
+              </div>
+              <span className="w-1 h-1 rounded-full bg-gray-200"></span>
+              <div className="flex items-center gap-2">
+                <i className="far fa-clock text-blue-500/60"></i>
+                <span className="text-sm font-black text-gray-600">المدة: {mission.DurationDays} أيام</span>
+              </div>
+              <span className="w-1 h-1 rounded-full bg-gray-200"></span>
+              <div className="flex items-center gap-2">
+                <i className={`fas ${mission.Type === 'external' ? 'fa-globe-americas text-purple-500/60' : 'fa-building text-emerald-500/60'}`}></i>
+                <span className="text-sm font-black text-gray-600">{mission.Type === 'external' ? 'مهمة خارجية' : 'مهمة داخلية'}</span>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="flex gap-3">
 
+        <div className="flex items-center gap-3 no-print">
           <button
-            className="flex items-center gap-2 px-4 py-2 bg-green-800 text-white rounded-xl hover:bg-green-900 transition-all shadow-md hover:shadow-lg"
             onClick={() => navigate(`/dashboard/missions/${id}/add-participants`)}
+            className="px-8 py-4 bg-white text-dark-green border-2 border-dark-green/10 rounded-2xl font-black text-sm flex items-center gap-3 hover:bg-dark-green hover:text-white hover:border-dark-green transition-all shadow-lg active:scale-95"
           >
             <i className="fas fa-user-plus"></i>
             <span>إضافة مشاركين</span>
           </button>
-          <button
-            className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 border border-gray-200 rounded-xl hover:bg-gray-50 transition-all shadow-sm hover:shadow-md"
-            onClick={() => navigate(-1)}
-          >
-            <i className="fas fa-arrow-right"></i>
-            <span>عودة</span>
-          </button>
-        </div>
-      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <div className="lg:col-span-2 space-y-6">
-          {/* Mission Stats */}
-          <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="bg-gray-50/50 border-b border-gray-100">
-                    <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">رقم المنسق</th>
-                    <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">تمت الإضافة بواسطة</th>
-                    <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">عدد المشاركين</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="px-6 py-4 text-gray-800 font-medium">{mission.CoordinatorNum || 'غير محدد'}</td>
-                    <td className="px-6 py-4 text-gray-800">{mission.CreatedByName || 'غير محدد'}</td>
-                    <td className="px-6 py-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${participants.length > 0 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
-                        {participants.length} مشارك
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Participants List */}
-          <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/30">
-              <h2 className="text-lg font-bold text-gray-800">المشاركون في المهمة</h2>
-            </div>
-
-            {participants.length > 0 ? (
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="bg-gray-50/50 border-b border-gray-100">
-                      <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الاسم</th>
-                      <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الدور</th>
-                      <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الإجراءات</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {participants.map(participant => (
-                      <tr key={participant.ID} className="hover:bg-gray-50/50 transition-colors">
-                        <td className="px-6 py-4 font-medium text-gray-800">{participant.Name}</td>
-                        <td className="px-6 py-4 text-gray-600">{participant.Job == 'photo' ? 'مصور فوتوغرافي' : participant.Job == 'video' ? 'مصور فيديو' : participant.Job == 'reporter' ? 'مراسل' : 'مشارك'}</td>
-                        <td className="px-6 py-4">
-                          <button
-                            className="w-8 h-8 rounded-lg flex items-center justify-center text-red-600 hover:bg-red-50 transition-colors"
-                            onClick={() => handleRemoveParticipant(participant.ID)}
-                            title="إزالة من المهمة"
-                          >
-                            <i className="fas fa-times"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+          <div className="relative group">
+            {mission.Status === 'completed' ? (
+              <span className="inline-flex px-6 py-4 rounded-2xl text-xs font-black bg-green-50 text-green-700 border border-green-100 items-center gap-2">
+                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                مكتملة
+              </span>
             ) : (
-              <div className="flex flex-col items-center justify-center py-12 text-center">
-                <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center text-gray-300 mb-4">
-                  <i className="fas fa-user-slash text-2xl"></i>
-                </div>
-                <p className="text-gray-500 mb-4">لا يوجد مشاركين في هذه المهمة</p>
-                <button
-                  className="px-4 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors text-sm font-medium"
-                  onClick={() => navigate(`/dashboard/missions/${id}/add-participants`)}
-                >
-                  <i className="fas fa-user-plus ml-2"></i>
-                  إضافة مشاركين
-                </button>
-              </div>
+              <span className="inline-flex px-6 py-4 rounded-2xl text-xs font-black bg-blue-50 text-blue-700 border border-blue-100 items-center gap-2 shadow-lg shadow-blue-500/10">
+                <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
+                قيد التنفيذ
+              </span>
             )}
           </div>
         </div>
+      </div>
 
-        {/* Share Card */}
-        <div className="lg:col-span-1">
-          <div className="bg-gradient-to-br from-green-800 to-green-900 rounded-2xl shadow-xl p-6 text-white sticky top-6">
-            <div className="flex items-center gap-3 mb-4 opacity-90">
-              <i className="fas fa-share-alt"></i>
-              <span className="text-sm font-medium">بطاقة المشاركة</span>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <div className="lg:col-span-8 space-y-10">
+          {/* Mission Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="glass-card p-8 group overflow-hidden relative">
+              <div className="absolute -top-10 -right-10 w-32 h-32 bg-dark-green/5 rounded-full blur-3xl group-hover:bg-dark-green/10 transition-colors"></div>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 bg-dark-green/5 text-dark-green rounded-2xl flex items-center justify-center text-xl shadow-inner">
+                  <i className="fas fa-headset"></i>
+                </div>
+                <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest">إدارة التنسيق</h3>
+              </div>
+              <div className="space-y-4">
+                <div className="flex justify-between items-end">
+                  <span className="text-gray-500 font-bold">رقم المنسق</span>
+                  <span className="text-xl font-black text-gray-800 font-mono tracking-tighter">{mission.CoordinatorNum || '---'}</span>
+                </div>
+                <div className="flex justify-between items-end">
+                  <span className="text-gray-500 font-bold">بواسطة</span>
+                  <span className="text-sm font-black text-gray-800">{mission.CreatedByName || 'النظام'}</span>
+                </div>
+              </div>
             </div>
 
-            <h3 className="text-xl font-bold mb-2">{mission.MissionName}</h3>
-            <p className="text-green-100 text-sm mb-6 leading-relaxed">
-              {formatDate(mission.Day, mission.Month, mission.Year)} • {mission.DurationDays} يوم • {participants.length} مشارك
-            </p>
-
-            <div className="space-y-3 mb-8 text-sm text-green-50">
-              <div className="flex justify-between border-b border-green-700/50 pb-2">
-                <span>رقم المنسق:</span>
-                <span className="font-mono">{mission.CoordinatorNum || 'غير محدد'}</span>
+            <div className="glass-card p-8 group overflow-hidden relative">
+              <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl group-hover:bg-blue-500/10 transition-colors"></div>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 bg-blue-500/5 text-blue-500 rounded-2xl flex items-center justify-center text-xl shadow-inner">
+                  <i className="fas fa-users-cog"></i>
+                </div>
+                <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest">إحصائيات الموارد</h3>
               </div>
-              <div className="flex justify-between border-b border-green-700/50 pb-2">
-                <span>تمت الإضافة بواسطة:</span>
-                <span>{mission.CreatedByName || 'غير محدد'}</span>
+              <div className="space-y-4">
+                <div className="flex justify-between items-end">
+                  <span className="text-gray-500 font-bold">إجمالي الفريق</span>
+                  <span className="text-3xl font-black text-blue-600 tracking-tighter">{participants.length}</span>
+                </div>
+                <div className="flex justify-between items-end">
+                  <span className="text-gray-500 font-bold">حالة التغطية</span>
+                  <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase ${participants.length > 0 ? 'bg-green-50 text-green-700' : 'bg-rose-50 text-rose-700'}`}>
+                    {participants.length > 0 ? 'فريق مفعل' : 'لم يتم التعيين'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Participants Table */}
+          <div className="glass-card overflow-hidden">
+            <div className="px-10 py-8 border-b border-gray-50 flex items-center justify-between bg-white/50">
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 bg-slate-900 text-white rounded-xl flex items-center justify-center">
+                  <i className="fas fa-users"></i>
+                </div>
+                <h2 className="text-2xl font-black text-gray-800">أعضاء فريق العمل</h2>
               </div>
             </div>
 
-            {/* <button
-              className="w-full py-3 bg-white text-green-900 rounded-xl font-bold hover:bg-green-50 transition-all shadow-lg flex items-center justify-center gap-2 mb-3"
-              onClick={handleShareSignal}
-            >
-              <i className="fas fa-paper-plane text-lg"></i>
-              <span>إرسال عبر سيجنال</span>
-            </button> */}
-
-            <button
-              className={`w-full py-3 rounded-xl font-bold transition-all shadow-lg flex items-center justify-center gap-2 border-2 border-white/20 ${isSending || participants.length === 0
-                ? 'bg-gray-500 text-gray-300 cursor-not-allowed'
-                : 'bg-green-700 text-white hover:bg-green-600'
-                }`}
-              onClick={handleSendToAllParticipants}
-              disabled={participants.length === 0 || isSending}
-            >
-              {isSending ? (
-                <>
-                  <i className="fas fa-spinner fa-spin text-lg"></i>
-                  <span>جاري الإرسال...</span>
-                </>
+            <div className="p-4">
+              {participants.length > 0 ? (
+                <div className="space-y-2">
+                  {participants.map(participant => (
+                    <div key={participant.ID} className="flex items-center justify-between p-6 rounded-3xl hover:bg-slate-50 transition-colors group">
+                      <div className="flex items-center gap-5">
+                        <div className="w-12 h-12 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-dark-green font-black shadow-sm">
+                          {participant.Name.charAt(0)}
+                        </div>
+                        <div>
+                          <h4 className="font-black text-gray-800 group-hover:text-dark-green transition-colors">{participant.Name}</h4>
+                          <div className="flex items-center gap-4 mt-1 text-[10px] font-bold text-gray-400">
+                            <span className="flex items-center gap-1">
+                              <i className="fas fa-id-badge opacity-50"></i>
+                              {participant.Job === 'photo' ? 'مصور فوتو' : participant.Job === 'video' ? 'مصور فيديو' : participant.Job === 'reporter' ? 'مراسل' : participant.Job || 'عضو فريق'}
+                            </span>
+                            <span className="w-1 h-1 rounded-full bg-gray-200"></span>
+                            <span className="font-mono tracking-tight">{participant.Mobile}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => handleRemoveParticipant(participant.ID)}
+                        className="w-10 h-10 rounded-xl text-rose-300 hover:bg-rose-50 hover:text-rose-500 transition-all opacity-0 group-hover:opacity-100 flex items-center justify-center shrink-0"
+                        title="إزالة من الفريق"
+                      >
+                        <i className="fas fa-user-minus"></i>
+                      </button>
+                    </div>
+                  ))}
+                </div>
               ) : (
-                <>
-                  <i className="fas fa-users text-lg"></i>
-                  <span>إرسال لجميع المشاركين</span>
-                </>
+                <div className="py-20 flex flex-col items-center justify-center text-center space-y-6 opacity-40">
+                  <div className="w-24 h-24 bg-slate-50 rounded-[2rem] flex items-center justify-center text-5xl">
+                    <i className="fas fa-user-plus"></i>
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-xl font-black text-gray-800">الفريق شاغر</p>
+                    <p className="text-sm font-bold text-gray-400">ابدأ بإسناد الموظفين لتفعيل هذه المهمة</p>
+                  </div>
+                </div>
               )}
-            </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Sidebar */}
+        <div className="lg:col-span-4 space-y-8">
+          {/* Signal Broadcasting Card */}
+          <div className="glass-card p-1 relative overflow-hidden group border-none shadow-2xl shadow-blue-500/20">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-blue-800"></div>
+            <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+
+            <div className="relative p-8 space-y-8 text-white">
+              <div className="flex items-center justify-between">
+                <div className="w-12 h-12 bg-white/10 backdrop-blur-xl rounded-2xl flex items-center justify-center text-2xl">
+                  <i className="fas fa-broadcast-tower animate-pulse"></i>
+                </div>
+                <div className="flex -space-x-3 rtl:space-x-reverse">
+                  {participants.slice(0, 3).map((p, i) => (
+                    <div key={i} className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md border-2 border-blue-700 flex items-center justify-center text-[10px] font-black">
+                      {p.Name.charAt(0)}
+                    </div>
+                  ))}
+                  {participants.length > 3 && (
+                    <div className="w-8 h-8 rounded-full bg-blue-500 border-2 border-blue-700 flex items-center justify-center text-[10px] font-black">
+                      +{participants.length - 3}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-2xl font-black mb-2">بث عبر Signal</h3>
+                <p className="text-blue-100/70 text-sm font-bold leading-relaxed">إرسال أوامر الإسناد الشخصية لكافة أعضاء الفريق ضغطة واحدة وبشكل آلي.</p>
+              </div>
+
+              <div className="space-y-4 pt-4">
+                <button
+                  onClick={handleSendToAllParticipants}
+                  disabled={participants.length === 0 || isSending}
+                  className={`w-full py-5 rounded-[2rem] font-black text-lg flex items-center justify-center gap-4 transition-all shadow-xl active:scale-95 ${isSending || participants.length === 0
+                      ? 'bg-blue-400/50 text-blue-200 cursor-not-allowed shadow-none'
+                      : 'bg-white text-blue-700 hover:bg-blue-50 shadow-white/10'
+                    }`}
+                >
+                  {isSending ? (
+                    <>
+                      <i className="fas fa-spinner fa-spin"></i>
+                      <span>جاري البث...</span>
+                    </>
+                  ) : (
+                    <>
+                      <i className="fas fa-paper-plane"></i>
+                      <span>إرسال لكافه الفريق</span>
+                    </>
+                  )}
+                </button>
+                <div className="flex items-center gap-3 justify-center opacity-60">
+                  <i className="fas fa-shield-alt text-xs"></i>
+                  <span className="text-[10px] font-black uppercase tracking-widest">تشفير كامل للأطراف</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Info */}
+          <div className="glass-card p-8 space-y-6">
+            <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest">ملاحظات التوثيق</h3>
+            <div className="space-y-4">
+              <div className="p-4 rounded-2xl bg-amber-50/50 border border-amber-100/50 flex gap-4">
+                <i className="fas fa-info-circle text-amber-500 mt-1"></i>
+                <p className="text-xs font-bold text-amber-800 leading-relaxed">يرجى التأكد من تسليم تقارير التوثيق في موعد أقصاه 24 ساعة من انتهاء المهمة.</p>
+              </div>
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex gap-4">
+                <i className="fas fa-history text-slate-400 mt-1"></i>
+                <p className="text-xs font-bold text-slate-500 leading-relaxed">تم إنشاء هذه المهمة تلقائياً كجزء من خطة التغطية الربع سنوية.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
 

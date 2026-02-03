@@ -123,258 +123,286 @@ export default function Reports() {
     }
 
     return (
-        <div className="p-6 max-w-7xl mx-auto">
+        <div className="space-y-10 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Header */}
-            <div className="mb-8 no-print">
-                <h1 className="text-2xl font-bold text-gray-800">التقارير</h1>
-                <p className="text-sm text-gray-500 mt-1">عرض وإنشاء التقارير التفصيلية</p>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 no-print">
+                <div className="flex items-center gap-6">
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="w-14 h-14 glass-card flex items-center justify-center text-gray-600 hover:bg-dark-green hover:text-white transition-all duration-300 group"
+                    >
+                        <i className="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                    <div>
+                        <div className="flex items-center gap-3 mb-1 text-dark-green">
+                            <div className="w-1.5 h-6 bg-current rounded-full"></div>
+                            <h1 className="text-3xl font-black tracking-tight text-gray-800">مركز التقارير</h1>
+                        </div>
+                        <p className="text-gray-500 font-bold pr-4">استخراج الإحصائيات، تحليل الأداء، وتوثيق المنجزات</p>
+                    </div>
+                </div>
             </div>
 
             <div className="report-content">
                 {/* PDF-only Header (hidden in web view) */}
-                <div className="hidden pdf-only mb-10 border-b-2 border-green-800 pb-6">
-                    <div className="flex justify-between items-center">
+                <div className="hidden pdf-only mb-10 border-b-4 border-dark-green pb-8">
+                    <div className="flex justify-between items-center bg-dark-green p-8 rounded-[2rem] text-white">
                         <div className="text-right">
-                            <h1 className="text-3xl font-bold text-green-900 mb-2">منصة توثيق</h1>
-                            <p className="text-lg text-gray-600">
+                            <h1 className="text-4xl font-black mb-2">منصة توثيق</h1>
+                            <p className="text-xl font-bold opacity-80 uppercase tracking-widest">
                                 {selectedReport === 'missions' ? 'تقرير المهام العام' :
                                     selectedReport === 'users' ? 'تقرير بيانات المستخدمين' :
                                         selectedReport === 'external' ? 'تقرير المهام الخارجية' : 'تقرير المهام الداخلية'}
                             </p>
                         </div>
-                        <div className="text-left text-sm text-gray-500">
-                            <p>تاريخ التقرير: {new Date().toLocaleDateString('ar-SA')}</p>
-                            {dateRange.startDate && <p>من: {dateRange.startDate} إلى: {dateRange.endDate}</p>}
+                        <div className="text-left font-black">
+                            <div className="bg-white/10 px-4 py-2 rounded-xl mb-2">تاريخ التقرير: {new Date().toLocaleDateString('ar-SA')}</div>
+                            {dateRange.startDate && <div className="text-sm opacity-60">المدى: من {dateRange.startDate} إلى {dateRange.endDate}</div>}
                         </div>
                     </div>
                 </div>
 
-                {/* Stats Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                {/* Stats Grid - Shared for both views but styled differently for print */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
                     {statsData.map((stat, index) => (
-                        <div key={index} className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 p-6">
+                        <div key={index} className="glass-card p-8 group relative overflow-hidden">
+                            <div className="absolute top-0 left-0 w-1.5 h-full bg-dark-green/10 group-hover:bg-dark-green transition-colors"></div>
                             <div className="flex items-center justify-between mb-4">
-                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${stat.color === 'blue' ? 'bg-blue-50 text-blue-600' :
-                                    stat.color === 'green' ? 'bg-green-50 text-green-600' :
-                                        stat.color === 'yellow' ? 'bg-yellow-50 text-yellow-600' :
-                                            'bg-purple-50 text-purple-600'
+                                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl shadow-inner ${stat.color === 'blue' ? 'bg-blue-50 text-blue-600' :
+                                        stat.color === 'green' ? 'bg-green-50 text-green-600' :
+                                            stat.color === 'yellow' ? 'bg-yellow-50 text-yellow-600' :
+                                                'bg-purple-50 text-purple-600'
                                     }`}>
-                                    <i className={`${stat.icon} text-xl`}></i>
+                                    <i className={stat.icon}></i>
                                 </div>
-                                <span className="text-sm font-semibold text-gray-500">{stat.change}</span>
+                                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{stat.change}</span>
                             </div>
-                            <div className="text-sm font-medium text-gray-500 mb-1">{stat.title}</div>
-                            <div className="text-3xl font-bold text-gray-800">{stat.value}</div>
+                            <h3 className="text-gray-500 font-bold text-xs mb-1 uppercase tracking-tighter">{stat.title}</h3>
+                            <div className="text-3xl font-black text-gray-800 tracking-tight">{stat.value}</div>
                         </div>
                     ))}
                 </div>
 
-                {/* Report Generation Form - Hidden in Print */}
-                <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 p-8 mb-8 no-print">
-                    <h2 className="text-xl font-bold text-gray-800 mb-6">إنشاء تقرير جديد</h2>
-
-                    <div className="space-y-6">
-                        {/* Report Type Selection */}
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">نوع التقرير</label>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                                {reportTypes.map((type) => (
-                                    <button
-                                        key={type.id}
-                                        onClick={() => handleReportTypeChange(type.id)}
-                                        className={`p-4 rounded-xl border-2 transition-all ${selectedReport === type.id
-                                            ? 'border-dark-green bg-dark-green text-white'
-                                            : 'border-gray-200 bg-white hover:border-dark-green text-gray-600'
-                                            }`}
-                                    >
-                                        <i className={`${type.icon} text-2xl mb-2 ml-3 block`}></i>
-                                        <span className="text-sm font-medium">{type.name}</span>
-                                    </button>
-                                ))}
+                {/* Filter Section - Hidden in Print */}
+                <div className="glass-card p-10 mb-10 no-print border-dark-green/5 relative overflow-hidden">
+                    <div className="absolute -top-10 -left-10 w-40 h-40 bg-dark-green/5 rounded-full blur-3xl"></div>
+                    <div className="relative z-10 space-y-8">
+                        <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 bg-dark-green text-white rounded-xl flex items-center justify-center">
+                                <i className="fas fa-sliders-h"></i>
                             </div>
+                            <h2 className="text-2xl font-black text-gray-800">تخصيص البحث</h2>
                         </div>
 
-                        {/* Date Range - Only show for mission reports */}
-                        {selectedReport !== 'users' && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium text-gray-700">من تاريخ</label>
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+                            {/* Report Type */}
+                            <div className="lg:col-span-5 space-y-3">
+                                <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">نوع البيانات</label>
+                                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-2 gap-3">
+                                    {reportTypes.map(type => (
+                                        <button
+                                            key={type.id}
+                                            onClick={() => handleReportTypeChange(type.id)}
+                                            className={`p-4 rounded-2xl border-2 transition-all duration-300 flex items-center gap-3 group/btn ${selectedReport === type.id
+                                                    ? 'border-dark-green bg-dark-green text-white shadow-lg'
+                                                    : 'border-gray-100 bg-gray-50/50 text-gray-500 hover:border-dark-green/30 hover:bg-white'
+                                                }`}
+                                        >
+                                            <i className={`${type.icon} text-lg ${selectedReport === type.id ? 'text-white' : 'text-dark-green'} group-hover/btn:scale-125 transition-transform`}></i>
+                                            <span className="text-xs font-black">{type.name}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Date Range */}
+                            <div className="lg:col-span-4 grid grid-cols-2 gap-4">
+                                <div className="space-y-3">
+                                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">من تاريخ</label>
                                     <input
                                         type="date"
                                         name="startDate"
                                         value={dateRange.startDate}
                                         onChange={handleDateChange}
-                                        className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
+                                        className="w-full p-4 rounded-2xl bg-gray-50 border-2 border-transparent focus:border-dark-green focus:bg-white outline-none font-bold text-gray-800 transition-all"
                                     />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium text-gray-700">إلى تاريخ</label>
+                                <div className="space-y-3">
+                                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">إلى تاريخ</label>
                                     <input
                                         type="date"
                                         name="endDate"
                                         value={dateRange.endDate}
                                         onChange={handleDateChange}
-                                        className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
+                                        className="w-full p-4 rounded-2xl bg-gray-50 border-2 border-transparent focus:border-dark-green focus:bg-white outline-none font-bold text-gray-800 transition-all"
                                     />
                                 </div>
                             </div>
-                        )}
 
-                        {/* Actions */}
-                        <div className="flex gap-3">
-                            <button
-                                onClick={handleGenerateReport}
-                                className="px-6 py-2 bg-dark-green text-white rounded-xl hover:bg-light-green transition-colors flex items-center gap-2"
-                            >
-                                <i className="fas fa-sync-alt"></i>
-                                تحديث التقرير
-                            </button>
-                            <button
-                                onClick={() => handleExport('pdf')}
-                                className="px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors flex items-center gap-2"
-                            >
-                                <i className="fas fa-file-pdf"></i>
-                                طباعة PDF
-                            </button>
+                            {/* Actions */}
+                            <div className="lg:col-span-3 flex gap-3">
+                                <button
+                                    onClick={handleGenerateReport}
+                                    className="flex-1 py-4 premium-gradient text-white rounded-2xl font-black text-sm flex items-center justify-center gap-2 hover:shadow-xl transition-all shadow-lg active:scale-95"
+                                >
+                                    <i className="fas fa-sync-alt"></i>
+                                    تحديث
+                                </button>
+                                <button
+                                    onClick={() => handleExport('pdf')}
+                                    className="w-16 h-14 bg-slate-800 text-white rounded-2xl flex items-center justify-center text-xl hover:bg-black transition-all shadow-lg active:scale-95"
+                                    title="طباعة التقرير"
+                                >
+                                    <i className="fas fa-print"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Report Results */}
-                <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-                    <div className="p-6 border-b border-gray-100">
-                        <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-                            <i className="fas fa-chart-bar text-green-700"></i>
-                            نتائج التقرير ({filteredData.length})
-                        </h2>
+                {/* Results Container */}
+                <div className="space-y-6">
+                    <div className="flex items-center justify-between px-6 no-print">
+                        <div className="flex items-center gap-3">
+                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                            <span className="text-sm font-black text-gray-400 uppercase tracking-widest">نتائج البحث المستخرجة ({filteredData.length})</span>
+                        </div>
                     </div>
 
-                    <div className="overflow-x-auto">
+                    {/* Results List - Modern Row Design */}
+                    <div className="space-y-3">
                         {selectedReport === 'users' ? (
-                            // Users Report
-                            <table className="w-full">
-                                <thead>
-                                    <tr className="bg-gray-50/50 border-b border-gray-100">
-                                        <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الاسم</th>
-                                        <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">البريد الإلكتروني</th>
-                                        <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الوظيفة</th>
-                                        <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الرصيد</th>
-                                        <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الحالة</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-100">
-                                    {filteredData.map((user) => (
-                                        <tr key={user.ID} className="hover:bg-gray-50/50 transition-colors">
-                                            <td className="px-6 py-4 font-medium text-gray-800">{user.Name}</td>
-                                            <td className="px-6 py-4 text-gray-600">{user.Email}</td>
-                                            <td className="px-6 py-4 text-gray-600">
-                                                {user.Job === 'photo' ? 'مصور فوتوغرافي' : user.Job === 'video' ? 'مصور فيديو' : user.Job}
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <span className={`font-bold ${user.Balance > 20 ? 'text-green-600' : user.Balance > 10 ? 'text-yellow-600' : 'text-red-600'}`}>
-                                                    {user.Balance} يوم
+                            // User Rows
+                            filteredData.length > 0 ? (
+                                filteredData.map(user => (
+                                    <div key={user.ID} className="glass-card p-6 group hover:translate-x-[-8px] transition-all duration-500 hover:shadow-2xl hover:shadow-slate-200/50">
+                                        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                                            <div className="md:col-span-4 flex items-center gap-5">
+                                                <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-dark-green font-black text-xl border-2 border-white shadow-sm">
+                                                    {user.Name.charAt(0)}
+                                                </div>
+                                                <div className="overflow-hidden">
+                                                    <h3 className="font-black text-gray-800 text-lg group-hover:text-dark-green transition-colors truncate">{user.Name}</h3>
+                                                    <p className="text-xs font-bold text-gray-400 truncate">{user.Email}</p>
+                                                </div>
+                                            </div>
+                                            <div className="md:col-span-3">
+                                                <span className="inline-flex px-4 py-1.5 rounded-xl text-[10px] font-black bg-blue-50/50 text-blue-700 border border-blue-100/30 uppercase tracking-tighter">
+                                                    {user.Job === 'photo' ? 'مصور فوتو' : user.Job === 'video' ? 'مصور فيديو' : user.Job}
                                                 </span>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${user.Balance >= 60 ? 'bg-green-100 text-green-700' :
-                                                    user.Balance >= 20 ? 'bg-yellow-100 text-yellow-700' :
-                                                        'bg-red-100 text-red-700'
+                                            </div>
+                                            <div className="md:col-span-2">
+                                                <div className="flex flex-col">
+                                                    <span className="text-[10px] font-black text-gray-300 uppercase leading-none mb-1">الرصيد</span>
+                                                    <span className={`text-lg font-black ${user.Balance > 20 ? 'text-green-600' : 'text-red-600'}`}>{user.Balance} يوم</span>
+                                                </div>
+                                            </div>
+                                            <div className="md:col-span-3 text-left">
+                                                <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-tighter ${user.Balance >= 60 ? 'bg-emerald-100/50 text-emerald-700' :
+                                                        user.Balance >= 20 ? 'bg-amber-100/50 text-amber-700' :
+                                                            'bg-rose-100/50 text-rose-700'
                                                     }`}>
-                                                    {user.Balance >= 60 ? 'ممتاز' : user.Balance >= 20 ? 'جيد' : 'منخفض'}
+                                                    حالة الرصيد: {user.Balance >= 60 ? 'ممتار' : user.Balance >= 20 ? 'جيد' : 'حرج'}
                                                 </span>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <EmptyState />
+                            )
                         ) : (
-                            // Missions Report
-                            <table className="w-full">
-                                <thead>
-                                    <tr className="bg-gray-50/50 border-b border-gray-100">
-                                        <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">اسم المهمة</th>
-                                        <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">التاريخ</th>
-                                        <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">المدة</th>
-                                        <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">النوع</th>
-                                        <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">المنسق</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-100">
-                                    {filteredData.map((mission) => (
-                                        <tr
-                                            key={mission.ID}
-                                            className="hover:bg-gray-50/50 transition-colors cursor-pointer"
-                                            onClick={() => navigate(`/dashboard/missions/${mission.ID}`)}
-                                        >
-                                            <td className="px-6 py-4 font-medium text-gray-800">{mission.MissionName}</td>
-                                            <td className="px-6 py-4 text-gray-600">
-                                                {formatDate(mission.Day, mission.Month, mission.Year)}
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
-                                                    {mission.DurationDays} يوم
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${mission.Type === 'external'
-                                                    ? 'bg-purple-100 text-purple-700'
-                                                    : 'bg-green-100 text-green-700'
+                            // Mission Rows
+                            filteredData.length > 0 ? (
+                                filteredData.map(mission => (
+                                    <div key={mission.ID} onClick={() => navigate(`/dashboard/missions/${mission.ID}`)} className="glass-card p-6 group hover:translate-x-[-8px] transition-all duration-500 hover:shadow-2xl hover:shadow-slate-200/50 cursor-pointer">
+                                        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                                            <div className="md:col-span-5 flex items-center gap-5">
+                                                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-xl shadow-sm ${mission.Type === 'external' ? 'bg-purple-100 text-purple-600' : 'bg-emerald-100 text-emerald-600'
                                                     }`}>
-                                                    {mission.Type === 'external' ? 'خارجية' : 'داخلية'}
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4 text-gray-600">{mission.CoordinatorName || '-'}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                                    <i className={`fas ${mission.Type === 'external' ? 'fa-globe-americas' : 'fa-building'}`}></i>
+                                                </div>
+                                                <div className="overflow-hidden">
+                                                    <h3 className="font-black text-gray-800 text-lg group-hover:text-dark-green transition-colors truncate">{mission.MissionName}</h3>
+                                                    <div className="flex items-center gap-2 text-xs font-bold text-gray-400 mt-0.5">
+                                                        <i className="far fa-compass"></i>
+                                                        <span>{mission.Type === 'external' ? 'مهمة خارجية' : 'مهمة داخلية'}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="md:col-span-3">
+                                                <div className="flex items-center gap-2 text-gray-600">
+                                                    <i className="far fa-calendar-check text-dark-green opacity-40"></i>
+                                                    <span className="text-sm font-black font-mono">{formatDate(mission.Day, mission.Month, mission.Year)}</span>
+                                                </div>
+                                            </div>
+                                            <div className="md:col-span-2">
+                                                <div className="flex flex-col">
+                                                    <span className="text-[10px] font-black text-gray-300 uppercase leading-none mb-1">المدة</span>
+                                                    <span className="text-sm font-black text-gray-800">{mission.DurationDays} أيام</span>
+                                                </div>
+                                            </div>
+                                            <div className="md:col-span-2 text-left">
+                                                <div className="text-[10px] font-black text-gray-300 uppercase mb-1">المنسق</div>
+                                                <div className="text-xs font-black text-gray-800 truncate">{mission.CoordinatorName || 'غير محدد'}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <EmptyState />
+                            )
                         )}
                     </div>
-
-                    {filteredData.length === 0 && (
-                        <div className="p-12 text-center">
-                            <i className="fas fa-inbox text-6xl text-gray-300 mb-4"></i>
-                            <p className="text-gray-500">لا توجد بيانات لعرضها</p>
-                        </div>
-                    )}
                 </div>
             </div>
 
-            {/* Print Styles */}
+            {/* Print Optimization Styles */}
             <style>{`
-                @media print {
-                  body { background: white !important; }
-                  .p-6 { padding: 0 !important; }
-                  .max-w-7xl { max-width: 100% !important; }
-                  .shadow-xl, .shadow-lg, .shadow-md, .shadow-sm { box-shadow: none !important; border: 1px solid #eee !important; }
-                  .backdrop-blur-md { backdrop-filter: none !important; background: white !important; }
-                  
-                  .pdf-only { display: block !important; }
-                  .no-print { display: none !important; }
-                  
-                  /* Prevent breaking inside cards or table rows */
-                  .bg-white, tr {
-                    page-break-inside: avoid;
-                    break-inside: avoid;
-                  }
-                  
-                  body * {
-                    visibility: hidden;
-                  }
-                  .report-content, .report-content * {
-                    visibility: visible;
-                  }
-                  .report-content {
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    width: 100%;
-                  }
-                  button, .no-print {
-                    display: none !important;
-                  }
-                }
-            `}</style>
+        @media print {
+            @page { size: A4; margin: 1cm; }
+            body { background: white !important; font-family: 'Inter', 'Arial', sans-serif; }
+            .no-print { display: none !important; }
+            .pdf-only { display: block !important; }
+            .report-content { width: 100% !important; margin: 0 !important; }
+            .glass-card { 
+                background: white !important; 
+                border: 1px solid #eee !important; 
+                box-shadow: none !important;
+                border-radius: 1rem !important;
+                page-break-inside: avoid;
+            }
+            h1, h2, h3, h4 { color: #1a4d4a !important; }
+            .text-gray-500, .text-gray-400 { color: #666 !important; }
+            
+            /* Ensure text contrast for print */
+            .text-white { color: white !important; -webkit-print-color-adjust: exact; }
+            .bg-dark-green { background-color: #1a4d4a !important; -webkit-print-color-adjust: exact; }
+            
+            .flex, .grid { display: flex !important; }
+            .grid-cols-4 > * { width: 25% !important; float: right !important; }
+            .md\\:col-span-8 { width: 66% !important; }
+            .md\\:col-span-4 { width: 33% !important; }
+            
+            /* Arabic Support for print */
+            * { direction: rtl !important; }
+        }
+      `}</style>
         </div>
     );
 }
+
+function EmptyState() {
+    return (
+        <div className="glass-card p-24 flex flex-col items-center justify-center text-center space-y-6">
+            <div className="w-24 h-24 bg-slate-50 rounded-[2rem] flex items-center justify-center text-slate-200 text-5xl">
+                <i className="fas fa-folder-open"></i>
+            </div>
+            <div className="space-y-2">
+                <h3 className="text-2xl font-black text-gray-800">لا توجد بيانات</h3>
+                <p className="text-gray-400 font-bold max-w-xs mx-auto">لم نعثر على أي نتائج مطابقة لتخصيص البحث الحالي، جرب تغيير المدى الزمني أو نوع التقرير</p>
+            </div>
+        </div>
+    );
+}
+

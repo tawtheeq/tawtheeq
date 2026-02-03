@@ -54,7 +54,7 @@ export default function Missions() {
 
     try {
       console.log("Deleting Mission with id:", id);
-      await axios.delete(`/api/missions/${id}`);
+      await api.delete(`/api/missions/${id}`);
       // إزالة العنصر من الجدول بعد نجاح الحذف
       setMissions(prev => prev.filter(c => c.ID !== id));
       alert("تم الحذف بنجاح!");
@@ -70,118 +70,162 @@ export default function Missions() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="space-y-10 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">قائمة المهام</h1>
-          <p className="text-sm text-gray-500 mt-1">إدارة المهام والمناسبات ({missions.length})</p>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="flex items-center gap-6">
+          <button
+            onClick={() => navigate(-1)}
+            className="w-14 h-14 glass-card flex items-center justify-center text-gray-600 hover:bg-dark-green hover:text-white transition-all duration-300 group"
+          >
+            <i className="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+          </button>
+          <div>
+            <div className="flex items-center gap-3 mb-1 text-dark-green">
+              <div className="w-1.5 h-6 bg-current rounded-full"></div>
+              <h1 className="text-3xl font-black tracking-tight text-gray-800">قائمة المهام</h1>
+            </div>
+            <p className="text-gray-500 font-bold pr-4">إدارة وتتبع المهام الإعلامية والمناسبات القائمة</p>
+          </div>
         </div>
+
         <Link
           to="addmission"
-          className="px-4 py-2 bg-dark-green text-white rounded-xl hover:bg-light-green transition-colors flex items-center gap-2"
+          className="px-8 py-4 premium-gradient text-white font-black rounded-2xl hover:shadow-2xl hover:shadow-green-900/40 transition-all duration-300 flex items-center gap-3 active:scale-[0.98]"
         >
           <i className="fas fa-plus"></i>
-          إضافة مهمة
+          <span>إنشاء مهمة جديدة</span>
         </Link>
       </div>
 
-      {/* Missions Table */}
-      <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-gray-50/50 border-b border-gray-100">
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">رقم المهمة </th>
+      {/* Missions List Container */}
+      <div className="space-y-4">
+        {/* Table Header */}
+        <div className="hidden lg:grid grid-cols-12 gap-4 px-10 py-4 text-xs font-black text-gray-400 uppercase tracking-widest">
+          <div className="col-span-1">ID</div>
+          <div className="col-span-4">اسم المهمة والمناسبة</div>
+          <div className="col-span-2">التاريخ</div>
+          <div className="col-span-1">المدة</div>
+          <div className="col-span-2">الحالة</div>
+          <div className="col-span-2 text-left">الإجراءات</div>
+        </div>
 
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">اسم المناسبة</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">التاريخ</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">مدة المهمة بالآيام</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">نوع المهمة</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الحالة</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">إجراءات</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {missions.length > 0 ? (
-                missions.map(mission => (
-                  <tr key={mission.ID} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="px-6 py-4">
-                      <span className="font-medium text-gray-800">{mission.ID}</span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="font-medium text-gray-800">{mission.MissionName}</span>
-                    </td>
-                    <td className="px-6 py-4 text-gray-600 text-sm font-mono">
-                      {mission.Day}/{mission.Month}/{mission.Year}
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
-                        {mission.DurationDays}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-gray-600 text-sm">{mission.Type == 'internal' ? 'داخلية' : 'خارجية'}</td>
-                    <td className="px-6 py-4">
-                      {mission.Status === 'completed' && (
-                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100">مكتملة</span>
-                      )}
-                      {mission.Status === 'in_progress' && (
-                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">قيد التنفيذ</span>
-                      )}
-                      {mission.Status === 'cancelled' && (
-                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-100">ملغاة</span>
-                      )}
-                      {mission.Status === 'created' && (
-                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-gray-50 text-gray-700 border border-gray-100">تم الإنشاء</span>
-                      )}
-                      {!['completed', 'in_progress', 'cancelled', 'created'].includes(mission.Status) && (
-                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-gray-50 text-gray-700 border border-gray-100">{mission.Status}</span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <button
-                          className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors"
-                          onClick={() => navigate(`/dashboard/missions/${mission.ID}`)}
-                          title="عرض التفاصيل"
-                        >
-                          <i className="fas fa-eye"></i>
-                        </button>
-                        <button
-                          className="w-8 h-8 rounded-lg flex items-center justify-center text-blue-600 hover:bg-blue-50 transition-colors"
-                          onClick={() => navigate(`update/${mission.ID}`)}
-                          title="تعديل"
-                        >
-                          <i className="fas fa-edit"></i>
-                        </button>
-                        <button
-                          className="w-8 h-8 rounded-lg flex items-center justify-center text-red-600 hover:bg-red-50 transition-colors"
-                          onClick={() => handleDelete(mission.ID)}
-                          title="حذف"
-                        >
-                          <i className="fas fa-trash"></i>
-                        </button>
+        {/* Missions List */}
+        <div className="space-y-4">
+          {missions.length > 0 ? (
+            missions.map(mission => (
+              <div key={mission.ID} className="glass-card p-6 lg:p-4 group hover:bg-white transition-all duration-500 hover:shadow-2xl hover:shadow-slate-200/50 border-white/50 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-1 h-full bg-dark-green opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-4 items-center px-4">
+                  {/* ID */}
+                  <div className="col-span-1">
+                    <span className="text-xs font-black text-gray-300 font-mono">#{mission.ID}</span>
+                  </div>
+
+                  {/* Mission Name */}
+                  <div className="col-span-4">
+                    <div className="flex items-center gap-4">
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl shadow-sm ${mission.Type === 'external' ? 'bg-purple-50 text-purple-600' : 'bg-blue-50 text-blue-600'
+                        }`}>
+                        <i className={`fas ${mission.Type === 'external' ? 'fa-globe-americas' : 'fa-building'}`}></i>
                       </div>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="5" className="px-6 py-12 text-center text-gray-500">
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center text-gray-300">
-                        <i className="fas fa-tasks text-2xl"></i>
+                      <div className="overflow-hidden">
+                        <h3 className="font-black text-gray-800 text-lg group-hover:text-dark-green transition-colors truncate">{mission.MissionName}</h3>
+                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">{mission.Type === 'external' ? 'مهمة خارجية' : 'مهمة داخلية'}</p>
                       </div>
-                      <p className="text-lg font-medium">لا يوجد مهام حالياً</p>
-                      <p className="text-sm">قم بإضافة مهمة جديدة للبدء</p>
                     </div>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                  </div>
+
+                  {/* Date */}
+                  <div className="col-span-2">
+                    <div className="flex flex-col">
+                      <span className="lg:hidden text-[10px] font-black text-gray-300 uppercase mb-1">التاريخ</span>
+                      <div className="flex items-center gap-2 text-gray-600">
+                        <i className="far fa-calendar-alt text-dark-green/40"></i>
+                        <span className="text-sm font-black font-mono">{mission.Day}/{mission.Month}/{mission.Year}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Duration */}
+                  <div className="col-span-1">
+                    <div className="flex flex-col">
+                      <span className="lg:hidden text-[10px] font-black text-gray-300 uppercase mb-1">المدة</span>
+                      <span className="text-sm font-black text-gray-800">{mission.DurationDays} أيام</span>
+                    </div>
+                  </div>
+
+                  {/* Status */}
+                  <div className="col-span-2">
+                    <div className="flex flex-col">
+                      <span className="lg:hidden text-[10px] font-black text-gray-300 uppercase mb-1">الحالة</span>
+                      {mission.Status === 'completed' ? (
+                        <span className="inline-flex px-4 py-1.5 rounded-xl text-[10px] font-black bg-green-50/50 text-green-700 border border-green-100/50 w-fit items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                          مكتملة
+                        </span>
+                      ) : mission.Status === 'in_progress' ? (
+                        <span className="inline-flex px-4 py-1.5 rounded-xl text-[10px] font-black bg-blue-50/50 text-blue-700 border border-blue-100/50 w-fit items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></span>
+                          قيد التنفيذ
+                        </span>
+                      ) : mission.Status === 'cancelled' ? (
+                        <span className="inline-flex px-4 py-1.5 rounded-xl text-[10px] font-black bg-red-50/50 text-red-700 border border-red-100/50 w-fit items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                          ملغاة
+                        </span>
+                      ) : (
+                        <span className="inline-flex px-4 py-1.5 rounded-xl text-[10px] font-black bg-gray-50/50 text-gray-700 border border-gray-100/50 w-fit items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                          تم الإنشاء
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="col-span-2 flex justify-end gap-2">
+                    <button
+                      onClick={() => navigate(`/dashboard/missions/${mission.ID}`)}
+                      className="w-11 h-11 rounded-2xl bg-slate-50 text-slate-600 hover:bg-dark-green hover:text-white transition-all duration-300 shadow-sm flex items-center justify-center group/btn"
+                      title="عرض التفاصيل"
+                    >
+                      <i className="fas fa-eye group-hover/btn:scale-110 transition-transform"></i>
+                    </button>
+                    <button
+                      onClick={() => navigate(`update/${mission.ID}`)}
+                      className="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 hover:bg-blue-500 hover:text-white transition-all duration-300 shadow-sm flex items-center justify-center"
+                      title="تعديل"
+                    >
+                      <i className="fas fa-edit text-sm"></i>
+                    </button>
+                    <button
+                      onClick={() => handleDelete(mission.ID)}
+                      className="w-11 h-11 rounded-2xl bg-red-50 text-red-600 hover:bg-red-500 hover:text-white transition-all duration-300 shadow-sm flex items-center justify-center"
+                      title="حذف"
+                    >
+                      <i className="fas fa-trash-alt text-sm"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="glass-card p-20 flex flex-col items-center justify-center text-center space-y-6">
+              <div className="w-24 h-24 bg-slate-50 rounded-[2rem] flex items-center justify-center text-slate-200 text-5xl">
+                <i className="fas fa-tasks"></i>
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-2xl font-black text-gray-800">قائمة المهام فارغة</h3>
+                <p className="text-gray-400 font-bold max-w-xs mx-auto">لم يتم تسجيل أي مهمة إعلامية حتى الآن، ابدأ بتنظيم مهام الفريق</p>
+              </div>
+              <Link to="addmission" className="px-8 py-3 bg-dark-green text-white font-black rounded-2xl shadow-lg shadow-green-900/10 hover:shadow-2xl transition-all">إنشاء أول مهمة</Link>
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 }
+

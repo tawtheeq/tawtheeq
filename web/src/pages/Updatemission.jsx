@@ -73,155 +73,255 @@ export default function UpdateMission() {
         fetchData();
     }, []);
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p className="text-red-500">Error: {error}</p>;
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="w-12 h-12 border-4 border-dark-green/20 border-t-dark-green rounded-full animate-spin"></div>
+                    <div className="text-lg font-black text-gray-400">جاري تحميل بيانات المهمة...</div>
+                </div>
+            </div>
+        );
+    }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log("Payload to send:", form);
-
-        try {
-            const response = await api.put(`/api/missions/${form.ID}`, form, {
-                headers: { "Content-Type": "application/json" }
-            });
-            console.log("Server response:", response.data);
-            alert("تم التحديث بنجاح!");
-        } catch (error) {
-            console.error("Error submitting data:", error);
-            alert(error.response?.data?.message || error.message || "حدث خطأ أثناء حفظ البيانات!");
-        }
-    };
+    if (error) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <div className="glass-card p-10 flex flex-col items-center gap-6 max-w-sm text-center">
+                    <div className="w-16 h-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center text-2xl">
+                        <i className="fas fa-exclamation-circle"></i>
+                    </div>
+                    <div className="space-y-2">
+                        <h3 className="text-xl font-black text-gray-800">تعذر الوصول للمهمة</h3>
+                        <p className="text-sm font-bold text-gray-400 leading-relaxed">{error}</p>
+                    </div>
+                    <button onClick={() => navigate(-1)} className="w-full py-4 bg-slate-100 text-slate-600 rounded-2xl font-black hover:bg-slate-200 transition-all">العودة للخلف</button>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="p-6 max-w-7xl mx-auto">
-            <div className="flex justify-between items-center mb-8">
-                <div>
-                    <h1 className="text-2xl font-bold text-gray-800">تعديل المهمة</h1>
-                    <p className="text-gray-500 mt-1">تحديث معلومات المهمة</p>
+        <div className="space-y-10 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div className="flex items-center gap-6">
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="w-14 h-14 glass-card flex items-center justify-center text-gray-600 hover:bg-amber-500 hover:text-white transition-all duration-300 group"
+                    >
+                        <i className="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                    <div>
+                        <div className="flex items-center gap-3 mb-1 text-amber-600">
+                            <div className="w-1.5 h-6 bg-current rounded-full"></div>
+                            <h1 className="text-3xl font-black tracking-tight text-gray-800">تعديل بيانات المهمة</h1>
+                        </div>
+                        <p className="text-gray-500 font-bold pr-4">تحديث الجدول الزمني والتصنيفات لهذه المهمة</p>
+                    </div>
                 </div>
-                <button
-                    className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 border border-gray-200 rounded-xl hover:bg-gray-50 transition-all shadow-sm hover:shadow-md"
-                    onClick={() => navigate(-1)}
-                >
-                    <i className="fas fa-arrow-right"></i>
-                    <span>رجوع</span>
-                </button>
             </div>
 
-            <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 p-8">
-                <form className="space-y-6" onSubmit={handleSubmit}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">اسم المهمة</label>
-                            <input
-                                type="text"
-                                name="MissionName"
-                                value={form.MissionName}
-                                onChange={handleChange}
-                                required
-                                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                                placeholder="أدخل اسم المهمة"
-                            />
-                        </div>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                <div className="lg:col-span-8">
+                    <div className="glass-card p-10 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-2 bg-amber-500/60 opacity-60"></div>
 
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">رقم المنسق</label>
-                            <input
-                                type="number"
-                                name="CoordinatorNum"
-                                value={form.CoordinatorNum}
-                                onChange={handleChange}
-                                required
-                                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                                placeholder="أدخل رقم المنسق"
-                            />
+                        <form className="space-y-12" onSubmit={handleSubmit}>
+                            {/* Mission Details Section */}
+                            <div className="space-y-8">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="w-8 h-8 bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center text-sm">
+                                        <i className="fas fa-edit"></i>
+                                    </div>
+                                    <h2 className="text-xl font-black text-gray-800">البيانات الأساسية</h2>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div className="md:col-span-2 space-y-3">
+                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">مسمى المهمة</label>
+                                        <div className="relative group">
+                                            <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-amber-500 transition-colors">
+                                                <i className="fas fa-folder-open"></i>
+                                            </div>
+                                            <input
+                                                type="text"
+                                                name="MissionName"
+                                                value={form.MissionName}
+                                                onChange={handleChange}
+                                                required
+                                                className="w-full pr-12 pl-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-amber-500/30 focus:bg-white outline-none font-bold text-gray-800 transition-all placeholder:text-gray-300"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">التصنيف الرئيسي</label>
+                                        <select
+                                            name="MainCategory"
+                                            value={form.MainCategory}
+                                            onChange={handleChange}
+                                            required
+                                            className="w-full px-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-amber-500/30 focus:bg-white outline-none font-black text-gray-800 transition-all appearance-none cursor-pointer"
+                                        >
+                                            <option value="">- اختر التصنيف -</option>
+                                            {mainCategories.map((mainCat) => (
+                                                <option key={mainCat.ID} value={mainCat.ID}>
+                                                    {mainCat.CategoryName}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">التصنيف الفرعي</label>
+                                        <select
+                                            name="SubCategory"
+                                            value={form.SubCategory}
+                                            onChange={handleChange}
+                                            required
+                                            className="w-full px-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-amber-500/30 focus:bg-white outline-none font-black text-gray-800 transition-all appearance-none cursor-pointer"
+                                        >
+                                            <option value="">- اختر التصنيف الفرعي -</option>
+                                            {subCategories.map((subCat) => (
+                                                <option key={subCat.ID} value={subCat.ID}>
+                                                    {subCat.CategoryName}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Timing Section */}
+                            <div className="space-y-8 pt-10 border-t border-gray-100">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="w-8 h-8 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center text-sm">
+                                        <i className="fas fa-calendar-alt"></i>
+                                    </div>
+                                    <h2 className="text-xl font-black text-gray-800">التوقيت والمدة</h2>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                                    <div className="md:col-span-3 grid grid-cols-3 gap-3">
+                                        <div className="space-y-3">
+                                            <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">اليوم</label>
+                                            <select name="Day" value={form.Day} onChange={handleChange} required
+                                                className="w-full px-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-blue-500/30 focus:bg-white outline-none font-black text-gray-800 transition-all appearance-none cursor-pointer">
+                                                {[...Array(31)].map((_, i) => (
+                                                    <option key={i + 1} value={i + 1}>{i + 1}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div className="space-y-3">
+                                            <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">الشهر</label>
+                                            <select name="Month" value={form.Month} onChange={handleChange} required
+                                                className="w-full px-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-blue-500/30 focus:bg-white outline-none font-black text-gray-800 transition-all appearance-none cursor-pointer">
+                                                {[...Array(12)].map((_, i) => (
+                                                    <option key={i + 1} value={i + 1}>{i + 1}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div className="space-y-3">
+                                            <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">السنة</label>
+                                            <select name="Year" value={form.Year} onChange={handleChange} required
+                                                className="w-full px-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-blue-500/30 focus:bg-white outline-none font-black text-gray-800 transition-all appearance-none cursor-pointer">
+                                                <option value={2025}>2025</option>
+                                                <option value={2026}>2026</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-3">
+                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">المدة (يوم)</label>
+                                        <input
+                                            type="number"
+                                            name="DurationDays"
+                                            value={form.DurationDays}
+                                            onChange={handleChange}
+                                            required
+                                            className="w-full px-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-blue-500/30 focus:bg-white outline-none font-black text-gray-800 transition-all"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Coordinator Section */}
+                            <div className="space-y-8 pt-10 border-t border-gray-100">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="w-8 h-8 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center text-sm">
+                                        <i className="fas fa-headset"></i>
+                                    </div>
+                                    <h2 className="text-xl font-black text-gray-800">بيانات التواصل</h2>
+                                </div>
+
+                                <div className="space-y-3">
+                                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">رقم المنسق</label>
+                                    <div className="relative group max-w-md">
+                                        <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-emerald-500 transition-colors">
+                                            <i className="fas fa-phone-alt"></i>
+                                        </div>
+                                        <input
+                                            type="number"
+                                            name="CoordinatorNum"
+                                            dir="ltr"
+                                            value={form.CoordinatorNum}
+                                            onChange={handleChange}
+                                            required
+                                            className="w-full pr-12 pl-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-emerald-500/30 focus:bg-white outline-none font-bold text-gray-800 transition-all text-right"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-4 pt-10">
+                                <button
+                                    type="submit"
+                                    className="flex-1 py-6 premium-gradient-amber text-white rounded-[2.5rem] font-black text-xl flex items-center justify-center gap-4 hover:shadow-2xl hover:shadow-amber-900/40 transition-all active:scale-[0.98]"
+                                >
+                                    <i className="fas fa-save text-2xl"></i>
+                                    <span>حفظ التعديلات الجديدة</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => navigate(-1)}
+                                    className="px-12 py-6 bg-slate-100 text-slate-500 rounded-[2.5rem] font-black hover:bg-slate-200 transition-all"
+                                >
+                                    إلغاء
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                {/* Sidebar */}
+                <div className="lg:col-span-4 space-y-8">
+                    <div className="glass-card p-8 flex flex-col items-center text-center space-y-6">
+                        <div className="w-20 h-20 rounded-[2rem] bg-amber-50 text-amber-500 flex items-center justify-center text-3xl shadow-inner border-2 border-white">
+                            <i className="fas fa-mission"></i>
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-black text-gray-800">مهمة نشطة</h3>
+                            <p className="text-xs font-black text-amber-500 uppercase tracking-widest mt-1">ID: #{id}</p>
+                        </div>
+                        <div className="w-full pt-6 border-t border-gray-50 flex items-center justify-between text-xs font-bold text-gray-400">
+                            <span>تاريخ الإنشاء</span>
+                            <span>{form.Year}/{form.Month}/{form.Day}</span>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">السنة</label>
-                            <select name="Year" value={form.Year} onChange={handleChange} required
-                                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white">
-                                <option value="">- اختر السنة -</option>
-                                <option value={2025}>2025</option>
-                                <option value={2026}>2026</option>
-                            </select>
-                        </div>
-
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">الشهر</label>
-                            <select name="Month" value={form.Month} onChange={handleChange} required
-                                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white">
-                                <option value="">- اختر الشهر -</option>
-                                {[...Array(12)].map((_, i) => (
-                                    <option key={i + 1} value={i + 1}>{i + 1}</option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">اليوم</label>
-                            <select name="Day" value={form.Day} onChange={handleChange} required
-                                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white">
-                                <option value="">- اختر اليوم -</option>
-                                {[...Array(31)].map((_, i) => (
-                                    <option key={i + 1} value={i + 1}>{i + 1}</option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">مدة المهمة (يوم)</label>
-                            <input
-                                type="number"
-                                name="DurationDays"
-                                value={form.DurationDays}
-                                onChange={handleChange}
-                                required
-                                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                                placeholder="عدد الأيام"
-                            />
+                    <div className="glass-card p-8 bg-slate-900 text-white relative overflow-hidden group border-none">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/20 rounded-full blur-[60px]"></div>
+                        <div className="relative z-10 space-y-4">
+                            <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-amber-400">
+                                <i className="fas fa-info-circle"></i>
+                            </div>
+                            <h3 className="text-lg font-black">تحذير الجدولة</h3>
+                            <p className="text-xs font-bold text-gray-400 leading-relaxed">تعديل مواعيد المهمة قد يؤثر على توافر المصورين المشاركين في هذه الفترة. يرجى مراجعة قائمة المشاركين بعد التعديل.</p>
                         </div>
                     </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">التصنيف الرئيسي</label>
-                            <select name="MainCategory" value={form.MainCategory} onChange={handleChange} required
-                                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white">
-                                <option value="">- اختر تصنيفًا -</option>
-                                {mainCategories.map(mainCat => (
-                                    <option key={mainCat.ID} value={mainCat.ID}>
-                                        {mainCat.CategoryName}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">التصنيف الفرعي</label>
-                            <select name="SubCategory" value={form.SubCategory} onChange={handleChange} required
-                                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white">
-                                <option value="">- اختر تصنيفًا -</option>
-                                {subCategories.map(subCat => (
-                                    <option key={subCat.ID} value={subCat.ID}>
-                                        {subCat.CategoryName}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-
-                    <div className="pt-6 border-t border-gray-100 flex justify-end">
-                        <button type="submit"
-                            className="w-full md:w-auto px-8 py-3 bg-green-800 text-white font-semibold rounded-xl hover:bg-green-900 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
-                            <i className="fas fa-save"></i>
-                            <span>حفظ</span>
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     );
 }
+

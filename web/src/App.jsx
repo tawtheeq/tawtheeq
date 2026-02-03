@@ -23,6 +23,7 @@ import Reports from "./pages/Reports";
 import About from "./pages/About";
 import UserReport from "./pages/UserReport";
 import Activate from "./pages/Activate";
+import UpdateCategories from "./pages/UpdateCategories";
 
 function AppContent() {
   const { isSetupRequired, isLoading } = useAuth();
@@ -47,6 +48,7 @@ function AppContent() {
           <Route index element={<Overview />} />
           <Route path="categories" element={<Categories />} />
           <Route path="categories/addcategory" element={<Addcategory />} />
+          <Route path="categories/update/:id" element={<UpdateCategories />} />
           <Route path="users" element={<Users />} />
           <Route path="users/update/:id" element={<UpdateEmp />} />
           <Route path="users/:id/report" element={<UserReport />} />

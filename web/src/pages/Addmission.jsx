@@ -152,292 +152,360 @@ export default function Addmission() {
     };
 
     return (
-        <div className="p-6 max-w-7xl mx-auto">
+        <div className="space-y-10 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Header */}
-            <div className="flex justify-between items-center mb-8">
-                <div className="flex items-center gap-3">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div className="flex items-center gap-6">
                     <button
                         onClick={() => navigate('/dashboard/missions')}
-                        className="w-10 h-10 rounded-xl flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors"
+                        className="w-14 h-14 glass-card flex items-center justify-center text-gray-600 hover:bg-dark-green hover:text-white transition-all duration-300 group"
                     >
-                        <i className="fas fa-arrow-right"></i>
+                        <i className="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                     </button>
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-800">إضافة مهمة جديدة</h1>
-                        <p className="text-sm text-gray-500 mt-1">أدخل تفاصيل المهمة الجديدة</p>
+                        <div className="flex items-center gap-3 mb-1 text-dark-green">
+                            <div className="w-1.5 h-6 bg-current rounded-full"></div>
+                            <h1 className="text-3xl font-black tracking-tight text-gray-800">إضافة مهمة جديدة</h1>
+                        </div>
+                        <p className="text-gray-500 font-bold pr-4">جدولة مهمة تصوير جديدة وتنسيق البيانات اللوجستية</p>
                     </div>
                 </div>
             </div>
 
-            <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 p-8">
-                <form className="space-y-6" onSubmit={handleSubmit}>
-                    {/* <div className="flex items-center gap-3 mb-4">
-                        <div className="h-8 w-1 bg-green-800 rounded-full"></div>
-                        <h2 className="text-lg font-bold text-gray-800">البيانات الأساسية</h2>
-                    </div> */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                <div className="lg:col-span-8">
+                    <div className="glass-card p-10 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-2 premium-gradient opacity-60"></div>
 
-                    {/* Date Grid: Start Date (Row 1) + End Date (Row 2) + Duration (Spans both rows) */}
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        {/* Start Date - Row 1, Columns 1-3 */}
-                        <div className="md:col-span-3 space-y-3">
-                            <div className="flex items-center gap-2 px-3 py-2 bg-green-50 rounded-xl border border-green-100">
-                                <i className="fas fa-calendar-alt text-dark-green"></i>
-                                <span className="text-sm font-semibold text-dark-green">تاريخ بداية المهمة</span>
-                            </div>
-                            <div className="grid grid-cols-3 gap-4">
-                                <select
-                                    name="Day"
-                                    value={form.Day}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                                >
-                                    <option value="">- اختر اليوم -</option>
-                                    {[...Array(31)].map((_, i) => (
-                                        <option key={i + 1} value={i + 1}>{i + 1}</option>
-                                    ))}
-                                </select>
-                                <select
-                                    name="Month"
-                                    value={form.Month}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                                >
-                                    <option value="">- اختر الشهر -</option>
-                                    <option value={1}>يناير</option>
-                                    <option value={2}>فبراير</option>
-                                    <option value={3}>مارس</option>
-                                    <option value={4}>أبريل</option>
-                                    <option value={5}>مايو</option>
-                                    <option value={6}>يونيو</option>
-                                    <option value={7}>يوليو</option>
-                                    <option value={8}>أغسطس</option>
-                                    <option value={9}>سبتمبر</option>
-                                    <option value={10}>أكتوبر</option>
-                                    <option value={11}>نوفمبر</option>
-                                    <option value={12}>ديسمبر</option>
-                                </select>
-
-                                <select
-                                    name="Year"
-                                    value={form.Year}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                                >
-                                    <option value="">- اختر السنة -</option>
-                                    <option value={2025}>2025</option>
-                                    <option value={2026}>2026</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        {/* Duration - Spans 2 rows, Column 4 */}
-                        <div className="md:row-span-2 flex flex-col items-center justify-center">
-                            <div className="flex flex-col h-full w-full space-y-3">
-                                <div className="flex items-center justify-center gap-2 px-3 py-2 bg-green-50 rounded-xl border border-green-100">
-                                    <i className="fas fa-clock text-dark-green"></i>
-                                    <span className="text-sm font-semibold text-dark-green">إجمالي المدة</span>
+                        <form className="space-y-12" onSubmit={handleSubmit}>
+                            {/* Time Period Section */}
+                            <div className="space-y-8">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="w-8 h-8 bg-dark-green/10 text-dark-green rounded-lg flex items-center justify-center text-sm">
+                                        <i className="fas fa-calendar-alt"></i>
+                                    </div>
+                                    <h2 className="text-xl font-black text-gray-800">الفترة الزمنية</h2>
                                 </div>
-                                <div className="flex-1 flex flex-col items-center justify-center bg-gradient-to-br from-green-50 to-green-100 rounded-2xl border-2 border-green-100 p-8 min-h-[160px]">
-                                    <div className="text-5xl font-bold text-dark-green">{form.DurationDays || '0'}</div>
-                                    <div className="text-base font-medium text-dark-green mt-2">يوم / أيام</div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+                                    <div className="md:col-span-8 space-y-6">
+                                        {/* Start Date */}
+                                        <div className="space-y-3">
+                                            <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">تاريخ البداية</label>
+                                            <div className="grid grid-cols-3 gap-3">
+                                                <select
+                                                    name="Day"
+                                                    value={form.Day}
+                                                    onChange={handleChange}
+                                                    required
+                                                    className="w-full px-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-dark-green/30 focus:bg-white outline-none font-bold text-gray-800 transition-all appearance-none cursor-pointer"
+                                                >
+                                                    <option value="">اليوم</option>
+                                                    {[...Array(31)].map((_, i) => (
+                                                        <option key={i + 1} value={i + 1}>{i + 1}</option>
+                                                    ))}
+                                                </select>
+                                                <select
+                                                    name="Month"
+                                                    value={form.Month}
+                                                    onChange={handleChange}
+                                                    required
+                                                    className="w-full px-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-dark-green/30 focus:bg-white outline-none font-bold text-gray-800 transition-all appearance-none cursor-pointer"
+                                                >
+                                                    <option value="">الشهر</option>
+                                                    <option value={1}>يناير</option>
+                                                    <option value={2}>فبراير</option>
+                                                    <option value={3}>مارس</option>
+                                                    <option value={4}>أبريل</option>
+                                                    <option value={5}>مايو</option>
+                                                    <option value={6}>يونيو</option>
+                                                    <option value={7}>يوليو</option>
+                                                    <option value={8}>أغسطس</option>
+                                                    <option value={9}>سبتمبر</option>
+                                                    <option value={10}>أكتوبر</option>
+                                                    <option value={11}>نوفمبر</option>
+                                                    <option value={12}>ديسمبر</option>
+                                                </select>
+                                                <select
+                                                    name="Year"
+                                                    value={form.Year}
+                                                    onChange={handleChange}
+                                                    required
+                                                    className="w-full px-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-dark-green/30 focus:bg-white outline-none font-bold text-gray-800 transition-all appearance-none cursor-pointer"
+                                                >
+                                                    <option value="">السنة</option>
+                                                    <option value={2025}>2025</option>
+                                                    <option value={2026}>2026</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        {/* End Date */}
+                                        <div className="space-y-3">
+                                            <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">تاريخ النهاية المتوقع</label>
+                                            <div className="grid grid-cols-3 gap-3">
+                                                <select
+                                                    name="Day"
+                                                    value={endDate.Day}
+                                                    onChange={handleEndDateChange}
+                                                    required
+                                                    className="w-full px-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-blue-500/30 focus:bg-white outline-none font-bold text-gray-800 transition-all appearance-none cursor-pointer"
+                                                >
+                                                    <option value="">اليوم</option>
+                                                    {[...Array(31)].map((_, i) => (
+                                                        <option key={i + 1} value={i + 1}>{i + 1}</option>
+                                                    ))}
+                                                </select>
+                                                <select
+                                                    name="Month"
+                                                    value={endDate.Month}
+                                                    onChange={handleEndDateChange}
+                                                    required
+                                                    className="w-full px-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-blue-500/30 focus:bg-white outline-none font-bold text-gray-800 transition-all appearance-none cursor-pointer"
+                                                >
+                                                    <option value="">الشهر</option>
+                                                    <option value={1}>يناير</option>
+                                                    <option value={2}>فبراير</option>
+                                                    <option value={3}>مارس</option>
+                                                    <option value={4}>أبريل</option>
+                                                    <option value={5}>مايو</option>
+                                                    <option value={6}>يونيو</option>
+                                                    <option value={7}>يوليو</option>
+                                                    <option value={8}>أغسطس</option>
+                                                    <option value={9}>سبتمبر</option>
+                                                    <option value={10}>أكتوبر</option>
+                                                    <option value={11}>نوفمبر</option>
+                                                    <option value={12}>ديسمبر</option>
+                                                </select>
+                                                <select
+                                                    name="Year"
+                                                    value={endDate.Year}
+                                                    onChange={handleEndDateChange}
+                                                    required
+                                                    className="w-full px-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-blue-500/30 focus:bg-white outline-none font-bold text-gray-800 transition-all appearance-none cursor-pointer"
+                                                >
+                                                    <option value="">السنة</option>
+                                                    <option value={2025}>2025</option>
+                                                    <option value={2026}>2026</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="md:col-span-4 h-full">
+                                        <div className="h-full glass-card bg-slate-50 border-transparent p-6 flex flex-col items-center justify-center text-center space-y-3 relative group overflow-hidden">
+                                            <div className="absolute top-0 right-0 w-24 h-24 bg-dark-green/5 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-dark-green/10 transition-all duration-700"></div>
+                                            <div className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">مدة المهمة</div>
+                                            <div className="text-6xl font-black text-dark-green tracking-tighter">{form.DurationDays || '0'}</div>
+                                            <div className="text-sm font-black text-dark-green opacity-60">أيام عمل</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        {/* End Date - Row 2, Columns 1-3 */}
-                        <div className="md:col-span-3 space-y-3">
-                            <div className="flex items-center gap-2 px-3 py-2 bg-green-50 rounded-xl border border-green-100">
-                                <i className="fas fa-calendar-check text-dark-green"></i>
-                                <span className="text-sm font-semibold text-dark-green">تاريخ نهاية المهمة</span>
+                            {/* Mission Details Section */}
+                            <div className="space-y-8 pt-10 border-t border-gray-100">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="w-8 h-8 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center text-sm">
+                                        <i className="fas fa-file-invoice"></i>
+                                    </div>
+                                    <h2 className="text-xl font-black text-gray-800">تفاصيل المهمة</h2>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div className="md:col-span-2 space-y-3">
+                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">مسمى المهمة</label>
+                                        <div className="relative group">
+                                            <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-dark-green transition-colors">
+                                                <i className="fas fa-pen-nib"></i>
+                                            </div>
+                                            <input
+                                                type="text"
+                                                name="MissionName"
+                                                value={form.MissionName}
+                                                onChange={handleChange}
+                                                required
+                                                className="w-full pr-12 pl-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-dark-green/30 focus:bg-white outline-none font-bold text-gray-800 transition-all placeholder:text-gray-300"
+                                                placeholder="مثلاً: تغطية فعاليات يوم التأسيس"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">التصنيف الرئيسي</label>
+                                        <select
+                                            name="MainCategory"
+                                            value={form.MainCategory}
+                                            onChange={handleChange}
+                                            required
+                                            className="w-full px-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-dark-green/30 focus:bg-white outline-none font-black text-gray-800 transition-all appearance-none cursor-pointer"
+                                        >
+                                            <option value="">- اختر التصنيف -</option>
+                                            {mainCategories.map((mainCat) => (
+                                                <option key={mainCat.ID} value={mainCat.ID}>
+                                                    {mainCat.CategoryName}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">التصنيف الفرعي</label>
+                                        <select
+                                            name="SubCategory"
+                                            value={form.SubCategory}
+                                            onChange={handleChange}
+                                            required
+                                            className="w-full px-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-dark-green/30 focus:bg-white outline-none font-black text-gray-800 transition-all appearance-none cursor-pointer"
+                                        >
+                                            <option value="">- اختر التصنيف الفرعي -</option>
+                                            {subCategories.map((subCat) => (
+                                                <option key={subCat.ID} value={subCat.ID}>
+                                                    {subCat.CategoryName}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">نطاق المهمة</label>
+                                        <div className="flex gap-4">
+                                            {['internal', 'external'].map((type) => (
+                                                <button
+                                                    key={type}
+                                                    type="button"
+                                                    onClick={() => handleChange({ target: { name: 'Type', value: type } })}
+                                                    className={`flex-1 py-4 rounded-2xl font-black text-sm transition-all border-2 ${form.Type === type
+                                                        ? 'bg-dark-green/5 border-dark-green text-dark-green shadow-lg shadow-dark-green/5'
+                                                        : 'bg-white border-slate-100 text-slate-400 hover:border-slate-200'
+                                                        }`}
+                                                >
+                                                    {type === 'internal' ? 'مهمة داخلية' : 'مهمة خارجية'}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">رقم الموظف المسؤول</label>
+                                        <input
+                                            type="number"
+                                            name="CreatedBy"
+                                            value={form.CreatedBy}
+                                            onChange={handleChange}
+                                            required
+                                            className="w-full px-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-dark-green/30 focus:bg-white outline-none font-black text-gray-800 transition-all"
+                                            placeholder="أدخل المعرف الخاص بك"
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                            <div className="grid grid-cols-3 gap-4">
-                                <select
-                                    name="Day"
-                                    value={endDate.Day}
-                                    onChange={handleEndDateChange}
-                                    required
-                                    className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                                >
-                                    <option value="">- اختر اليوم -</option>
-                                    {[...Array(31)].map((_, i) => (
-                                        <option key={i + 1} value={i + 1}>{i + 1}</option>
-                                    ))}
-                                </select>
-                                <select
-                                    name="Month"
-                                    value={endDate.Month}
-                                    onChange={handleEndDateChange}
-                                    required
-                                    className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                                >
-                                    <option value="">- اختر الشهر -</option>
-                                    <option value={1}>يناير</option>
-                                    <option value={2}>فبراير</option>
-                                    <option value={3}>مارس</option>
-                                    <option value={4}>أبريل</option>
-                                    <option value={5}>مايو</option>
-                                    <option value={6}>يونيو</option>
-                                    <option value={7}>يوليو</option>
-                                    <option value={8}>أغسطس</option>
-                                    <option value={9}>سبتمبر</option>
-                                    <option value={10}>أكتوبر</option>
-                                    <option value={11}>نوفمبر</option>
-                                    <option value={12}>ديسمبر</option>
-                                </select>
 
-                                <select
-                                    name="Year"
-                                    value={endDate.Year}
-                                    onChange={handleEndDateChange}
-                                    required
-                                    className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
+                            {/* Coordinator Section */}
+                            <div className="space-y-8 pt-10 border-t border-gray-100">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="w-8 h-8 bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center text-sm">
+                                        <i className="fas fa-user-tie"></i>
+                                    </div>
+                                    <h2 className="text-xl font-black text-gray-800">بيانات التنسيق</h2>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div className="space-y-3">
+                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">اسم المنسق الميداني</label>
+                                        <div className="relative group">
+                                            <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-amber-500 transition-colors">
+                                                <i className="fas fa-user-circle"></i>
+                                            </div>
+                                            <input
+                                                type="text"
+                                                name="CoordinatorName"
+                                                value={form.CoordinatorName}
+                                                onChange={handleChange}
+                                                required
+                                                className="w-full pr-12 pl-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-amber-500/30 focus:bg-white outline-none font-bold text-gray-800 transition-all placeholder:text-gray-300"
+                                                placeholder="اسم الشخص المسؤول من الجهة"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="space-y-3">
+                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">رقم تواصل المنسق</label>
+                                        <div className="relative group">
+                                            <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-amber-500 transition-colors">
+                                                <i className="fas fa-mobile-alt"></i>
+                                            </div>
+                                            <input
+                                                type="text"
+                                                name="CoordinatorNum"
+                                                dir="ltr"
+                                                value={form.CoordinatorNum}
+                                                onChange={handleChange}
+                                                required
+                                                className="w-full pr-12 pl-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-amber-500/30 focus:bg-white outline-none font-bold text-gray-800 transition-all text-right placeholder:text-gray-300"
+                                                placeholder="+966 5x xxx xxxx"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-4 pt-10">
+                                <button
+                                    type="submit"
+                                    className="flex-1 py-6 premium-gradient text-white rounded-[2.5rem] font-black text-xl flex items-center justify-center gap-4 hover:shadow-2xl hover:shadow-green-900/40 transition-all active:scale-[0.98]"
                                 >
-                                    <option value="">- اختر السنة -</option>
-                                    <option value={2025}>2025</option>
-                                    <option value={2026}>2026</option>
-                                </select>
+                                    <i className="fas fa-check-double text-2xl"></i>
+                                    <span>تسجيل المهمة في النظام</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => navigate('/dashboard/missions')}
+                                    className="px-12 py-6 bg-slate-100 text-slate-500 rounded-[2.5rem] font-black hover:bg-slate-200 transition-all"
+                                >
+                                    إلغاء
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                {/* Sidebar Info */}
+                <div className="lg:col-span-4 space-y-8">
+                    <div className="glass-card p-8 bg-slate-900 text-white relative overflow-hidden group border-none">
+                        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-dark-green/20 rounded-full blur-[80px]"></div>
+                        <div className="relative z-10 space-y-6">
+                            <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-3xl">
+                                <i className="fas fa-lightbulb text-amber-400"></i>
+                            </div>
+                            <div>
+                                <h3 className="text-xl font-black mb-2">تعليمات الجدولة</h3>
+                                <p className="text-sm font-bold text-gray-400 leading-relaxed">يرجى التأكد من دقة المواعيد لضمان تفرغ أعضاء الفريق المختارين للمهمة، حيث سيقوم النظام تلقائياً بحساب الاستحقاقات بناءً على المدة.</p>
+                            </div>
+                            <div className="space-y-3 pt-4 border-t border-white/5">
+                                <div className="flex items-center gap-3 text-xs font-black text-gray-400">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-dark-green"></div>
+                                    <span>يمنع تداخل المواعيد للموظف الواحد</span>
+                                </div>
+                                <div className="flex items-center gap-3 text-xs font-black text-gray-400">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-dark-green"></div>
+                                    <span>يتم حساب المكافآت حسب نوع المهمة</span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-
-
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        <div className="md:col-span-4 space-y-3">
-
-                            <div className="md:col-span-2 flex items-center gap-2 px-3 py-2 bg-green-50 rounded-xl border border-green-100">
-                                <i className="fas fa-calendar-check text-dark-green"></i>
-                                <span className="text-sm font-semibold text-dark-green">  تفاصيل المهمة</span>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                                <div className="col-span-2 space-y-2">
-                                    {/* <label className="text-sm font-medium text-gray-700">اسم المهمة</label> */}
-                                    <input
-                                        type="text"
-                                        name="MissionName"
-                                        value={form.MissionName}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                                        placeholder=" اسم المهمة"
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    {/* <label className="text-sm font-medium text-gray-700">رقم المنسق</label> */}
-                                    <input
-                                        type="text"
-                                        name="CoordinatorName"
-                                        value={form.CoordinatorName}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                                        placeholder=" اسم المنسق من الجهة"
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    {/* <label className="text-sm font-medium text-gray-700">رقم المنسق</label> */}
-                                    <input
-                                        type="text"
-                                        name="CoordinatorNum"
-                                        dir="ltr"
-                                        value={form.CoordinatorNum}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                                        placeholder="+9665XXXXXXXX"
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
-                                    {/* <label className="text-sm font-medium text-gray-700">التصنيف الرئيسي</label> */}
-                                    <select
-                                        name="Type"
-                                        value={form.Type}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                                    >
-                                        <option value="">- اختر نوع المهمة -</option>
-                                        <option value="internal">داخلية</option>
-                                        <option value="external">خارجية</option>
-                                    </select>
-                                </div>
-
-                                <div className="space-y-2">
-                                    {/* <label className="text-sm font-medium text-gray-700">التصنيف الرئيسي</label> */}
-                                    <select
-                                        name="MainCategory"
-                                        value={form.MainCategory}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                                    >
-                                        <option value="">- اختر التصنيف الرئيسي -</option>
-                                        {mainCategories.map((mainCat) => (
-                                            <option key={mainCat.ID} value={mainCat.ID}>
-                                                {mainCat.CategoryName}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="space-y-2">
-                                    {/* <label className="text-sm font-medium text-gray-700">التصنيف الفرعي</label> */}
-                                    <select
-                                        name="SubCategory"
-                                        value={form.SubCategory}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                                    >
-                                        <option value="">- اختر التصنيف الفرعي -</option>
-                                        {subCategories.map((subCat) => (
-                                            <option key={subCat.ID} value={subCat.ID}>
-                                                {subCat.CategoryName}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="space-y-2">
-                                    {/* <label className="text-sm font-medium text-gray-700">تمت الإضافة بواسطة</label> */}
-                                    <input
-                                        type="number"
-                                        name="CreatedBy"
-                                        value={form.CreatedBy}
-                                        onChange={handleChange}
-                                        // disabled
-                                        required
-                                        className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                                        placeholder="اسم المستخدم"
-                                    />
-                                </div>
-                            </div>
-
+                    <div className="glass-card p-8 border-dashed border-2 border-slate-200 flex flex-col items-center justify-center text-center space-y-6 opacity-80">
+                        <div className="w-20 h-20 bg-slate-50 rounded-[2rem] flex items-center justify-center text-slate-300 text-4xl">
+                            <i className="fas fa-shield-check"></i>
+                        </div>
+                        <div className="space-y-2">
+                            <h4 className="font-black text-gray-500">نظام إدارة المهام</h4>
+                            <p className="text-[10px] font-bold text-gray-400 leading-relaxed leading-relaxed">يخضع تسجيل المهام لبروتوكولات الجودة المعمول بها في إدارة الإنتاج الفني</p>
                         </div>
                     </div>
-
-
-                    <div className="pt-6 border-t border-gray-100 flex justify-end gap-3">
-                        <button
-                            type="button"
-                            onClick={() => navigate('/dashboard/missions')}
-                            className="px-6 py-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-colors"
-                        >
-                            إلغاء
-                        </button>
-                        <button
-                            type="submit"
-                            className="px-6 py-2 bg-dark-green text-white rounded-xl hover:bg-light-green transition-colors flex items-center gap-2"
-                        >
-                            <i className="fas fa-plus"></i>
-                            تسجيل المهمة
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     );
 }
+

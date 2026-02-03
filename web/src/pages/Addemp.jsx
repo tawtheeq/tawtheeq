@@ -113,183 +113,265 @@ export default function AddEmp() {
 
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="space-y-10 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="flex items-center gap-6">
           <button
             onClick={() => navigate('/dashboard/users')}
-            className="w-10 h-10 rounded-xl flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors"
+            className="w-14 h-14 glass-card flex items-center justify-center text-gray-600 hover:bg-dark-green hover:text-white transition-all duration-300 group"
           >
-            <i className="fas fa-arrow-right"></i>
+            <i className="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">إضافة موظف جديد</h1>
-            <p className="text-sm text-gray-500 mt-1">أدخل تفاصيل الموظف الجديد</p>
+            <div className="flex items-center gap-3 mb-1 text-dark-green">
+              <div className="w-1.5 h-6 bg-current rounded-full"></div>
+              <h1 className="text-3xl font-black tracking-tight text-gray-800">إضافة عضو جديد</h1>
+            </div>
+            <p className="text-gray-500 font-bold pr-4">تسجيل بيانات الموظف ومنحه صلاحيات الوصول للمنصة</p>
           </div>
         </div>
       </div>
 
-      <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 p-8">
-        <form className="space-y-6" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">اسم الموظف</label>
-              <input
-                type="text"
-                name="Name"
-                value={form.Name}
-                onChange={handleChange}
-                required
-                className="mt-2 w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                placeholder="أدخل اسم الموظف"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">رقم الجوال</label>
-              <input
-                type="text"
-                name="Mobile"
-                dir="ltr"
-                value={form.Mobile}
-                onChange={handleChange}
-                required
-                className="mt-2 w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                placeholder="+9665XXXXXXXX"
-              />
-            </div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <div className="lg:col-span-8">
+          <div className="glass-card p-10 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-2 premium-gradient opacity-60"></div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">البريد الإلكتروني</label>
-              <input
-                type="email"
-                name="Email"
-                value={form.Email}
-                onChange={handleChange}
-                required
-                className="mt-2 w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                placeholder="أدخل البريد الإلكتروني"
-              />
+            <form className="space-y-10" onSubmit={handleSubmit}>
+              {/* Basic Info Section */}
+              <div className="space-y-6">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-8 h-8 bg-dark-green/10 text-dark-green rounded-lg flex items-center justify-center text-sm">
+                    <i className="fas fa-user-plus"></i>
+                  </div>
+                  <h2 className="text-xl font-black text-gray-800">المعلومات الشخصية</h2>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-3">
+                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">الاسم الكامل</label>
+                    <div className="relative group">
+                      <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-dark-green transition-colors">
+                        <i className="fas fa-id-card"></i>
+                      </div>
+                      <input
+                        type="text"
+                        name="Name"
+                        value={form.Name}
+                        onChange={handleChange}
+                        required
+                        className="w-full pr-12 pl-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-dark-green/30 focus:bg-white outline-none font-bold text-gray-800 transition-all placeholder:text-gray-300"
+                        placeholder="اسم الموظف الثلاثي"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">رقم الجوال</label>
+                    <div className="relative group">
+                      <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-dark-green transition-colors">
+                        <i className="fas fa-phone"></i>
+                      </div>
+                      <input
+                        type="text"
+                        name="Mobile"
+                        dir="ltr"
+                        value={form.Mobile}
+                        onChange={handleChange}
+                        required
+                        className="w-full pr-12 pl-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-dark-green/30 focus:bg-white outline-none font-bold text-gray-800 transition-all placeholder:text-gray-300 text-right"
+                        placeholder="+966 5x xxx xxxx"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">البريد الإلكتروني</label>
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-dark-green transition-colors">
+                      <i className="fas fa-envelope"></i>
+                    </div>
+                    <input
+                      type="email"
+                      name="Email"
+                      value={form.Email}
+                      onChange={handleChange}
+                      required
+                      className="w-full pr-12 pl-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-dark-green/30 focus:bg-white outline-none font-bold text-gray-800 transition-all placeholder:text-gray-300"
+                      placeholder="example@company.com"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Role & Job Section */}
+              <div className="space-y-6 pt-6 border-t border-gray-100">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-8 h-8 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center text-sm">
+                    <i className="fas fa-briefcase"></i>
+                  </div>
+                  <h2 className="text-xl font-black text-gray-800">التوصيف الوظيفي</h2>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="space-y-3">
+                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">التخصص</label>
+                    <select
+                      name="Job"
+                      value={form.Job}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-dark-green/30 focus:bg-white outline-none font-black text-gray-800 transition-all appearance-none cursor-pointer"
+                    >
+                      <option value="">اختر التخصص</option>
+                      <option value="photo">مصور فوتوغرافي</option>
+                      <option value="video">مصور فيديو</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-3">
+                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">رصيد المهام (يوم)</label>
+                    <input
+                      type="number"
+                      name="Balance"
+                      value={form.Balance}
+                      onChange={handleChange}
+                      min="0"
+                      max="60"
+                      required
+                      className="w-full px-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-dark-green/30 focus:bg-white outline-none font-black text-gray-800 transition-all"
+                    />
+                  </div>
+
+                  <div className="space-y-3">
+                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest mr-2">صلاحية النظام</label>
+                    <select
+                      name="Role"
+                      value={form.Role}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-4 rounded-2xl bg-gray-50/50 border-2 border-transparent focus:border-dark-green/30 focus:bg-white outline-none font-black text-gray-800 transition-all appearance-none cursor-pointer"
+                    >
+                      <option value="">اختر الصلاحية</option>
+                      <option value="admin">مدير نظام</option>
+                      <option value="user">عضو فريق</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Blocked Status */}
+              <div className={`p-6 rounded-3xl border-2 transition-all duration-500 flex items-center gap-4 cursor-pointer select-none ${form.Blocked ? 'bg-red-50 border-red-100 text-red-700' : 'bg-slate-50 border-transparent text-slate-500'
+                }`} onClick={() => setForm({ ...form, Blocked: !form.Blocked })}>
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl transition-all ${form.Blocked ? 'bg-red-500 text-white shadow-lg shadow-red-200' : 'bg-white text-slate-300'
+                  }`}>
+                  <i className={`fas ${form.Blocked ? 'fa-user-slash' : 'fa-check-circle'}`}></i>
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-black text-sm">حالة العضوية الفورية</h4>
+                  <p className="text-[10px] font-bold opacity-70">عند الحظر، لن يتمكن الموظف من تسجيل الدخول أو المشاركة في أي مهام جديدة</p>
+                </div>
+                <div className={`w-12 h-6 rounded-full relative transition-colors ${form.Blocked ? 'bg-red-500' : 'bg-slate-200'}`}>
+                  <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${form.Blocked ? 'left-1' : 'left-7'}`}></div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4 pt-6">
+                <button
+                  type="submit"
+                  className="flex-1 py-5 premium-gradient text-white rounded-[2rem] font-black text-lg flex items-center justify-center gap-3 hover:shadow-2xl hover:shadow-green-900/40 transition-all active:scale-[0.98]"
+                >
+                  <i className="fas fa-plus-circle text-xl"></i>
+                  <span>إضافة الموظف للنظام</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigate('/dashboard/users')}
+                  className="px-10 py-5 bg-slate-100 text-slate-500 rounded-[2rem] font-black hover:bg-slate-200 transition-all"
+                >
+                  إلغاء
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        {/* Sidebar Help */}
+        <div className="lg:col-span-4 space-y-6">
+          <div className="glass-card p-8 bg-dark-green text-white relative overflow-hidden group">
+            <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all duration-700"></div>
+            <div className="relative z-10 space-y-4">
+              <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl">
+                <i className="fas fa-magic"></i>
+              </div>
+              <h3 className="text-xl font-black">نصائح التفعيل</h3>
+              <ul className="space-y-3 text-sm font-bold opacity-90">
+                <li className="flex gap-2">
+                  <i className="fas fa-check-circle mt-1 opacity-60"></i>
+                  <span>تأكد من صحة رقم الجوال لتلقي التنبيهات</span>
+                </li>
+                <li className="flex gap-2">
+                  <i className="fas fa-check-circle mt-1 opacity-60"></i>
+                  <span>الرصيد الافتراضي هو 60 يوماً للمهام</span>
+                </li>
+                <li className="flex gap-2">
+                  <i className="fas fa-check-circle mt-1 opacity-60"></i>
+                  <span>سيتم توليد رابط دعوة خاص بعد الإضافة</span>
+                </li>
+              </ul>
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-6">
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">الوظيفة</label>
-              <select
-                name="Job"
-                value={form.Job}
-                onChange={handleChange}
-                required
-                className="mt-2 w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-              >
-                <option value="">اختر الوظيفة</option>
-                <option value="photo">مصور فوتوغرافي</option>
-                <option value="video">مصور فيديو</option>
-              </select>
+          <div className="glass-card p-8 border-dashed border-2 border-slate-200 flex flex-col items-center justify-center text-center space-y-4 opacity-60">
+            <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-300">
+              <i className="fas fa-shield-alt"></i>
             </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700"> رصيد المستخدم</label>
-              <input
-                type="number"
-                name="Balance"
-                value={form.Balance}
-                onChange={handleChange}
-                min="0"
-                max="60"
-                required
-                className="mt-2 w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-                placeholder="أدخل رصيد المستخدم (0-60)"
-              />
+            <div>
+              <h4 className="font-black text-gray-400 text-sm">بيانات آمنة</h4>
+              <p className="text-[10px] font-bold text-gray-400">جميع البيانات مشفرة وتخضع لسياسة الخصوصية</p>
             </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">الصلاحية</label>
-              <select
-                name="Role"
-                value={form.Role}
-                onChange={handleChange}
-                required
-                className="mt-2 w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-700 focus:border-transparent outline-none transition-all bg-gray-50/50 focus:bg-white"
-              >
-                <option value="">اختر الصلاحية</option>
-                <option value="admin">مدير</option>
-                <option value="user">مستخدم</option>
-              </select>
-            </div>
-
           </div>
-
-          {/* Blocked Checkbox */}
-          <div className="flex items-center gap-3 p-4 bg-red-50 border border-red-100 rounded-xl">
-            <input
-              type="checkbox"
-              id="blocked"
-              name="Blocked"
-              checked={form.Blocked}
-              onChange={handleChange}
-              className="w-5 h-5 text-red-600 bg-white border-gray-300 rounded focus:ring-red-500 focus:ring-2 cursor-pointer"
-            />
-            <label htmlFor="blocked" className="text-sm font-medium text-red-700 cursor-pointer select-none">
-              <i className="fas fa-ban ml-2"></i>
-              حظر هذا الموظف من المشاركة في المهام
-            </label>
-          </div>
-
-          <div className="pt-6 border-t border-gray-100 flex justify-end gap-3">
-            <button
-              type="button"
-              onClick={() => navigate('/dashboard/users')}
-              className="px-6 py-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-colors"
-            >
-              إلغاء
-            </button>
-            <button
-              type="submit"
-              className="px-6 py-2 bg-dark-green text-white rounded-xl hover:bg-light-green transition-colors flex items-center gap-2"
-            >
-              <i className="fas fa-plus"></i>
-              إضافة
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
 
       {/* Invitation Success Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 text-center animate-in fade-in zoom-in duration-300">
-            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <i className="fas fa-check text-3xl text-green-600"></i>
+        <div className="fixed inset-0 bg-dark-green/20 backdrop-blur-xl flex items-center justify-center z-50 p-6 animate-in fade-in duration-300">
+          <div className="bg-white rounded-[3rem] shadow-2xl max-w-lg w-full p-10 text-center animate-in zoom-in-95 duration-500 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-2 premium-gradient"></div>
+
+            <div className="w-24 h-24 bg-green-50 text-green-500 rounded-[2.5rem] flex items-center justify-center mx-auto mb-8 text-4xl shadow-inner border-2 border-white">
+              <i className="fas fa-sparkles"></i>
             </div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">تم إضافة الموظف!</h2>
-            <p className="text-gray-600 mb-8">
-              تم إنشاء الحساب بنجاح. يرجى إرسال رابط التفعيل التالي للموظف ليتمكن من تعيين كلمة المرور الخاصة به.
+
+            <h2 className="text-3xl font-black text-gray-800 mb-4">تم تسجيل العضو بنجاح!</h2>
+            <p className="text-gray-500 font-bold mb-10 leading-relaxed px-4">
+              خطوة واحدة متبقية، انسخ رابط الدعوة أدناه وأرسله للعضو الجديد ليتمكن من تفعيل حسابه وتعيين كلمة السر الخاصة به.
             </p>
 
-            <div className="bg-gray-50 rounded-2xl p-4 mb-8 flex items-center gap-3 border border-gray-100">
+            <div className="bg-slate-50 rounded-3xl p-6 mb-10 border-2 border-slate-100 flex items-center gap-4 relative group">
+              <span className="text-xs font-black text-gray-300 absolute -top-3 right-6 bg-white px-3 py-1 rounded-full border border-slate-100">رابط الدعوة الخاص</span>
               <input
                 type="text"
                 readOnly
                 value={invitationLink}
-                className="bg-transparent border-none outline-none text-sm text-gray-600 flex-1 font-mono"
+                className="bg-transparent border-none outline-none text-sm text-gray-600 flex-1 font-mono font-bold"
               />
               <button
                 onClick={copyToClipboard}
-                className="w-10 h-10 rounded-xl bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:text-green-600 hover:border-green-200 transition-all shadow-sm"
+                className="w-14 h-14 rounded-2xl bg-white border-2 border-slate-100 flex items-center justify-center text-slate-600 hover:text-dark-green hover:border-dark-green/30 transition-all shadow-sm active:scale-95"
                 title="نسخ الرابط"
               >
-                <i className="fas fa-copy"></i>
+                <i className="fas fa-copy text-xl"></i>
               </button>
             </div>
 
             <button
               onClick={() => navigate('/dashboard/users')}
-              className="w-full py-4 bg-dark-green text-white rounded-2xl font-bold hover:bg-light-green transition-all shadow-lg hover:shadow-xl"
+              className="w-full py-5 premium-gradient text-white rounded-[2rem] font-black text-lg shadow-xl shadow-green-900/20 hover:scale-[1.02] transition-all"
             >
-              تم
+              العودة لقائمة الأعضاء
             </button>
           </div>
         </div>
@@ -297,3 +379,4 @@ export default function AddEmp() {
     </div>
   );
 }
+

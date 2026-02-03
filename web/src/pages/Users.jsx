@@ -123,177 +123,169 @@ export default function Users() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="space-y-10 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
-        {/* <div>
-          <h1 className="text-2xl font-bold text-gray-800">قائمة الموظفين</h1>
-          <p className="text-sm text-gray-500 mt-1">إدارة الموظفين وصلاحياتهم ({users.length})</p>
-        </div>
-        <Link
-          to="addemp"
-          className="px-4 py-2 bg-dark-green text-white rounded-xl hover:bg-light-green transition-colors flex items-center gap-2"
-        >
-          <i className="fas fa-plus"></i>
-          إضافة موظف
-        </Link> */}
-
-
-
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="flex items-center gap-6">
           <button
             onClick={() => navigate(-1)}
-            className="w-10 h-10 rounded-xl flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors"
+            className="w-14 h-14 glass-card flex items-center justify-center text-gray-600 hover:bg-dark-green hover:text-white transition-all duration-300 group"
           >
-            <i className="fas fa-arrow-right"></i>
+            <i className="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">  قائمة الموظفين  </h1>
-            <p className="text-sm text-gray-500 mt-1">إدارة الموظفين وصلاحياتهم ({users.length})</p>
+            <div className="flex items-center gap-3 mb-1 text-dark-green">
+              <div className="w-1.5 h-6 bg-current rounded-full"></div>
+              <h1 className="text-3xl font-black tracking-tight text-gray-800">إدارة الموظفين</h1>
+            </div>
+            <p className="text-gray-500 font-bold pr-4">إدارة بيانات الزملاء، صلاحياتهم، وأرصدة المهام</p>
           </div>
         </div>
+
         <Link
           to="addemp"
-          className="px-4 py-2 bg-dark-green text-white rounded-xl hover:bg-light-green transition-colors flex items-center gap-2"
+          className="px-8 py-4 premium-gradient text-white font-black rounded-2xl hover:shadow-2xl hover:shadow-green-900/40 transition-all duration-300 flex items-center gap-3 active:scale-[0.98]"
         >
           <i className="fas fa-plus"></i>
-          إضافة موظف
+          <span>إضافة موظف جديد</span>
         </Link>
       </div>
 
-      {/* Users Table */}
-      <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-gray-50/50 border-b border-gray-100">
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الاسم</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">رقم الجوال</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الوظيفة</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الرصيد المتبقي</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الحالة</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600"> الاستثناءات</th>
-                <th className="px-6 py-4 text-right text-sm font-semibold text-gray-600">الإجراءات</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {users.length > 0 ? (
-                users.map(user => (
-                  <tr key={user.ID} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold text-sm border border-green-200">
-                          {user.Name.charAt(0)}
-                        </div>
-                        <span className="font-medium text-gray-800">{user.Name}</span>
+      {/* Users List Container */}
+      <div className="space-y-4">
+        {/* Table Header - Custom Hidden on Mobile */}
+        <div className="hidden lg:grid grid-cols-12 gap-4 px-10 py-4 text-xs font-black text-gray-400 uppercase tracking-widest">
+          <div className="col-span-4">الموظف</div>
+          <div className="col-span-2">الوظيفة</div>
+          <div className="col-span-2">الرصيد</div>
+          <div className="col-span-2">الحالة</div>
+          <div className="col-span-2 text-left">الإجراءات</div>
+        </div>
+
+        {/* Users List */}
+        <div className="space-y-4">
+          {users.length > 0 ? (
+            users.map(user => (
+              <div key={user.ID} className="glass-card p-6 lg:p-4 group hover:bg-white transition-all duration-500 hover:shadow-2xl hover:shadow-slate-200/50 border-white/50 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-1 h-full bg-dark-green opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-4 items-center px-4">
+                  {/* User Info */}
+                  <div className="col-span-4 flex items-center gap-5">
+                    <div className="relative">
+                      <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-dark-green font-black text-xl border-2 border-white shadow-sm group-hover:scale-110 transition-transform duration-500">
+                        {user.Name.charAt(0)}
                       </div>
-                    </td>
-                    <td className="px-6 py-4 text-gray-600 font-mono text-sm">{user.Mobile}</td>
-                    <td className="px-6 py-4">
-                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
-                        {user.Job == 'photo' ? 'مصور فوتو' : user.Job == 'video' ? 'مصور فيديو' : user.job}
+                      <div className={`absolute -bottom-1 -left-1 w-5 h-5 rounded-full border-4 border-white ${user.IsActive ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
+                    </div>
+                    <div className="overflow-hidden">
+                      <h3 className="font-black text-gray-800 text-lg group-hover:text-dark-green transition-colors truncate">{user.Name}</h3>
+                      <p className="text-xs font-bold text-gray-400 font-mono mt-0.5">{user.Mobile}</p>
+                    </div>
+                  </div>
+
+                  {/* Job */}
+                  <div className="col-span-2">
+                    <div className="flex flex-col">
+                      <span className="lg:hidden text-[10px] font-black text-gray-300 uppercase mb-1">الوظيفة</span>
+                      <span className="inline-flex px-4 py-1.5 rounded-xl text-xs font-black bg-blue-50/50 text-blue-700 border border-blue-100/50 w-fit">
+                        {user.Job === 'photo' ? 'مصور فوتو' : user.Job === 'video' ? 'مصور فيديو' : user.Job}
                       </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium border ${user.Balance > 10
-                        ? 'bg-green-50 text-green-700 border-green-100'
-                        : 'bg-red-50 text-red-700 border-red-100'
-                        }`}>
-                        {user.Balance}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      {user.IsActive ? (
-                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100">
-                          نشط
+                    </div>
+                  </div>
+
+                  {/* Balance */}
+                  <div className="col-span-2">
+                    <div className="flex flex-col">
+                      <span className="lg:hidden text-[10px] font-black text-gray-300 uppercase mb-1">رصيد المهام</span>
+                      <div className="flex items-center gap-3">
+                        <div className="flex-1 max-w-[80px] h-2 bg-gray-100 rounded-full overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all duration-1000 ${user.Balance > 20 ? 'bg-green-500' : 'bg-red-500'}`}
+                            style={{ width: `${Math.min(100, (user.Balance / 60) * 100)}%` }}
+                          ></div>
+                        </div>
+                        <span className={`text-sm font-black ${user.Balance > 20 ? 'text-green-600' : 'text-red-600'}`}>
+                          {user.Balance}
                         </span>
-                      ) : (
-                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700 border border-yellow-100">
-                          بانتظار التفعيل
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4">
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Status & Exceptions */}
+                  <div className="col-span-2 flex flex-col lg:flex-row gap-3">
+                    <div className="flex flex-col">
+                      <span className="lg:hidden text-[10px] font-black text-gray-300 uppercase mb-1">الحالة</span>
                       <button
                         onClick={() => handleToggleNegativeBalance(user.ID, user.NegativeBalance)}
-                        className={`px-3 py-1 rounded-full text-xs font-medium border transition-all ${user.NegativeBalance === 'yes'
-                          ? 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100'
-                          : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'
+                        className={`px-4 py-1.5 rounded-xl text-[10px] font-black border transition-all flex items-center gap-2 w-fit ${user.NegativeBalance === 'yes'
+                          ? 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100'
+                          : 'bg-slate-50 text-slate-400 border-slate-200 hover:bg-slate-100'
                           }`}
-                        title={user.NegativeBalance === 'yes' ? 'مستثنى' : 'غير مستثنى'}
                       >
-                        {user.NegativeBalance === 'yes' ? (
-                          <>
-                            <i className="fas fa-check-circle ml-1"></i>
-                            مستثنى
-                          </>
-                        ) : (
-                          <>
-                            <i className="fas fa-times-circle ml-1"></i>
-                            غير مستثنى
-                          </>
-                        )}
+                        <i className={`fas ${user.NegativeBalance === 'yes' ? 'fa-star' : 'fa-circle'}`}></i>
+                        {user.NegativeBalance === 'yes' ? 'مستثنى' : 'عادي'}
                       </button>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        {!user.IsActive && user.InvitationToken?.String && (
-                          <button
-                            className="w-8 h-8 rounded-lg flex items-center justify-center text-yellow-600 hover:bg-yellow-50 transition-colors"
-                            onClick={() => {
-                              const link = `${window.location.origin}/activate/${user.InvitationToken.String}`;
-                              navigator.clipboard.writeText(link);
-                              alert("تم نسخ رابط التفعيل!");
-                            }}
-                            title="نسخ رابط التفعيل"
-                          >
-                            <i className="fas fa-link"></i>
-                          </button>
-                        )}
-                        <button
-                          className="w-8 h-8 rounded-lg flex items-center justify-center text-green-600 hover:bg-green-50 transition-colors"
-                          onClick={() => navigate(`${user.ID}/report`)}
-                          title="عرض التقرير"
-                        >
-                          <i className="fas fa-file-alt"></i>
-                        </button>
-                        <button
-                          className="w-8 h-8 rounded-lg flex items-center justify-center text-blue-600 hover:bg-blue-50 transition-colors"
-                          onClick={() => navigate(`update/${user.ID}`)}
-                          title="تعديل"
-                        >
-                          <i className="fas fa-edit"></i>
-                        </button>
-                        <button
-                          className="w-8 h-8 rounded-lg flex items-center justify-center text-red-600 hover:bg-red-50 transition-colors"
-                          onClick={() => handleDelete(user.ID)}
-                          title="حذف"
-                        >
-                          <i className="fas fa-trash"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" className="px-6 py-12 text-center text-gray-500">
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center text-gray-300">
-                        <i className="fas fa-users text-2xl"></i>
-                      </div>
-                      <p className="text-lg font-medium">لا يوجد مستخدمين حالياً</p>
-                      <p className="text-sm">قم بإضافة مستخدم جديد للبدء</p>
                     </div>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="col-span-2 flex justify-end gap-2">
+                    {!user.IsActive && user.InvitationToken?.String && (
+                      <button
+                        onClick={() => {
+                          const link = `${window.location.origin}/activate/${user.InvitationToken.String}`;
+                          navigator.clipboard.writeText(link);
+                          alert("تم نسخ رابط التفعيل!");
+                        }}
+                        className="w-11 h-11 rounded-2xl bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-white transition-all duration-300 shadow-sm flex items-center justify-center group/btn"
+                        title="نسخ رابط التفعيل"
+                      >
+                        <i className="fas fa-link group-hover/btn:rotate-45 transition-transform duration-500"></i>
+                      </button>
+                    )}
+                    <button
+                      onClick={() => navigate(`${user.ID}/report`)}
+                      className="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 hover:bg-emerald-500 hover:text-white transition-all duration-300 shadow-sm flex items-center justify-center"
+                      title="عرض التقرير"
+                    >
+                      <i className="fas fa-file-invoice"></i>
+                    </button>
+                    <button
+                      onClick={() => navigate(`update/${user.ID}`)}
+                      className="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 hover:bg-blue-500 hover:text-white transition-all duration-300 shadow-sm flex items-center justify-center"
+                      title="تعديل"
+                    >
+                      <i className="fas fa-user-edit text-sm"></i>
+                    </button>
+                    <button
+                      onClick={() => handleDelete(user.ID)}
+                      className="w-11 h-11 rounded-2xl bg-red-50 text-red-600 hover:bg-red-500 hover:text-white transition-all duration-300 shadow-sm flex items-center justify-center"
+                      title="حذف"
+                    >
+                      <i className="fas fa-trash-alt text-sm"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="glass-card p-20 flex flex-col items-center justify-center text-center space-y-6">
+              <div className="w-24 h-24 bg-slate-50 rounded-[2rem] flex items-center justify-center text-slate-200 text-5xl">
+                <i className="fas fa-users"></i>
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-2xl font-black text-gray-800">قائمة فارغة</h3>
+                <p className="text-gray-400 font-bold max-w-xs mx-auto">لم يتم تسجيل أي موظف حتى الآن، ابدأ بإضافة الزملاء لبناء فريق العمل</p>
+              </div>
+              <Link to="addemp" className="px-8 py-3 bg-dark-green text-white font-black rounded-2xl shadow-lg shadow-green-900/10 hover:shadow-2xl transition-all">إضافة أول موظف</Link>
+            </div>
+          )}
         </div>
       </div>
-    </div >
+    </div>
   );
 }
+
 
 
