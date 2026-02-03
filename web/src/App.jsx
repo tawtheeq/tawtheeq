@@ -20,7 +20,6 @@ import UpdateEmp from "./pages/UpdateEmp";
 import MissionDetails from "./pages/MissionDetails";
 import AddParticipantsToMission from "./pages/AddParticipantsToMission";
 import Reports from "./pages/Reports";
-import About from "./pages/About";
 import UserReport from "./pages/UserReport";
 import Activate from "./pages/Activate";
 import UpdateCategories from "./pages/UpdateCategories";
@@ -55,7 +54,6 @@ function AppContent() {
           <Route path="settings" element={<Settings />} />
           <Route path="missions" element={<Missions />} />
           <Route path="missions/addmission" element={<AddMission />} />
-          <Route path="about" element={<About />} />
           <Route path="missions/update/:id" element={<UpdateMission />} />
           <Route path="missions/:id" element={<MissionDetails />} />
           <Route path="missions/:id/add-participants" element={<AddParticipantsToMission />} />

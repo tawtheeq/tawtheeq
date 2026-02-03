@@ -147,14 +147,14 @@ export default function Addcategory() {
 
                 {/* Sidebar Info */}
                 <div className="lg:col-span-4 space-y-8">
-                    <div className="glass-card p-8 bg-slate-900 text-white relative overflow-hidden group border-none">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-dark-green/20 rounded-full blur-[60px]"></div>
+                    <div className="glass-card p-8 text-white relative overflow-hidden group border-none">
+                        {/* <div className="absolute top-0 right-0 w-32 h-32"></div> */}
                         <div className="relative z-10 space-y-6">
-                            <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-dark-green text-xl">
+                            <div className="w-12 h-12 bg-gray-100 rounded-2xl flex items-center justify-center text-dark-green text-xl">
                                 <i className="fas fa-lightbulb"></i>
                             </div>
                             <div className="space-y-4">
-                                <h3 className="text-xl font-black">ما هي أنواع التصنيفات؟</h3>
+                                <h3 className="text-xl text-gray-600">ما هي أنواع التصنيفات؟</h3>
                                 <div className="space-y-3">
                                     <div className="flex items-start gap-3">
                                         <div className="w-1.5 h-1.5 bg-dark-green rounded-full mt-1.5 shrink-0"></div>

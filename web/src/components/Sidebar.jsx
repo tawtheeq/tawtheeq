@@ -1,8 +1,9 @@
-import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 
 export default function Sidebar() {
+  const { logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -12,12 +13,12 @@ export default function Sidebar() {
     { title: 'الموظفين', path: 'users', icon: 'fas fa-users' },
     { title: 'التقارير', path: 'reports', icon: 'fas fa-chart-pie' },
     { title: 'الإعدادات', path: 'settings', icon: 'fas fa-sliders-h' },
-    { title: 'عن المنصة', path: 'about', icon: 'fas fa-info-circle' }
   ];
 
   const handleLogout = () => {
     if (window.confirm('هل أنت متأكد من تسجيل الخروج؟')) {
-      navigate('/login');
+      logout();
+      navigate('/');
     }
   };
 

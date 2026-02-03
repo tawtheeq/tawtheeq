@@ -156,11 +156,10 @@ export default function UserReport() {
 
                     {/* Quick Stats Sidebar */}
                     <div className="lg:col-span-4 grid grid-cols-1 gap-6">
-                        <div className="glass-card p-8 bg-slate-900 text-white relative overflow-hidden group border-none">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-dark-green/20 rounded-full blur-[60px]"></div>
+                        <div className="glass-card p-8 relative overflow-hidden group">
                             <div className="relative z-10 flex items-center gap-6">
-                                <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-2xl text-dark-green">
-                                    <i className="fas fa-chess-knight"></i>
+                                <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl">
+                                    <i className="fas fa-tasks"></i>
                                 </div>
                                 <div>
                                     <div className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">إجمالي المهام</div>
@@ -171,11 +170,11 @@ export default function UserReport() {
                         <div className="glass-card p-8 relative overflow-hidden group">
                             <div className="flex items-center gap-6">
                                 <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl">
-                                    <i className="fas fa-stopwatch"></i>
+                                    <i className="fas fa-star"></i>
                                 </div>
                                 <div>
-                                    <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">سعر الإنجاز</div>
-                                    <div className="text-4xl font-black text-gray-800 tracking-tighter">{missions?.reduce((acc, m) => acc + m.DurationDays, 0) || 0} <span className="text-lg text-gray-300">يوم</span></div>
+                                    <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">تقييم الموظف</div>
+                                    <div className="text-4xl font-black text-gray-800 tracking-tighter">{missions?.reduce((acc, m) => acc + m.DurationDays, 0) || 0} <span className="text-lg text-gray-300"> / 100</span></div>
                                 </div>
                             </div>
                         </div>

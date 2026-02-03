@@ -314,8 +314,8 @@ export default function MissionDetails() {
                     <i className="fas fa-user-plus"></i>
                   </div>
                   <div className="space-y-2">
-                    <p className="text-xl font-black text-gray-800">الفريق شاغر</p>
-                    <p className="text-sm font-bold text-gray-400">ابدأ بإسناد الموظفين لتفعيل هذه المهمة</p>
+                    <p className="text-xl font-black text-gray-800"> لا يوجد أعضاء في الفريق </p>
+                    <p className="text-sm font-bold text-gray-400">ابدأ بإسناد الموظفين  لهذه المهمة</p>
                   </div>
                 </div>
               )}
@@ -350,8 +350,8 @@ export default function MissionDetails() {
               </div>
 
               <div>
-                <h3 className="text-2xl font-black mb-2">بث عبر Signal</h3>
-                <p className="text-blue-100/70 text-sm font-bold leading-relaxed">إرسال أوامر الإسناد الشخصية لكافة أعضاء الفريق ضغطة واحدة وبشكل آلي.</p>
+                <h3 className="text-2xl font-black mb-2">إرسال عبر Signal</h3>
+                <p className="text-blue-100/70 text-sm font-bold leading-relaxed">إرسال أوامر الإسناد الشخصية لكافة أعضاء الفريق</p>
               </div>
 
               <div className="space-y-4 pt-4">
@@ -359,14 +359,14 @@ export default function MissionDetails() {
                   onClick={handleSendToAllParticipants}
                   disabled={participants.length === 0 || isSending}
                   className={`w-full py-5 rounded-[2rem] font-black text-lg flex items-center justify-center gap-4 transition-all shadow-xl active:scale-95 ${isSending || participants.length === 0
-                      ? 'bg-blue-400/50 text-blue-200 cursor-not-allowed shadow-none'
-                      : 'bg-white text-blue-700 hover:bg-blue-50 shadow-white/10'
+                    ? 'bg-blue-400/50 text-blue-200 cursor-not-allowed shadow-none'
+                    : 'bg-white text-blue-700 hover:bg-blue-50 shadow-white/10'
                     }`}
                 >
                   {isSending ? (
                     <>
                       <i className="fas fa-spinner fa-spin"></i>
-                      <span>جاري البث...</span>
+                      <span>جاري الإرسال...</span>
                     </>
                   ) : (
                     <>
@@ -375,16 +375,16 @@ export default function MissionDetails() {
                     </>
                   )}
                 </button>
-                <div className="flex items-center gap-3 justify-center opacity-60">
+                {/* <div className="flex items-center gap-3 justify-center opacity-60">
                   <i className="fas fa-shield-alt text-xs"></i>
                   <span className="text-[10px] font-black uppercase tracking-widest">تشفير كامل للأطراف</span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
 
           {/* Quick Info */}
-          <div className="glass-card p-8 space-y-6">
+          {/* <div className="glass-card p-8 space-y-6">
             <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest">ملاحظات التوثيق</h3>
             <div className="space-y-4">
               <div className="p-4 rounded-2xl bg-amber-50/50 border border-amber-100/50 flex gap-4">
@@ -396,7 +396,7 @@ export default function MissionDetails() {
                 <p className="text-xs font-bold text-slate-500 leading-relaxed">تم إنشاء هذه المهمة تلقائياً كجزء من خطة التغطية الربع سنوية.</p>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

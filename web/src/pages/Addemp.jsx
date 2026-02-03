@@ -134,7 +134,7 @@ export default function AddEmp() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-        <div className="lg:col-span-8">
+        <div className="lg:col-span-12">
           <div className="glass-card p-10 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-2 premium-gradient opacity-60"></div>
 
@@ -294,43 +294,6 @@ export default function AddEmp() {
                 </button>
               </div>
             </form>
-          </div>
-        </div>
-
-        {/* Sidebar Help */}
-        <div className="lg:col-span-4 space-y-6">
-          <div className="glass-card p-8 bg-dark-green text-white relative overflow-hidden group">
-            <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all duration-700"></div>
-            <div className="relative z-10 space-y-4">
-              <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl">
-                <i className="fas fa-magic"></i>
-              </div>
-              <h3 className="text-xl font-black">نصائح التفعيل</h3>
-              <ul className="space-y-3 text-sm font-bold opacity-90">
-                <li className="flex gap-2">
-                  <i className="fas fa-check-circle mt-1 opacity-60"></i>
-                  <span>تأكد من صحة رقم الجوال لتلقي التنبيهات</span>
-                </li>
-                <li className="flex gap-2">
-                  <i className="fas fa-check-circle mt-1 opacity-60"></i>
-                  <span>الرصيد الافتراضي هو 60 يوماً للمهام</span>
-                </li>
-                <li className="flex gap-2">
-                  <i className="fas fa-check-circle mt-1 opacity-60"></i>
-                  <span>سيتم توليد رابط دعوة خاص بعد الإضافة</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="glass-card p-8 border-dashed border-2 border-slate-200 flex flex-col items-center justify-center text-center space-y-4 opacity-60">
-            <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-300">
-              <i className="fas fa-shield-alt"></i>
-            </div>
-            <div>
-              <h4 className="font-black text-gray-400 text-sm">بيانات آمنة</h4>
-              <p className="text-[10px] font-bold text-gray-400">جميع البيانات مشفرة وتخضع لسياسة الخصوصية</p>
-            </div>
           </div>
         </div>
       </div>
