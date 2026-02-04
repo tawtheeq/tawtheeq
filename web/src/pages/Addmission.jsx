@@ -167,7 +167,7 @@ export default function Addmission() {
                             <div className="w-1.5 h-6 bg-current rounded-full"></div>
                             <h1 className="text-3xl font-black tracking-tight text-gray-800">إضافة مهمة جديدة</h1>
                         </div>
-                        <p className="text-gray-500 font-bold pr-4">جدولة مهمة تصوير جديدة وتنسيق البيانات اللوجستية</p>
+                        <p className="text-gray-500 font-bold pr-4">جدولة مهمة تصوير جديدة</p>
                     </div>
                 </div>
             </div>
@@ -472,9 +472,9 @@ export default function Addmission() {
                 {/* Sidebar Info */}
                 <div className="lg:col-span-4 space-y-8">
                     <div className="glass-card p-8 bg-slate-900 text-white relative overflow-hidden group border-none">
-                        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-dark-green/20 rounded-full blur-[80px]"></div>
+                        {/* <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-dark-green/20"></div> */}
                         <div className="relative z-10 space-y-6">
-                            <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-3xl">
+                            <div className="w-14 h-14 bg-gray-100 rounded-2xl flex items-center justify-center text-3xl">
                                 <i className="fas fa-lightbulb text-amber-400"></i>
                             </div>
                             <div>
@@ -488,7 +488,7 @@ export default function Addmission() {
                                 </div>
                                 <div className="flex items-center gap-3 text-xs font-black text-gray-400">
                                     <div className="w-1.5 h-1.5 rounded-full bg-dark-green"></div>
-                                    <span>يتم حساب المكافآت حسب نوع المهمة</span>
+                                    <span>يتم   خصم الرصيد بناء على نوع المهمة</span>
                                 </div>
                             </div>
                         </div>
